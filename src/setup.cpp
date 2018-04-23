@@ -1,6 +1,7 @@
 #include "config.h"
 #include "ym2612.h"
 #include "clock.h"
+#include "midi.h"
 
 void setup()
 {
@@ -10,15 +11,24 @@ void setup()
     Serial.println("Hello ym2612");
 #endif
 
+
     start_clock();
 
     ym2612.setup();
     ym2612.reset();
-    ym2612.segaDocTestProgram();
+    ym2612.segaDocTestProgram(false);
 
-    // led
+    setup_midi();
+
+
+    // double blink led for startup
     pinMode(PIN_LED, OUTPUT);
-    digitalWrite(PIN_LED, HIGH);
+    for (int i=0; i<2; i++) {
+        digitalWrite(PIN_LED, HIGH);
+        delay(50);
+        digitalWrite(PIN_LED, LOW);
+        delay(100);
+    }
 }
 
 

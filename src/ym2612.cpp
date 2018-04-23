@@ -82,7 +82,7 @@ void Ym2612::setCh3Mode(uint8_t mode)
 
 void Ym2612::setKeyOnOff(uint8_t channel, uint8_t operators)
 {
-    update_register(0x28,0, 0, ((operators & 0xF) <<4) | (channel & 0x7));
+    write_register(0, 0x28, ((operators & 0xF) <<4) | (channel & 0x7));
 }
 void Ym2612::keyOn(uint8_t channel)
 {
@@ -272,7 +272,7 @@ void Ym2612::write_register(uint8_t part, uint8_t reg, uint8_t data)
  * sega test program from docs
  */
 
-void Ym2612::segaDocTestProgram()
+void Ym2612::segaDocTestProgram(bool play_test_note)
 {
     write_register(0, 0x22, 0);          // lfo off
     write_register(0, 0x27, 0);          // ch3 mode
@@ -329,5 +329,9 @@ void Ym2612::segaDocTestProgram()
     write_register(0, 0xA4, 0x22);      // Set frequency
     write_register(0, 0xA0, 0x69);
 
-    write_register(0, 0x28, 0xF0);      // Key on
+    if (play_test_note) {
+        write_register(0, 0x28, 0xF0);      // Key on
+        delay(1000);
+        write_register(0, 0x28, 0x00);      // Key off
+    }
 }

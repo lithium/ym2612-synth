@@ -16,7 +16,7 @@ public:
 
     void setup();
     void reset();
-    void segaDocTestProgram();
+    void segaDocTestProgram(bool play_test_note);
 
     // utility functions
     void write_data(uint8_t data);

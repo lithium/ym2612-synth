@@ -1,5 +1,7 @@
 #include "ym2612.h"
 #include "config.h"
+#include "clock.h"
+
 
 Ym2612 ym2612(
     YM_D0, YM_D1, YM_D2, YM_D3, YM_D4, YM_D5, YM_D6, YM_D7,
@@ -53,6 +55,12 @@ void Ym2612::setup()
     memset(this->registers, 0, sizeof(this->registers));
 }
 
+uint16_t Ym2612::hz_to_fword(uint8_t octave, uint16_t hz)
+{
+    // (144 * fnote * 2^20 / CLK) / 2^(B-1)
+    uint16_t fnum = ((144 * hz * 1048576) / MASTER_CLOCK_SPEED) / pow(2, octave - 1);
+    return fnum;
+}
 
 /*
  * global registers

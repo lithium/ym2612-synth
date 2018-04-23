@@ -56,6 +56,9 @@ public:
     void setLfoFm(uint8_t channel, uint8_t depth);
 
 
+    static uint16_t hz_to_fword(uint8_t octave, uint16_t hz);
+
+
 private:
     uint8_t pin_data[8];
     uint8_t pin_ic;

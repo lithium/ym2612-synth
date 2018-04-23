@@ -3,7 +3,7 @@
 
 void start_clock()
 {
-    analogWriteFrequency(YM_CLK, 7670445); // 7.670445Mhz
+    analogWriteFrequency(YM_CLK, MASTER_CLOCK_SPEED); 
     analogWriteResolution(8);
     analogWrite(YM_CLK, 128);
 }

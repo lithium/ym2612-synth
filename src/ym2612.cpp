@@ -180,11 +180,11 @@ void Ym2612::setOutputs(uint8_t channel, bool left, bool right)
 }
 void Ym2612::setLfoAm(uint8_t channel, uint8_t depth)
 {
-    update_ch_register(0xB4, channel, 3, depth & 0b111);
+    update_ch_register(0xB4, channel, 4, depth & 0b11);
 }
 void Ym2612::setLfoFm(uint8_t channel, uint8_t depth)
 {
-    update_ch_register(0xB4, channel, 0, depth & 0b11);
+    update_ch_register(0xB4, channel, 0, depth & 0b111);
 }
 
 

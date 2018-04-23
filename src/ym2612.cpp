@@ -54,30 +54,149 @@ void Ym2612::setup()
 }
 
 
-
 /*
- * register manipulation 
+ * global registers
  */
 
-void Ym2612::setDetune(uint8_t channel, uint8_t slot, uint8_t detune)
+void Ym2612::enableLfo(bool enabled)
 {
-    update_register(0x30, channel, slot, 4, detune & 0x7);   // 3 bits <<4
+    update_register(0x22,0, 3, enabled & 0b1);
+}
+void Ym2612::setLfoFrequency(uint8_t frequency)
+{
+    update_register(0x22,0, 0, frequency & 0b111);
 }
 
-void Ym2612::setMultiple(uint8_t channel, uint8_t slot, uint8_t multiple)
+void Ym2612::setCh3Mode(uint8_t mode)
 {
-    update_register(0x30, channel, slot, 0, multiple & 0xF);   // 4 bits <<0
+    update_register(0x27,0, 6, mode & 0b11);
 }
 
+void Ym2612::setKeyOnOff(uint8_t channel, uint8_t operators)
+{
+    update_register(0x28,0, 0, ((operators & 0xF) <<4) | (channel & 0x7));
+}
+void Ym2612::keyOn(uint8_t channel)
+{
+    setKeyOnOff(channel, 0xF);
+}
+void Ym2612::keyOff(uint8_t channel)
+{
+    setKeyOnOff(channel, 0x0);
+}
+
+void Ym2612::enableDac(bool enabled)
+{
+    update_register(0x2B,0, 7, enabled);
+}
+void Ym2612::setDac(uint16_t dac_value)
+{
+    update_register(0x2A, 0, 0, dac_value);
+}
+
+
+/*
+ * channel+operator registers
+ */
+
+void Ym2612::setDetune(uint8_t channel, uint8_t oper, uint8_t detune)
+{
+    update_chop_register(0x30, channel, oper, 4, detune & 0x7);   // 3 bits <<4
+}
+void Ym2612::setMultiple(uint8_t channel, uint8_t oper, uint8_t multiple)
+{
+    update_chop_register(0x30, channel, oper, 0, multiple & 0xF);   // 4 bits <<0
+}
+
+void Ym2612::setTotalLevel(uint8_t channel, uint8_t oper, uint8_t level)
+{
+    update_chop_register(0x40, channel, oper, 0, level & 0x7F);
+}
+
+void Ym2612::setRateScale(uint8_t channel, uint8_t oper, uint8_t rate_scale)
+{
+    update_chop_register(0x50, channel, oper, 6, rate_scale & 0b11); 
+}
+void Ym2612::setAttack(uint8_t channel, uint8_t oper, uint8_t rate)
+{
+    update_chop_register(0x50, channel, oper, 0, rate & 0b11111);
+}
+
+void Ym2612::enableLfoAm(uint8_t channel, uint8_t oper, bool enabled)
+{
+    update_chop_register(0x60, channel, oper, 7, enabled & 0b1);
+}
+void Ym2612::setFirstDecay(uint8_t channel, uint8_t oper, uint8_t rate)
+{
+    update_chop_register(0x60, channel, oper, 0, rate & 0b11111);
+}
+
+void Ym2612::setSecondDecay(uint8_t channel, uint8_t oper, uint8_t rate)
+{
+    update_chop_register(0x70, channel, oper, 0, rate & 0b11111);
+}
+
+void Ym2612::setSecondLevel(uint8_t channel, uint8_t oper, uint8_t level)
+{
+    update_chop_register(0x80, channel, oper, 4, level & 0b1111);
+}
+void Ym2612::setRelease(uint8_t channel, uint8_t oper, uint8_t rate)
+{
+    update_chop_register(0x80, channel, oper, 0, rate & 0b1111);
+}
+
+
+/* 
+ * channel registers
+ */
+void Ym2612::setFrequency(uint8_t channel, uint8_t octave, uint16_t freq)
+{   
+    uint8_t lsb = freq & 0xFF;
+    uint8_t msb = (freq & 0x700)>>8;
+
+    // TODO: handle Ch3 mode with diff frequencies
+    uint8_t ym_addr = 0xA0 + (channel % 3);
+
+    // set high order byte first
+    set_register(channel >= 3, ym_addr+4, ((octave & 0x7)<<3) |  msb);
+    set_register(channel >= 3, ym_addr, lsb);
+}
+void Ym2612::setAlgorithm(uint8_t channel, uint8_t algorithm, uint8_t feedback)
+{
+    update_ch_register(0xB0, channel, 3, feedback & 0b111);
+    update_ch_register(0xB0, channel, 0, algorithm & 0b111);
+}
+void Ym2612::setOutputs(uint8_t channel, bool left, bool right)
+{
+    update_ch_register(0xB4, channel, 6, (left<<1)|right);
+}
+void Ym2612::setLfoAm(uint8_t channel, uint8_t depth)
+{
+    update_ch_register(0xB4, channel, 3, depth & 0b111);
+}
+void Ym2612::setLfoFm(uint8_t channel, uint8_t depth)
+{
+    update_ch_register(0xB4, channel, 0, depth & 0b11);
+}
 
 
 /*
  * internal register cache
  */
-
-void Ym2612::update_register(uint8_t base_addr, uint8_t channel, uint8_t slot, uint8_t bit_offset, uint8_t value)
+void Ym2612::update_ch_register(uint8_t base_addr, uint8_t channel, uint8_t bit_offset, uint8_t value)
 {
-    uint8_t ym_addr = base_addr + channel*4 + slot;
+    uint8_t ym_addr = base_addr + (channel%3);
+    return update_register(ym_addr, channel, bit_offset, value);
+}
+
+void Ym2612::update_chop_register(uint8_t base_addr, uint8_t channel, uint8_t oper, uint8_t bit_offset, uint8_t value)
+{
+    uint8_t ym_addr = base_addr + channel*4 + oper;
+    return update_register(ym_addr, channel, bit_offset, value);
+}
+
+void Ym2612::update_register(uint8_t ym_addr, uint8_t channel, uint8_t bit_offset, uint8_t value)
+{
     uint8_t existing_value = get_register(channel >= 3, ym_addr);
     uint8_t new_value = existing_value | (value << bit_offset);
     if (new_value != existing_value) {

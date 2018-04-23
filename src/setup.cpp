@@ -13,13 +13,13 @@ void setup()
     start_clock();
 
     ym2612.setup();
-    ym2612.setOutputs(1,1);
-    ym2612.keyOn(1);
-
-    Serial.println("keyed on?");
-
+    ym2612.reset();
+    ym2612.segaDocTestProgram();
 
     // led
     pinMode(PIN_LED, OUTPUT);
     digitalWrite(PIN_LED, HIGH);
 }
+
+
+

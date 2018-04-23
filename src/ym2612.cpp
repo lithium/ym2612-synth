@@ -41,113 +41,106 @@ void Ym2612::setup()
     pinMode(this->pin_a1, OUTPUT);
 
 
-    // chip enable
-    digitalWriteFast(YM_IC, HIGH); 
-    delay(1);
-    digitalWriteFast(YM_IC, LOW); 
-    delay(1);
-    digitalWriteFast(YM_IC, HIGH); 
-
-}
-
-
-
-void Ym2612::writeRegister(uint8_t channel, uint8_t reg, uint8_t data)
-{
+    digitalWriteFast(this->pin_ic, HIGH);
+    digitalWriteFast(this->pin_cs, HIGH);
+    digitalWriteFast(this->pin_wr, HIGH);
     digitalWriteFast(this->pin_rd, HIGH);
-    digitalWriteFast(this->pin_wr, LOW);
-
-    digitalWriteFast(this->pin_cs, HIGH);
-
-    // write address
-    if (channel < 3) {
-        digitalWriteFast(this->pin_a1, LOW);
-        digitalWriteFast(this->pin_a0, LOW);
-    } else {
-        digitalWriteFast(this->pin_a1, HIGH);
-        digitalWriteFast(this->pin_a0, LOW);
-    }
-    set_data(reg);
-    digitalWriteFast(this->pin_cs, LOW);
-
-    // delay after writing address
-    delay_10ns();
-
-
-    digitalWriteFast(this->pin_cs, HIGH);
-    delay_10ns();
-
-
-    // write data
-    if (channel < 3) {
-        digitalWriteFast(this->pin_a1, LOW);
-        digitalWriteFast(this->pin_a0, HIGH);
-    } else {
-        digitalWriteFast(this->pin_a1, HIGH);
-        digitalWriteFast(this->pin_a0, HIGH);
-    }
-    set_data(data);
-    digitalWriteFast(this->pin_cs, LOW);
-
-    // delay after writing data
-    delay_10ns();
+    digitalWriteFast(this->pin_a0, LOW);
+    digitalWriteFast(this->pin_a1, LOW);
 }
 
 
-void Ym2612::keyOn(uint8_t channel)
+void Ym2612::reset()
 {
-    keyOnOperators(channel, 0xF); // turn all all 4 operators
-}
-void Ym2612::keyOff(uint8_t channel)
-{
-    keyOnOperators(channel, 0x0);
-}
-void Ym2612::keyOnOperators(uint8_t channel, uint8_t operators)
-{
-    writeRegister(channel, 0x28, (operators << 4) | (channel & 0x7));
+    digitalWriteFast(this->pin_ic, LOW);
+    delay(10);
+    digitalWriteFast(this->pin_ic, HIGH);
+    delay(10);
 }
 
-void Ym2612::setOutputs(uint8_t left, uint8_t right)
-{
-    writeRegister(5, 0xb4, (left&1)<<7 | (right&1)<<6);
-}
 
-void Ym2612::setFrequency(uint8_t channel, uint8_t octave, uint16_t offset)
+void Ym2612::segaDocTestProgram()
 {
-    uint8_t lsb_addr;
-    uint8_t msb_addr;
+    write_register(0x22, 0);          // lfo off
+    write_register(0x27, 0);          // ch3 mode
 
-    switch (channel) {
-        case 0:
-            lsb_addr = 0xA0;
-            msb_addr = 0xA4;
-            break;
-        case 1:
-            lsb_addr = 0xA1;
-            msb_addr = 0xA5;
-            break;
-        case 2:
-            lsb_addr = 0xA2;
-            msb_addr = 0xA6;
-            break;
-    }
+    write_register(0x28, 0);          // all channels off
+    write_register(0x28, 1);
+    write_register(0x28, 2);          
+    write_register(0x28, 4);          // 3 gets skipped!
+    write_register(0x28, 5);
+    write_register(0x28, 6);
+
+    write_register(0x2B, 0);          // dac off
+
+    write_register(0x30, 0x71);       // DT1/MUL
+    write_register(0x34, 0x0D);
+    write_register(0x38, 0x33);
+    write_register(0x3C, 0x01);
+
+    write_register(0x40, 0x23);       // Total Level
+    write_register(0x44, 0x2D);
+    write_register(0x48, 0x26);
+    write_register(0x4C, 0x00);
+
+    write_register(0x50, 0x5F);       // RS/AR 
+    write_register(0x54, 0x99);
+    write_register(0x58, 0x5F);
+    write_register(0x5C, 0x94);
+
+    write_register(0x60, 0x05);       // AM/D1R
+    write_register(0x64, 0x05);
+    write_register(0x68, 0x05);
+    write_register(0x6C, 0x07);
+
+    write_register(0x70, 0x02);       // D2R
+    write_register(0x74, 0x02);
+    write_register(0x78, 0x02);
+    write_register(0x7C, 0x02);
+
+    write_register(0x80, 0x11);       // D1L/RR
+    write_register(0x84, 0x11);
+    write_register(0x88, 0x11);
+    write_register(0x8C, 0xA6);
+
+    write_register(0x90, 0x00);       // Proprietary
+    write_register(0x94, 0x00);
+    write_register(0x98, 0x00);
+    write_register(0x9C, 0x00);
+
+    write_register(0xB0, 0x32);      // Feedback/algorithm
+    write_register(0xB4, 0xC0);      // Both speakers on
+
+    write_register(0x28, 0x00);      // Key off
+
+    write_register(0xA4, 0x22);      // Set frequency
+    write_register(0xA0, 0x69);
+
+    write_register(0x28, 0xF0);      // Key on
 }
 
 /*
  * private 
  */
 
-void Ym2612::set_data(uint8_t b) 
-{
+void Ym2612::write_data(uint8_t data) {
+    digitalWriteFast(this->pin_cs, LOW);
     for (int i=0; i < 8; i++) {
-        digitalWriteFast(this->pin_data[i], (b >> i) & 1);
+        digitalWriteFast(this->pin_data[i], (data >> i) & 1);
     }
+    delayMicroseconds(1);
+
+    digitalWriteFast(this->pin_wr, LOW); // write data
+    delayMicroseconds(5);
+    digitalWriteFast(this->pin_wr, HIGH);
+    delayMicroseconds(5);
+
+    digitalWriteFast(this->pin_cs, HIGH);
 }
 
-void Ym2612::delay_10ns()
-{
-    int i = DELAY_SCALE;
-    while(i-- > 0) {
-        __asm__ volatile ("nop");
-    }
+void Ym2612::write_register(uint8_t reg, uint8_t data) {
+    digitalWriteFast(this->pin_a0, LOW);
+    write_data(reg);
+    digitalWriteFast(this->pin_a0, HIGH);
+    write_data(data);
 }

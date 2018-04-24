@@ -2,6 +2,7 @@
 #define YM2612_h
 
 #include "config.h"
+#include "patch.h"
 
 
 #define DELAY_SCALE 11
@@ -16,6 +17,9 @@ public:
 
     void setup();
     void reset();
+
+    void applyTfiPatch(uint8_t channel, struct tfi_patch_t *patch);
+
     void segaDocTestProgram(bool play_test_note);
 
     // utility functions
@@ -55,6 +59,7 @@ public:
     void setOutputs(uint8_t channel, bool left, bool right);
     void setLfoAm(uint8_t channel, uint8_t depth);
     void setLfoFm(uint8_t channel, uint8_t depth);
+
 
 
     static uint16_t hz_to_fword(uint8_t octave, uint16_t hz);

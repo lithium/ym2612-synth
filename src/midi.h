@@ -3,12 +3,42 @@
 
 #include "config.h"
 
+
+
+const uint8_t OUR_SYSEX_MANUFACTURER_CODE[3] = {0x00, 0x7F, 0x38};
+#define OUR_SYSEX_PRODUCT_TYPE 1
+#define OUR_SYSEX_PRODUCT_NUMBER 1
+
+#define SYSEX_COMMAND_REPLACE_PATCH 0
+#define SYSEX_PATCH_FORMAT_TFI 0
+
+struct sysex_header_t {
+    uint8_t sysex_magic; // should be 0xF0
+    uint8_t manufacturer_id[3];
+    uint8_t product_type;
+    uint8_t product_number;
+    uint8_t command;
+};
+const uint sysex_header_length = sizeof(struct sysex_header_t);
+
+struct sysex_patch_header_t {
+    uint8_t channel;
+    uint8_t patch_format;
+};
+const uint sysex_patch_header_length = sizeof(struct sysex_patch_header_t);
+
+
+
+
 void setup_midi();
 
 
 void handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity);
 void handleMidiNoteOff(uint8_t channel, uint8_t note, uint8_t velocity);
 void handleMidiCC(uint8_t channel, uint8_t control, uint8_t value);
+void handleMidiSysex(const uint8_t *data, uint16_t length, bool last);
+
+void sysex_replace_patch(struct sysex_header_t *header, const uint8_t *data, uint16_t length);
 
 // global
 #define MIDI_CC_LFO_ENABLE 1

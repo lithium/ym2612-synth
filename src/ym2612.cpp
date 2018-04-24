@@ -62,6 +62,23 @@ uint16_t Ym2612::hz_to_fword(uint8_t octave, uint16_t hz)
     return fnum;
 }
 
+void Ym2612::applyTfiPatch(uint8_t channel, struct tfi_patch_t *patch)
+{
+    setAlgorithm(channel, patch->algorithm);
+    setFeedback(channel, patch->feedback);
+    for (int i=0; i < 4; i++) {
+        setMultiple(channel, i, patch->op[i].multiplier);
+        setDetune(channel, i, patch->op[i].detune);
+        setTotalLevel(channel, i, patch->op[i].total_level);
+        setRateScale(channel, i, patch->op[i].rate_scale);
+        setAttackRate(channel, i, patch->op[i].attack_rate);
+        setDecayRate(channel, i, patch->op[i].decay_rate);
+        setSustainRate(channel, i, patch->op[i].sustain_rate);
+        setReleaseRate(channel, i, patch->op[i].release_rate);
+        setSustainLevel(channel, i, patch->op[i].sustain_level);
+    }
+}
+
 /*
  * global registers
  */

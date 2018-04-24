@@ -1,12 +1,14 @@
 #include "midi.h"
 #include "ym2612.h"
-
+#include "patch.h"
 
 void setup_midi()
 {
     usbMIDI.setHandleNoteOn(handleMidiNoteOn);
     usbMIDI.setHandleNoteOff(handleMidiNoteOff);
     usbMIDI.setHandleControlChange(handleMidiCC);
+    usbMIDI.setHandleControlChange(handleMidiCC);
+    usbMIDI.setHandleSystemExclusive(handleMidiSysex);
 }
 
 
@@ -96,3 +98,48 @@ void handleMidiCC(uint8_t channel, uint8_t control, uint8_t value)
     }
 
 }
+
+
+void handleMidiSysex(const uint8_t *data, uint16_t length, bool last)
+{
+    Serial.print("sysex length: ");
+    Serial.print(length);
+    Serial.print(" last:");
+    Serial.println(last);
+
+    if (length < sysex_header_length) {
+        // not a sysex message for us
+        return;
+    }
+
+    struct sysex_header_t *header = (struct sysex_header_t *)data;
+
+    if (memcmp(header->manufacturer_id, OUR_SYSEX_MANUFACTURER_CODE, 3) != 0)
+    {
+        Serial.println("manufacturer does NOT match!  ");
+        return;
+    }
+
+    if (header->product_type != OUR_SYSEX_PRODUCT_TYPE || header->product_number != OUR_SYSEX_PRODUCT_NUMBER)
+    {
+        Serial.println("product type and number dont match");
+        return;
+    }
+
+    Serial.print("sysex is good! command: ");
+    Serial.println(header->command);
+
+    if (header->command == SYSEX_COMMAND_REPLACE_PATCH) {
+        sysex_replace_patch(header, data, length);
+    }
+}
+
+void sysex_replace_patch(struct sysex_header_t *header, const uint8_t *data, uint16_t length)
+{
+    struct sysex_patch_header_t *patch_header = (struct sysex_patch_header_t *)(data + sysex_header_length);
+    if (patch_header->patch_format == SYSEX_PATCH_FORMAT_TFI) {
+        struct tfi_patch_t *tfi = (struct tfi_patch_t *)(patch_header + sysex_patch_header_length);
+        ym2612.applyTfiPatch(patch_header->channel, tfi);
+    }
+}
+

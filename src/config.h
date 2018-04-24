@@ -20,13 +20,13 @@
 #define YM_D7 21
 
 
-#define YM_IC 22
 #define YM_CS 0
 #define YM_WR 1
 #define YM_RD 2
 #define YM_A0 3
 #define YM_A1 4
 #define YM_CLK 5
+#define YM_IC 6
 
 
 // builtin led

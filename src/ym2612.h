@@ -41,16 +41,17 @@ public:
     void setMultiple(uint8_t channel, uint8_t oper, uint8_t multiple);
     void setTotalLevel(uint8_t channel, uint8_t oper, uint8_t level);
     void setRateScale(uint8_t channel, uint8_t oper, uint8_t rate_scale);
-    void setAttack(uint8_t channel, uint8_t oper, uint8_t rate);
+    void setAttackRate(uint8_t channel, uint8_t oper, uint8_t rate);
     void enableLfoAm(uint8_t channel, uint8_t oper, bool enabled);
-    void setFirstDecay(uint8_t channel, uint8_t oper, uint8_t rate);
-    void setSecondDecay(uint8_t channel, uint8_t oper, uint8_t rate);
-    void setSecondLevel(uint8_t channel, uint8_t oper, uint8_t level);
-    void setRelease(uint8_t channel, uint8_t oper, uint8_t rate);
+    void setDecayRate(uint8_t channel, uint8_t oper, uint8_t rate);
+    void setSustainRate(uint8_t channel, uint8_t oper, uint8_t rate);
+    void setSustainLevel(uint8_t channel, uint8_t oper, uint8_t level);
+    void setReleaseRate(uint8_t channel, uint8_t oper, uint8_t rate);
 
     // channel  0xA0 - 0xB4
     void setFrequency(uint8_t channel, uint8_t octave, uint16_t offset);
-    void setAlgorithm(uint8_t channel, uint8_t algorithm, uint8_t feedback);
+    void setAlgorithm(uint8_t channel, uint8_t algorithm);
+    void setFeedback(uint8_t channel, uint8_t feedback);
     void setOutputs(uint8_t channel, bool left, bool right);
     void setLfoAm(uint8_t channel, uint8_t depth);
     void setLfoFm(uint8_t channel, uint8_t depth);

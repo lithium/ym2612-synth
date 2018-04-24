@@ -126,7 +126,7 @@ void Ym2612::setRateScale(uint8_t channel, uint8_t oper, uint8_t rate_scale)
 {
     update_chop_register(0x50,channel,oper, 0b11000000, rate_scale); 
 }
-void Ym2612::setAttack(uint8_t channel, uint8_t oper, uint8_t rate)
+void Ym2612::setAttackRate(uint8_t channel, uint8_t oper, uint8_t rate)
 {
     update_chop_register(0x50,channel,oper, 0b00011111, rate);
 }
@@ -135,21 +135,21 @@ void Ym2612::enableLfoAm(uint8_t channel, uint8_t oper, bool enabled)
 {
     update_chop_register(0x60,channel,oper, 0b10000000, enabled);
 }
-void Ym2612::setFirstDecay(uint8_t channel, uint8_t oper, uint8_t rate)
+void Ym2612::setDecayRate(uint8_t channel, uint8_t oper, uint8_t rate)
 {
     update_chop_register(0x60,channel,oper, 0b00011111, rate);
 }
 
-void Ym2612::setSecondDecay(uint8_t channel, uint8_t oper, uint8_t rate)
+void Ym2612::setSustainRate(uint8_t channel, uint8_t oper, uint8_t rate)
 {
     update_chop_register(0x70,channel,oper, 0b00011111, rate);
 }
 
-void Ym2612::setSecondLevel(uint8_t channel, uint8_t oper, uint8_t level)
+void Ym2612::setSustainLevel(uint8_t channel, uint8_t oper, uint8_t level)
 {
     update_chop_register(0x80,channel,oper, 0b11110000, level);
 }
-void Ym2612::setRelease(uint8_t channel, uint8_t oper, uint8_t rate)
+void Ym2612::setReleaseRate(uint8_t channel, uint8_t oper, uint8_t rate)
 {
     update_chop_register(0x80,channel,oper, 0b00001111, rate);
 }
@@ -170,10 +170,13 @@ void Ym2612::setFrequency(uint8_t channel, uint8_t octave, uint16_t freq)
     set_register(channel >= 3, ym_addr+4, ((octave & 0x7)<<3) |  msb);
     set_register(channel >= 3, ym_addr, lsb);
 }
-void Ym2612::setAlgorithm(uint8_t channel, uint8_t algorithm, uint8_t feedback)
+void Ym2612::setAlgorithm(uint8_t channel, uint8_t algorithm)
+{
+    update_ch_register(0xB0, channel, 0b00000111, algorithm);
+}
+void Ym2612::setFeedback(uint8_t channel, uint8_t feedback) 
 {
     update_ch_register(0xB0, channel, 0b00111000, feedback);
-    update_ch_register(0xB0, channel, 0b00000111, algorithm);
 }
 void Ym2612::setOutputs(uint8_t channel, bool left, bool right)
 {

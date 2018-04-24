@@ -69,9 +69,9 @@ private:
     uint8_t pin_a1;
 
 
-    void update_ch_register(uint8_t base_addr, uint8_t channel, uint8_t bit_offset, uint8_t value);
-    void update_chop_register(uint8_t base_addr, uint8_t channel, uint8_t oper, uint8_t bit_offset, uint8_t value);
-    void update_register(uint8_t ym_addr, uint8_t channel, uint8_t bit_offset, uint8_t value);
+    void update_ch_register(uint8_t base_addr, uint8_t channel, uint8_t mask, uint8_t value);
+    void update_chop_register(uint8_t base_addr, uint8_t channel, uint8_t oper, uint8_t mask, uint8_t value);
+    void update_register(uint8_t ym_addr, uint8_t channel, uint8_t mask, uint8_t value);
 
     void set_register(uint8_t part, uint8_t ym_addr, uint8_t value);
     uint8_t get_register(uint8_t part, uint8_t ym_addr);

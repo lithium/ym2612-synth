@@ -37,5 +37,23 @@ void handleMidiNoteOff(uint8_t channel, uint8_t note, uint8_t velocity)
 
 void handleMidiCC(uint8_t channel, uint8_t control, uint8_t value)
 {
+    uint8_t ym_channel = channel-1;
+
+    switch (control) {
+        case MIDI_CC_TL_OP1: ym2612.setTotalLevel(ym_channel, 0, value); break;
+        case MIDI_CC_TL_OP2: ym2612.setTotalLevel(ym_channel, 1, value); break;
+        case MIDI_CC_TL_OP3: ym2612.setTotalLevel(ym_channel, 2, value); break;
+        case MIDI_CC_TL_OP4: ym2612.setTotalLevel(ym_channel, 3, value); break;
+
+        case MIDI_CC_RS_OP1: ym2612.setRateScale(ym_channel, 0, value); break;
+        case MIDI_CC_RS_OP2: ym2612.setRateScale(ym_channel, 1, value); break;
+        case MIDI_CC_RS_OP3: ym2612.setRateScale(ym_channel, 2, value); break;
+        case MIDI_CC_RS_OP4: ym2612.setRateScale(ym_channel, 3, value); break;
+
+        case MIDI_CC_AR_OP1: ym2612.setAttack(ym_channel, 0, value); break;
+        case MIDI_CC_AR_OP2: ym2612.setAttack(ym_channel, 1, value); break;
+        case MIDI_CC_AR_OP3: ym2612.setAttack(ym_channel, 2, value); break;
+        case MIDI_CC_AR_OP4: ym2612.setAttack(ym_channel, 3, value); break;
+    }
 
 }

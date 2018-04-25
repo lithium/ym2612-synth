@@ -46,64 +46,75 @@ void handleMidiSysex(const uint8_t *data, uint16_t length, bool last);
 
 void sysex_replace_patch(struct sysex_header_t *header, const uint8_t *data, uint16_t length);
 
+
+
+
+// http://little-scale.com/GENMDM/GENMDM_102/GENMDM_102.txt
+
+
 // global
-#define MIDI_CC_LFO_ENABLE 1
-#define MIDI_CC_LFO_FREQUENCY 2
+#define MIDI_CC_LFO_ENABLE 74
+#define MIDI_CC_LFO_FREQUENCY 1
 
 
-#define MIDI_CC_LFO_AM_DEPTH 38
-#define MIDI_CC_LFO_FM_DEPTH 39
+#define MIDI_CC_LFO_AM_DEPTH 76
+#define MIDI_CC_LFO_FM_DEPTH 75
 
 //settings
-#define MIDI_CC_ALGORITHM 41
-#define MIDI_CC_FEEDBACK 42
+#define MIDI_CC_ALGORITHM 14
+#define MIDI_CC_FEEDBACK 15
 
 // tuning
-#define MIDI_CC_DETUNE_OP1 45
-#define MIDI_CC_DETUNE_OP2 46
-#define MIDI_CC_DETUNE_OP3 47
-#define MIDI_CC_DETUNE_OP4 48
+#define MIDI_CC_DETUNE_OP1 24
+#define MIDI_CC_DETUNE_OP2 25
+#define MIDI_CC_DETUNE_OP3 26
+#define MIDI_CC_DETUNE_OP4 27
 
-#define MIDI_CC_MULTIPLY_OP1 49
-#define MIDI_CC_MULTIPLY_OP2 50
-#define MIDI_CC_MULTIPLY_OP3 51
-#define MIDI_CC_MULTIPLY_OP4 52
+#define MIDI_CC_MULTIPLY_OP1 20
+#define MIDI_CC_MULTIPLY_OP2 21
+#define MIDI_CC_MULTIPLY_OP3 22
+#define MIDI_CC_MULTIPLY_OP4 23
 
 // envelope cc's
 
-#define MIDI_CC_TL_OP1 10
-#define MIDI_CC_TL_OP2 11
-#define MIDI_CC_TL_OP3 12
-#define MIDI_CC_TL_OP4 13
+#define MIDI_CC_TL_OP1 16
+#define MIDI_CC_TL_OP2 17
+#define MIDI_CC_TL_OP3 18
+#define MIDI_CC_TL_OP4 19
 
-#define MIDI_CC_RS_OP1 14
-#define MIDI_CC_RS_OP2 15
-#define MIDI_CC_RS_OP3 16
-#define MIDI_CC_RS_OP4 17
+#define MIDI_CC_RS_OP1 39
+#define MIDI_CC_RS_OP2 40
+#define MIDI_CC_RS_OP3 41
+#define MIDI_CC_RS_OP4 42
 
-#define MIDI_CC_AR_OP1 18
-#define MIDI_CC_AR_OP2 19
-#define MIDI_CC_AR_OP3 20
-#define MIDI_CC_AR_OP4 21
+#define MIDI_CC_AR_OP1 43
+#define MIDI_CC_AR_OP2 44
+#define MIDI_CC_AR_OP3 45
+#define MIDI_CC_AR_OP4 46
 
-#define MIDI_CC_DR_OP1 22
-#define MIDI_CC_DR_OP2 23
-#define MIDI_CC_DR_OP3 24
-#define MIDI_CC_DR_OP4 25
+#define MIDI_CC_DR_OP1 47
+#define MIDI_CC_DR_OP2 48
+#define MIDI_CC_DR_OP3 49
+#define MIDI_CC_DR_OP4 50
 
-#define MIDI_CC_SR_OP1 26
-#define MIDI_CC_SR_OP2 27
-#define MIDI_CC_SR_OP3 28
-#define MIDI_CC_SR_OP4 29
+#define MIDI_CC_SR_OP1 51
+#define MIDI_CC_SR_OP2 52
+#define MIDI_CC_SR_OP3 53
+#define MIDI_CC_SR_OP4 54
 
-#define MIDI_CC_SL_OP1 30
-#define MIDI_CC_SL_OP2 31
-#define MIDI_CC_SL_OP3 32
-#define MIDI_CC_SL_OP4 33
+#define MIDI_CC_SL_OP1 55
+#define MIDI_CC_SL_OP2 56
+#define MIDI_CC_SL_OP3 57
+#define MIDI_CC_SL_OP4 58
 
-#define MIDI_CC_RR_OP1 34
-#define MIDI_CC_RR_OP2 35
-#define MIDI_CC_RR_OP3 36
-#define MIDI_CC_RR_OP4 37
+#define MIDI_CC_RR_OP1 59
+#define MIDI_CC_RR_OP2 60
+#define MIDI_CC_RR_OP3 61
+#define MIDI_CC_RR_OP4 62
+
+#define MIDI_LFO_AM_OP1 70
+#define MIDI_LFO_AM_OP1 71
+#define MIDI_LFO_AM_OP1 72
+#define MIDI_LFO_AM_OP1 73
 
 #endif

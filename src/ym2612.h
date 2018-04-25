@@ -20,6 +20,7 @@ public:
 
     void applyTfiPatch(uint8_t channel, struct tfi_patch_t *patch);
 
+    void grandPianoVoice(uint8_t channel);
     void segaDocTestProgram(bool play_test_note);
 
     // utility functions

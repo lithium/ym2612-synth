@@ -99,6 +99,9 @@ void Ym2612::setCh3Mode(uint8_t mode)
 
 void Ym2612::setKeyOnOff(uint8_t channel, uint8_t operators)
 {
+    if (channel >= 3) {
+        channel += 1;
+    }
     write_register(0, 0x28, ((operators & 0xF) <<4) | (channel & 0x7));
 }
 void Ym2612::keyOn(uint8_t channel)
@@ -184,7 +187,7 @@ void Ym2612::setFrequency(uint8_t channel, uint8_t octave, uint16_t freq)
     uint8_t ym_addr = 0xA0 + (channel % 3);
 
     // set high order byte first
-    set_register(channel >= 3, ym_addr+4, ((octave & 0x7)<<3) |  msb);
+    set_register(channel >= 3, ym_addr+4, ((octave & 0x7)<<3) | msb);
     set_register(channel >= 3, ym_addr, lsb);
 }
 void Ym2612::setAlgorithm(uint8_t channel, uint8_t algorithm)
@@ -286,17 +289,80 @@ void Ym2612::write_data(uint8_t data) {
 // part=1 channels 4-6
 void Ym2612::write_register(uint8_t part, uint8_t reg, uint8_t data) 
 {
-    digitalWriteFast(this->pin_a1, part);
+    digitalWriteFast(this->pin_a1, part ? HIGH : LOW);
+    delayMicroseconds(10);
     digitalWriteFast(this->pin_a0, LOW);
     write_data(reg);
+    delayMicroseconds(10);
     digitalWriteFast(this->pin_a0, HIGH);
     write_data(data);
+    delayMicroseconds(20);
 }
+
+
 
 
 /*
  * sega test program from docs
  */
+
+void Ym2612::grandPianoVoice(uint8_t channel)
+{
+    enableLfo(false);
+    setCh3Mode(0);
+    for (int i=0; i < 6; i++) {
+        keyOff(i);
+    }
+    enableDac(false);
+
+    setDetune(channel, 0, 7);
+    setDetune(channel, 1, 0);
+    setDetune(channel, 2, 3);
+    setDetune(channel, 3, 0);
+
+    setMultiple(channel, 0, 1);
+    setMultiple(channel, 1, 0xD);
+    setMultiple(channel, 2, 3);
+    setMultiple(channel, 3, 1);
+
+    setTotalLevel(channel,0, 0x23);
+    setTotalLevel(channel,1, 0x2D);
+    setTotalLevel(channel,2, 0x26);
+    setTotalLevel(channel,3, 0x00);
+
+    setRateScale(channel,0, 1);
+    setRateScale(channel,1, 2);
+    setRateScale(channel,2, 1);
+    setRateScale(channel,3, 2);
+
+    setAttackRate(channel,0, 31);
+    setAttackRate(channel,1, 25);
+    setAttackRate(channel,2, 31);
+    setAttackRate(channel,3, 20);
+
+    setDecayRate(channel,0, 5);
+    setDecayRate(channel,1, 5);
+    setDecayRate(channel,2, 5);
+    setDecayRate(channel,3, 7);
+
+    setSustainRate(channel,0, 2);
+    setSustainRate(channel,1, 2);
+    setSustainRate(channel,2, 2);
+    setSustainRate(channel,3, 2);
+
+    setSustainLevel(channel,0, 0x1);
+    setSustainLevel(channel,1, 0x1);
+    setSustainLevel(channel,2, 0x1);
+    setSustainLevel(channel,3, 0xA);
+
+    setReleaseRate(channel,0, 0x1);
+    setReleaseRate(channel,1, 0x1);
+    setReleaseRate(channel,2, 0x1);
+    setReleaseRate(channel,3, 0x6);
+
+    setAlgorithm(channel, 2); 
+    setFeedback(channel, 6);
+}
 
 void Ym2612::segaDocTestProgram(bool play_test_note)
 {

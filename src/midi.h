@@ -5,6 +5,12 @@
 
 
 
+#define POLY_MODE_MONO 0
+#define POLY_MODE_POLY 1
+extern uint8_t polyphonic_mode;
+
+
+
 const uint8_t OUR_SYSEX_MANUFACTURER_CODE[3] = {0x00, 0x7F, 0x38};
 #define OUR_SYSEX_PRODUCT_TYPE 1
 #define OUR_SYSEX_PRODUCT_NUMBER 1

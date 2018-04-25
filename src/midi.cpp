@@ -12,12 +12,34 @@ void setup_midi()
 }
 
 
+uint8_t polyphonic_mode = POLY_MODE_POLY;
+static uint8_t poly_notes[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+
+
 //tuning scale from sega doc -- 1-1/2 steps flat
 static uint16_t fnotes[12] = {617, 653, 692, 733, 777, 823, 872, 924, 979, 1037, 1099, 1164};
 
+
 void handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity)
 {
-    uint8_t ym_channel = channel-1;
+    uint8_t ym_channel = 0xFF;
+    if (polyphonic_mode == POLY_MODE_MONO) {
+        ym_channel = channel-1;
+    } else if (polyphonic_mode == POLY_MODE_POLY) {
+        // find an available channel to play the note on
+        for (int i=0; i < 6; i++) {
+            if (poly_notes[i] == 0xFF) {
+                poly_notes[i] = note;
+                ym_channel = i;
+                break;
+            } 
+        }
+        if (ym_channel == 0xFF) {
+            // no available channels
+            return; 
+        }
+    }
+
     int midi_octave = (note/12)-1;
     int midi_scale_note = note % 12;
     uint16_t fn = fnotes[midi_scale_note];
@@ -31,8 +53,21 @@ void handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity)
 
 void handleMidiNoteOff(uint8_t channel, uint8_t note, uint8_t velocity)
 {
-    ym2612.keyOff(channel - 1); 
+    uint8_t ym_channel;
+    if (polyphonic_mode == POLY_MODE_MONO) {
+        ym_channel = channel-1;
+    } else if (polyphonic_mode == POLY_MODE_POLY) {
+        // find which channel the note is being played on
+        for (int i=0; i < 6; i++) {
+            if (poly_notes[i] == note) {
+                poly_notes[i] = 0xFF;
+                ym_channel = i;
+                break;
+            }
+        }
+    }
 
+    ym2612.keyOff(ym_channel);
 
     digitalWrite(PIN_LED, LOW);
 }

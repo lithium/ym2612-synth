@@ -223,7 +223,7 @@ void Ym2612::update_ch_register(uint8_t base_addr, uint8_t channel, uint8_t mask
 
 void Ym2612::update_chop_register(uint8_t base_addr,uint8_t channel,uint8_t oper, uint8_t mask, uint8_t value)
 {
-    uint8_t ym_addr = base_addr + oper*4 + channel;
+    uint8_t ym_addr = base_addr + oper*4 + (channel%3);
     return update_register(ym_addr, channel, mask, value);
 }
 
@@ -425,5 +425,69 @@ void Ym2612::segaDocTestProgram(bool play_test_note)
         write_register(0, 0x28, 0xF0);      // Key on
         delay(1000);
         write_register(0, 0x28, 0x00);      // Key off
+    }
+}
+
+void Ym2612::segaDocTestProgramCh4(bool play_test_note)
+{
+    write_register(0, 0x22, 0);          // lfo off
+    write_register(0, 0x27, 0);          // ch3 mode
+
+    write_register(0, 0x28, 0);          // all channels off
+    write_register(0, 0x28, 1);
+    write_register(0, 0x28, 2);          
+    write_register(0, 0x28, 4);          // 3 gets skipped!
+    write_register(0, 0x28, 5);
+    write_register(0, 0x28, 6);
+
+    write_register(0, 0x2B, 0);          // dac off
+
+    write_register(1, 0x30, 0x71);       // DT1/MUL
+    write_register(1, 0x34, 0x0D);
+    write_register(1, 0x38, 0x33);
+    write_register(1, 0x3C, 0x01);
+
+    write_register(1, 0x40, 0x23);       // Total Level
+    write_register(1, 0x44, 0x2D);
+    write_register(1, 0x48, 0x26);
+    write_register(1, 0x4C, 0x00);
+
+    write_register(1, 0x50, 0x5F);       // RS/AR 
+    write_register(1, 0x54, 0x99);
+    write_register(1, 0x58, 0x5F);
+    write_register(1, 0x5C, 0x94);
+
+    write_register(1, 0x60, 0x05);       // AM/D1R
+    write_register(1, 0x64, 0x05);
+    write_register(1, 0x68, 0x05);
+    write_register(1, 0x6C, 0x07);
+
+    write_register(1, 0x70, 0x02);       // D2R
+    write_register(1, 0x74, 0x02);
+    write_register(1, 0x78, 0x02);
+    write_register(1, 0x7C, 0x02);
+
+    write_register(1, 0x80, 0x11);       // D1L/RR
+    write_register(1, 0x84, 0x11);
+    write_register(1, 0x88, 0x11);
+    write_register(1, 0x8C, 0xA6);
+
+    write_register(1, 0x90, 0x00);       // Proprietary
+    write_register(1, 0x94, 0x00);
+    write_register(1, 0x98, 0x00);
+    write_register(1, 0x9C, 0x00);
+
+    write_register(1, 0xB0, 0x32);      // Feedback/algorithm
+    write_register(1, 0xB4, 0xC0);      // Both speakers on
+
+    write_register(0, 0x28, 0x00);      // Key off
+
+    write_register(1, 0xA4, 0x22);      // Set frequency
+    write_register(1, 0xA0, 0x69);
+
+    if (play_test_note) {
+        write_register(0, 0x28, 0xF4);      // Key on
+        delay(1000);
+        write_register(0, 0x28, 0x04);      // Key off
     }
 }

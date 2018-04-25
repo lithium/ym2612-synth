@@ -16,9 +16,14 @@ void setup()
 
     ym2612.setup();
     ym2612.reset();
-    ym2612.segaDocTestProgram(false);
+
+    //initialize all voices with sega doc patch
+    for (int i=0; i < 6; i++) {
+        ym2612.grandPianoVoice(i);
+    }
 
     setup_midi();
+
 
 
     // double blink led for startup

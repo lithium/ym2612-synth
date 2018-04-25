@@ -22,6 +22,7 @@ public:
 
     void grandPianoVoice(uint8_t channel);
     void segaDocTestProgram(bool play_test_note);
+    void segaDocTestProgramCh4(bool play_test_note);
 
     // utility functions
     void write_data(uint8_t data);

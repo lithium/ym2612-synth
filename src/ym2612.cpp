@@ -79,6 +79,36 @@ void Ym2612::applyTfiPatch(uint8_t channel, struct tfi_patch_t *patch)
     }
 }
 
+void Ym2612::dumpPatch(uint8_t channel, struct ym2612_patch_t *patch)
+{
+    memset(patch, 0, sizeof(struct ym2612_patch_t));
+
+    // channel-global parameters
+    patch->lfo_enabled = getLfoEnabled();
+    patch->lfo_frequency = getLfoFrequency();
+
+    // channel parameters
+    patch->algorithm = getAlgorithm(channel);
+    patch->feedback = getFeedback(channel);
+    patch->lfo_am_depth = getLfoAm(channel);
+    patch->lfo_fm_depth = getLfoFm(channel);
+
+    // channel+op parameters
+    for (int i=0; i < 4; i++) {
+        patch->op[i].detune = getDetune(channel, i);
+        patch->op[i].multiplier = getMultiple(channel, i);
+        patch->op[i].total_level = getTotalLevel(channel, i);
+        patch->op[i].sustain_level = getSustainLevel(channel, i);
+        patch->op[i].rate_scale = getRateScale(channel, i);
+        patch->op[i].attack_rate = getAttackRate(channel, i);
+        patch->op[i].decay_rate = getDecayRate(channel, i);
+        patch->op[i].sustain_rate = getSustainRate(channel, i);
+        patch->op[i].release_rate = getReleaseRate(channel, i);
+        patch->op[i].lfo_enabled = getLfoEnabledForOperator(channel, i);
+        // patch->op[i].frequency = getFrequency(channel, i);
+    }
+}
+
 /*
  * global registers
  */
@@ -87,14 +117,27 @@ void Ym2612::enableLfo(bool enabled)
 {
     update_register(0x22,0, 0b00001000, enabled);
 }
+bool Ym2612::getLfoEnabled()
+{
+    return get_ch_register(0x22,0, 0b00001000);
+}
+
 void Ym2612::setLfoFrequency(uint8_t frequency)
 {
     update_register(0x22,0, 0b00000111, frequency);
+}
+uint8_t Ym2612::getLfoFrequency()
+{
+    return get_ch_register(0x22,0, 0b00000111);
 }
 
 void Ym2612::setCh3Mode(uint8_t mode)
 {
     update_register(0x27,0, 0b11000000, mode);
+}
+uint8_t Ym2612::getCh3Mode()
+{
+    return get_ch_register(0x27,0, 0b11000000);
 }
 
 void Ym2612::setKeyOnOff(uint8_t channel, uint8_t operators)
@@ -117,6 +160,11 @@ void Ym2612::enableDac(bool enabled)
 {
     update_register(0x2B,0, 0b10000000, enabled);
 }
+bool Ym2612::getDacEnabled()
+{
+    return get_ch_register(0x2B,0, 0b10000000);
+}
+
 void Ym2612::setDac(uint16_t dac_value)
 {
     update_register(0x2A,0, 0b11111111, dac_value);
@@ -132,46 +180,90 @@ void Ym2612::setDetune(uint8_t channel, uint8_t oper, uint8_t detune)
     update_chop_register(0x30,channel,oper, 0b01110000, detune);
 
 }
+uint8_t Ym2612::getDetune(uint8_t channel, uint8_t oper)
+{
+    return get_chop_register(0x30,channel,oper, 0b01110000);
+}
+
 void Ym2612::setMultiple(uint8_t channel, uint8_t oper, uint8_t multiple)
 {
     update_chop_register(0x30,channel,oper, 0b00001111, multiple);
+}
+uint8_t Ym2612::getMultiple(uint8_t channel, uint8_t oper)
+{
+    return get_chop_register(0x30,channel,oper, 0b00001111);
 }
 
 void Ym2612::setTotalLevel(uint8_t channel, uint8_t oper, uint8_t level)
 {
     update_chop_register(0x40,channel,oper, 0b01111111, level);
 }
+uint8_t Ym2612::getTotalLevel(uint8_t channel, uint8_t oper)
+{
+    return get_chop_register(0x40,channel,oper, 0b01111111);
+}
 
 void Ym2612::setRateScale(uint8_t channel, uint8_t oper, uint8_t rate_scale)
 {
     update_chop_register(0x50,channel,oper, 0b11000000, rate_scale); 
 }
+uint8_t Ym2612::getRateScale(uint8_t channel, uint8_t oper)
+{
+    return get_chop_register(0x50,channel,oper, 0b11000000);
+}
+
 void Ym2612::setAttackRate(uint8_t channel, uint8_t oper, uint8_t rate)
 {
     update_chop_register(0x50,channel,oper, 0b00011111, rate);
+}
+uint8_t Ym2612::getAttackRate(uint8_t channel, uint8_t oper)
+{
+    return get_chop_register(0x50,channel,oper, 0b00011111);
 }
 
 void Ym2612::enableLfoForOperator(uint8_t channel, uint8_t oper, bool enabled)
 {
     update_chop_register(0x60,channel,oper, 0b10000000, enabled);
 }
+uint8_t Ym2612::getLfoEnabledForOperator(uint8_t channel, uint8_t oper)
+{
+    return get_chop_register(0x60,channel,oper, 0b10000000);
+}
+
 void Ym2612::setDecayRate(uint8_t channel, uint8_t oper, uint8_t rate)
 {
     update_chop_register(0x60,channel,oper, 0b00011111, rate);
+}
+uint8_t Ym2612::getDecayRate(uint8_t channel, uint8_t oper)
+{
+    return get_chop_register(0x60,channel,oper, 0b00011111);
 }
 
 void Ym2612::setSustainRate(uint8_t channel, uint8_t oper, uint8_t rate)
 {
     update_chop_register(0x70,channel,oper, 0b00011111, rate);
 }
+uint8_t Ym2612::getSustainRate(uint8_t channel, uint8_t oper)
+{
+    return get_chop_register(0x70,channel,oper, 0b00011111);
+}
 
 void Ym2612::setSustainLevel(uint8_t channel, uint8_t oper, uint8_t level)
 {
     update_chop_register(0x80,channel,oper, 0b11110000, level);
 }
+uint8_t Ym2612::getSustainLevel(uint8_t channel, uint8_t oper)
+{
+    return get_chop_register(0x80,channel,oper, 0b11110000);
+}
+
 void Ym2612::setReleaseRate(uint8_t channel, uint8_t oper, uint8_t rate)
 {
     update_chop_register(0x80,channel,oper, 0b00001111, rate);
+}
+uint8_t Ym2612::getReleaseRate(uint8_t channel, uint8_t oper)
+{
+    return get_chop_register(0x80,channel,oper, 0b00001111);
 }
 
 
@@ -190,31 +282,79 @@ void Ym2612::setFrequency(uint8_t channel, uint8_t octave, uint16_t freq)
     set_register(channel >= 3, ym_addr+4, ((octave & 0x7)<<3) | msb);
     set_register(channel >= 3, ym_addr, lsb);
 }
+
+
 void Ym2612::setAlgorithm(uint8_t channel, uint8_t algorithm)
 {
     update_ch_register(0xB0, channel, 0b00000111, algorithm);
 }
+uint8_t Ym2612::getAlgorithm(uint8_t channel)
+{
+    return get_ch_register(0xB0, channel, 0b00000111);
+}
+
 void Ym2612::setFeedback(uint8_t channel, uint8_t feedback) 
 {
     update_ch_register(0xB0, channel, 0b00111000, feedback);
 }
+uint8_t Ym2612::getFeedback(uint8_t channel)
+{
+    return get_ch_register(0xB0, channel, 0b00111000);
+}
+
 void Ym2612::setOutputs(uint8_t channel, bool left, bool right)
 {
     update_ch_register(0xB4, channel, 0b11000000, (left<<1)|right);
 }
+uint8_t Ym2612::getOutputs(uint8_t channel)
+{
+    return get_ch_register(0xB4, channel, 0b11000000);
+}
+
 void Ym2612::setLfoAm(uint8_t channel, uint8_t depth)
 {
     update_ch_register(0xB4, channel, 0b00110000, depth);
 }
+uint8_t Ym2612::getLfoAm(uint8_t channel)
+{
+    return get_ch_register(0xB4, channel, 0b00110000);
+}
+
 void Ym2612::setLfoFm(uint8_t channel, uint8_t depth)
 {
     update_ch_register(0xB4, channel, 0b00000111, depth);
+}
+uint8_t Ym2612::getLfoFm(uint8_t channel)
+{
+    return get_ch_register(0xB4, channel, 0b00000111);
 }
 
 
 /*
  * internal register cache
  */
+uint8_t Ym2612::get_ch_register(uint8_t base_addr, uint8_t channel, uint8_t mask)
+{
+    uint8_t ym_addr = base_addr + (channel%3);
+    uint8_t value = get_register(channel >= 3, ym_addr) & mask;
+    while (!(mask & 1)) {
+        value >>= 1;
+        mask >>= 1;
+    }
+    return value;
+}
+
+uint8_t Ym2612::get_chop_register(uint8_t base_addr,uint8_t channel,uint8_t oper, uint8_t mask)
+{
+    uint8_t ym_addr = base_addr + oper*4 + (channel%3);
+    uint8_t value = get_register(channel >= 3, ym_addr) & mask;
+    while (!(mask & 1)) {
+        value >>= 1;
+        mask >>= 1;
+    }
+    return value;
+}
+
 void Ym2612::update_ch_register(uint8_t base_addr, uint8_t channel, uint8_t mask, uint8_t value)
 {
     uint8_t ym_addr = base_addr + (channel%3);

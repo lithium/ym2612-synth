@@ -19,10 +19,13 @@ public:
     void reset();
 
     void applyTfiPatch(uint8_t channel, struct tfi_patch_t *patch);
+    void dumpPatch(uint8_t channel, struct ym2612_patch_t *patchDestination);
 
     void grandPianoVoice(uint8_t channel);
     void segaDocTestProgram(bool play_test_note);
     void segaDocTestProgramCh4(bool play_test_note);
+
+
 
     // utility functions
     void write_data(uint8_t data);
@@ -31,16 +34,22 @@ public:
 
     // global registers  0x22 - 0x2B
     void enableLfo(bool enabled);
+    bool getLfoEnabled();
+
     void setLfoFrequency(uint8_t frequency);
+    uint8_t getLfoFrequency();
 
     void setCh3Mode(uint8_t mode);
+    uint8_t getCh3Mode();
 
     void setKeyOnOff(uint8_t channel, uint8_t operators);
     void keyOn(uint8_t channel);
     void keyOff(uint8_t channel);
 
     void enableDac(bool enabled);
+    bool getDacEnabled();
     void setDac(uint16_t dac_value);
+
 
     // channel+slot  0x30 - 0x90
     void setDetune(uint8_t channel, uint8_t oper, uint8_t detune);
@@ -54,6 +63,17 @@ public:
     void setSustainLevel(uint8_t channel, uint8_t oper, uint8_t level);
     void setReleaseRate(uint8_t channel, uint8_t oper, uint8_t rate);
 
+    uint8_t getDetune(uint8_t channel, uint8_t oper);
+    uint8_t getMultiple(uint8_t channel, uint8_t oper);
+    uint8_t getTotalLevel(uint8_t channel, uint8_t oper);
+    uint8_t getRateScale(uint8_t channel, uint8_t oper);
+    uint8_t getAttackRate(uint8_t channel, uint8_t oper);
+    uint8_t getLfoEnabledForOperator(uint8_t channel, uint8_t oper);
+    uint8_t getDecayRate(uint8_t channel, uint8_t oper);
+    uint8_t getSustainRate(uint8_t channel, uint8_t oper);
+    uint8_t getSustainLevel(uint8_t channel, uint8_t oper);
+    uint8_t getReleaseRate(uint8_t channel, uint8_t oper);
+
     // channel  0xA0 - 0xB4
     void setFrequency(uint8_t channel, uint8_t octave, uint16_t offset);
     void setAlgorithm(uint8_t channel, uint8_t algorithm);
@@ -61,6 +81,13 @@ public:
     void setOutputs(uint8_t channel, bool left, bool right);
     void setLfoAm(uint8_t channel, uint8_t depth);
     void setLfoFm(uint8_t channel, uint8_t depth);
+
+    uint8_t getFrequency(uint8_t channel);
+    uint8_t getAlgorithm(uint8_t channel);
+    uint8_t getFeedback(uint8_t channel);
+    uint8_t getOutputs(uint8_t channel);
+    uint8_t getLfoAm(uint8_t channel);
+    uint8_t getLfoFm(uint8_t channel);
 
 
 
@@ -80,6 +107,9 @@ private:
     void update_ch_register(uint8_t base_addr, uint8_t channel, uint8_t mask, uint8_t value);
     void update_chop_register(uint8_t base_addr, uint8_t channel, uint8_t oper, uint8_t mask, uint8_t value);
     void update_register(uint8_t ym_addr, uint8_t channel, uint8_t mask, uint8_t value);
+
+    uint8_t get_ch_register(uint8_t base_addr, uint8_t channel, uint8_t mask);
+    uint8_t get_chop_register(uint8_t base_addr, uint8_t channel, uint8_t oper, uint8_t mask);
 
     void set_register(uint8_t part, uint8_t ym_addr, uint8_t value);
     uint8_t get_register(uint8_t part, uint8_t ym_addr);

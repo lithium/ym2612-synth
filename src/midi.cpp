@@ -171,6 +171,9 @@ void handleMidiSysex(const uint8_t *data, uint16_t length, bool last)
     if (header->command == SYSEX_COMMAND_REPLACE_PATCH) {
         sysex_replace_patch(header, data, length);
     }
+    if (header->command == SYSEX_COMMAND_DUMP_PATCH) {
+        sysex_dump_patch(header, data, length);
+    }
 }
 
 void sysex_replace_patch(struct sysex_header_t *header, const uint8_t *data, uint16_t length)
@@ -182,3 +185,33 @@ void sysex_replace_patch(struct sysex_header_t *header, const uint8_t *data, uin
     }
 }
 
+void sysex_dump_patch(struct sysex_header_t *header, const uint8_t *data, uint16_t length)
+{
+    struct sysex_dump_patch_t *dump_msg = (struct sysex_dump_patch_t *)(data + sysex_header_length);
+
+    auto patch_message_size = sysex_header_length + sysex_patch_header_length + sizeof(struct ym2612_patch_t) + 1;
+    uint8_t message[patch_message_size];
+
+    // midi sysex header
+    struct sysex_header_t *response_header = (struct sysex_header_t *)message; 
+    response_header->sysex_magic = 0xF0;
+    memcpy(response_header->manufacturer_id, OUR_SYSEX_MANUFACTURER_CODE, 3);
+    response_header->product_type = OUR_SYSEX_PRODUCT_TYPE;
+    response_header->product_number = OUR_SYSEX_PRODUCT_NUMBER;
+    response_header->command = SYSEX_COMMAND_REPLACE_PATCH;
+
+    // replace current patch header
+    struct sysex_patch_header_t *patch_header = (struct sysex_patch_header_t *)(message + sysex_header_length); 
+    patch_header->channel = dump_msg->channel;
+    patch_header->patch_format = SYSEX_PATCH_FORMAT_YM2612;
+
+    // patch data
+    struct ym2612_patch_t *cur_patch = (struct ym2612_patch_t *)(message + sysex_header_length + sysex_patch_header_length);
+    ym2612.dumpPatch(dump_msg->channel, cur_patch); 
+
+    // terminate sysex message
+    message[patch_message_size-1] = 0xF7;  
+
+    // send back
+    usbMIDI.sendSysEx(patch_message_size, message, true);
+}

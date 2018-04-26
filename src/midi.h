@@ -5,18 +5,38 @@
 
 
 
+void setup_midi();
+
+
+void handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity);
+void handleMidiNoteOff(uint8_t channel, uint8_t note, uint8_t velocity);
+void handleMidiCC(uint8_t channel, uint8_t control, uint8_t value);
+void handleMidiSysex(const uint8_t *data, uint16_t length, bool last);
+
+void sysex_replace_patch(struct sysex_header_t *header, const uint8_t *data, uint16_t length);
+void sysex_dump_patch(struct sysex_header_t *header, const uint8_t *data, uint16_t length);
+
+
+
+
+// shareable definitions
+
+
 #define POLY_MODE_MONO 0
 #define POLY_MODE_POLY 1
 extern uint8_t polyphonic_mode;
 
 
 
-const uint8_t OUR_SYSEX_MANUFACTURER_CODE[3] = {0x00, 0x7F, 0x38};
+const uint8_t OUR_SYSEX_MANUFACTURER_CODE[3] = {0x00, 0x7F, 0x38};  // 0x7F to indicate its unofficial
 #define OUR_SYSEX_PRODUCT_TYPE 1
 #define OUR_SYSEX_PRODUCT_NUMBER 1
 
 #define SYSEX_COMMAND_REPLACE_PATCH 0
+#define SYSEX_COMMAND_DUMP_PATCH 1
+
 #define SYSEX_PATCH_FORMAT_TFI 0
+#define SYSEX_PATCH_FORMAT_YM2612 1
 
 struct sysex_header_t {
     uint8_t sysex_magic; // should be 0xF0
@@ -34,17 +54,10 @@ struct sysex_patch_header_t {
 const uint sysex_patch_header_length = sizeof(struct sysex_patch_header_t);
 
 
-
-
-void setup_midi();
-
-
-void handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity);
-void handleMidiNoteOff(uint8_t channel, uint8_t note, uint8_t velocity);
-void handleMidiCC(uint8_t channel, uint8_t control, uint8_t value);
-void handleMidiSysex(const uint8_t *data, uint16_t length, bool last);
-
-void sysex_replace_patch(struct sysex_header_t *header, const uint8_t *data, uint16_t length);
+struct sysex_dump_patch_t {
+    uint8_t channel;
+};
+const uint sysex_dump_patch_length = sizeof(struct sysex_dump_patch_t);
 
 
 

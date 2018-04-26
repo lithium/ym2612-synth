@@ -48,7 +48,7 @@ public:
     void setTotalLevel(uint8_t channel, uint8_t oper, uint8_t level);
     void setRateScale(uint8_t channel, uint8_t oper, uint8_t rate_scale);
     void setAttackRate(uint8_t channel, uint8_t oper, uint8_t rate);
-    void enableLfoAm(uint8_t channel, uint8_t oper, bool enabled);
+    void enableLfoForOperator(uint8_t channel, uint8_t oper, bool enabled);
     void setDecayRate(uint8_t channel, uint8_t oper, uint8_t rate);
     void setSustainRate(uint8_t channel, uint8_t oper, uint8_t rate);
     void setSustainLevel(uint8_t channel, uint8_t oper, uint8_t level);

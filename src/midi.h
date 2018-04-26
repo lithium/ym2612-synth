@@ -52,11 +52,9 @@ void sysex_replace_patch(struct sysex_header_t *header, const uint8_t *data, uin
 // http://little-scale.com/GENMDM/GENMDM_102/GENMDM_102.txt
 
 
-// global
+// lfo
 #define MIDI_CC_LFO_ENABLE 74
 #define MIDI_CC_LFO_FREQUENCY 1
-
-
 #define MIDI_CC_LFO_AM_DEPTH 76
 #define MIDI_CC_LFO_FM_DEPTH 75
 
@@ -112,9 +110,9 @@ void sysex_replace_patch(struct sysex_header_t *header, const uint8_t *data, uin
 #define MIDI_CC_RR_OP3 61
 #define MIDI_CC_RR_OP4 62
 
-#define MIDI_LFO_AM_OP1 70
-#define MIDI_LFO_AM_OP1 71
-#define MIDI_LFO_AM_OP1 72
-#define MIDI_LFO_AM_OP1 73
+#define MIDI_CC_LFO_ENABLE_OP1 70
+#define MIDI_CC_LFO_ENABLE_OP2 71
+#define MIDI_CC_LFO_ENABLE_OP3 72
+#define MIDI_CC_LFO_ENABLE_OP4 73
 
 #endif

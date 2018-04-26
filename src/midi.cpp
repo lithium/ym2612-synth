@@ -122,14 +122,18 @@ void handleMidiCC(uint8_t channel, uint8_t control, uint8_t value)
         case MIDI_CC_MULTIPLY_OP3: ym2612.setMultiple(ym_channel, 2, value); break;
         case MIDI_CC_MULTIPLY_OP4: ym2612.setMultiple(ym_channel, 3, value); break;
 
+        case MIDI_CC_LFO_ENABLE_OP1: ym2612.enableLfoForOperator(ym_channel, 0, value); break;
+        case MIDI_CC_LFO_ENABLE_OP2: ym2612.enableLfoForOperator(ym_channel, 1, value); break;
+        case MIDI_CC_LFO_ENABLE_OP3: ym2612.enableLfoForOperator(ym_channel, 2, value); break;
+        case MIDI_CC_LFO_ENABLE_OP4: ym2612.enableLfoForOperator(ym_channel, 3, value); break;
+
         case MIDI_CC_ALGORITHM: ym2612.setAlgorithm(ym_channel, value); break;
         case MIDI_CC_FEEDBACK: ym2612.setFeedback(ym_channel, value); break;
 
-        case MIDI_CC_LFO_AM_DEPTH: ym2612.setLfoAm(ym_channel, value); break;
-        case MIDI_CC_LFO_FM_DEPTH: ym2612.setLfoFm(ym_channel, value); break;
-
         case MIDI_CC_LFO_ENABLE: ym2612.enableLfo(value); break;
         case MIDI_CC_LFO_FREQUENCY: ym2612.setLfoFrequency(value); break;
+        case MIDI_CC_LFO_AM_DEPTH: ym2612.setLfoAm(ym_channel, value); break;
+        case MIDI_CC_LFO_FM_DEPTH: ym2612.setLfoFm(ym_channel, value); break;
     }
 
 }

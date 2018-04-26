@@ -151,7 +151,7 @@ void Ym2612::setAttackRate(uint8_t channel, uint8_t oper, uint8_t rate)
     update_chop_register(0x50,channel,oper, 0b00011111, rate);
 }
 
-void Ym2612::enableLfoAm(uint8_t channel, uint8_t oper, bool enabled)
+void Ym2612::enableLfoForOperator(uint8_t channel, uint8_t oper, bool enabled)
 {
     update_chop_register(0x60,channel,oper, 0b10000000, enabled);
 }

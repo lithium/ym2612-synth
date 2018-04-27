@@ -7,7 +7,6 @@ void setup_midi()
     usbMIDI.setHandleNoteOn(handleMidiNoteOn);
     usbMIDI.setHandleNoteOff(handleMidiNoteOff);
     usbMIDI.setHandleControlChange(handleMidiCC);
-    usbMIDI.setHandleControlChange(handleMidiCC);
     usbMIDI.setHandleSystemExclusive(handleMidiSysex);
 }
 
@@ -72,10 +71,8 @@ void handleMidiNoteOff(uint8_t channel, uint8_t note, uint8_t velocity)
     digitalWrite(PIN_LED, LOW);
 }
 
-void handleMidiCC(uint8_t channel, uint8_t control, uint8_t value)
+void handle_midi_for_channel(uint8_t ym_channel, uint8_t control, uint8_t value)
 {
-    uint8_t ym_channel = channel-1;
-
     switch (control) {
         case MIDI_CC_TL_OP1: ym2612.setTotalLevel(ym_channel, 0, value); break;
         case MIDI_CC_TL_OP2: ym2612.setTotalLevel(ym_channel, 1, value); break;
@@ -136,6 +133,19 @@ void handleMidiCC(uint8_t channel, uint8_t control, uint8_t value)
         case MIDI_CC_LFO_FM_DEPTH: ym2612.setLfoFm(ym_channel, value); break;
     }
 
+}
+
+
+void handleMidiCC(uint8_t channel, uint8_t control, uint8_t value)
+{
+    
+    if (polyphonic_mode == POLY_MODE_POLY) {
+        for (int i=0; i < 6; i++) {
+            handle_midi_for_channel(i, control, value);
+        }
+    } else {
+        handle_midi_for_channel(channel-1, control, value);
+    }
 }
 
 

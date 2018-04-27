@@ -2,7 +2,7 @@
 #define MIDI_H
 
 #include "config.h"
-
+#include "patch.h"
 
 
 void setup_midi();
@@ -60,7 +60,21 @@ struct sysex_dump_patch_t {
 const uint sysex_dump_patch_length = sizeof(struct sysex_dump_patch_t);
 
 
+struct sysex_ym2612_dump_patch_request {
+    struct sysex_header_t sysex_header;
+    struct sysex_dump_patch_t dump_patch;
+    uint8_t sysex_terminator;
+};
 
+struct sysex_ym2612_replace_patch {
+    struct sysex_header_t sysex_header;
+    struct sysex_patch_header_t patch_header;
+    struct ym2612_patch_t patch;
+    uint8_t sysex_terminator;
+};
+
+
+const uint8_t SysexDumpPatchRequest[] = {0xF0, 0x00, 0x7F, 0x38, OUR_SYSEX_PRODUCT_TYPE, OUR_SYSEX_PRODUCT_NUMBER, SYSEX_COMMAND_DUMP_PATCH, 0x00, 0xF7};
 
 // http://little-scale.com/GENMDM/GENMDM_102/GENMDM_102.txt
 

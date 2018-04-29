@@ -16,7 +16,13 @@ static uint8_t poly_notes[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
 
 
 //tuning scale from sega doc -- 1-1/2 steps flat
-static uint16_t fnotes[12] = {617, 653, 692, 733, 777, 823, 872, 924, 979, 1037, 1099, 1164};
+// static uint16_t fnotes[12] = {617, 653, 692, 733, 777, 823, 872, 924, 979, 1037, 1099, 1164};
+
+// hand tuned
+static uint16_t fnotes[12] = {686, 727, 770, 816, 865, 916, 970, 1028, 1089, 1154, 1223, 1295 };
+
+
+uint8_t cur_scale_note=0;
 
 
 void handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity)
@@ -39,6 +45,7 @@ void handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity)
         }
     }
 
+
     int midi_octave = (note/12)-1;
     int midi_scale_note = note % 12;
     uint16_t fn = fnotes[midi_scale_note];
@@ -46,6 +53,7 @@ void handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity)
     ym2612.setFrequency(ym_channel, midi_octave, fn);
     ym2612.keyOn(ym_channel);
 
+    cur_scale_note = midi_scale_note;
 
     digitalWrite(PIN_LED, HIGH);
 }
@@ -74,6 +82,8 @@ void handleMidiNoteOff(uint8_t channel, uint8_t note, uint8_t velocity)
 void handle_midi_for_channel(uint8_t ym_channel, uint8_t control, uint8_t value)
 {
     switch (control) {
+ 
+
         case MIDI_CC_TL_OP1: ym2612.setTotalLevel(ym_channel, 0, value); break;
         case MIDI_CC_TL_OP2: ym2612.setTotalLevel(ym_channel, 1, value); break;
         case MIDI_CC_TL_OP3: ym2612.setTotalLevel(ym_channel, 2, value); break;
@@ -138,7 +148,32 @@ void handle_midi_for_channel(uint8_t ym_channel, uint8_t control, uint8_t value)
 
 void handleMidiCC(uint8_t channel, uint8_t control, uint8_t value)
 {
-    
+    // switch (control) {
+    //     case 102:
+    //     case 100: {
+    //         //tune down
+    //         fnotes[cur_scale_note] -= 1;
+    //         break;
+    //     }
+    //     case 103:
+    //     case 101: {
+    //         // tune up
+    //         fnotes[cur_scale_note] += 1;
+    //         break;
+    //     }
+    //     case 105: {
+    //         // dump tuning
+    //         Serial.println("TUNING:");
+    //         Serial.print("{");
+    //         for (int i=0; i < 12; i++) {
+    //             Serial.print(fnotes[i]);
+    //             Serial.print(", ");
+    //         }
+    //         Serial.println("};");
+    //         break;
+    //     }
+    // }
+
     if (polyphonic_mode == POLY_MODE_POLY) {
         for (int i=0; i < 6; i++) {
             handle_midi_for_channel(i, control, value);

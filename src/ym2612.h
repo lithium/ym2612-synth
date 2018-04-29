@@ -33,8 +33,8 @@ public:
 
 
     // global registers  0x22 - 0x2B
-    void enableLfo(bool enabled);
-    bool getLfoEnabled();
+    void enableLfo(uint8_t enabled);
+    uint8_t getLfoEnabled();
 
     void setLfoFrequency(uint8_t frequency);
     uint8_t getLfoFrequency();
@@ -46,8 +46,8 @@ public:
     void keyOn(uint8_t channel);
     void keyOff(uint8_t channel);
 
-    void enableDac(bool enabled);
-    bool getDacEnabled();
+    void enableDac(uint8_t enabled);
+    uint8_t getDacEnabled();
     void setDac(uint16_t dac_value);
 
 
@@ -57,7 +57,7 @@ public:
     void setTotalLevel(uint8_t channel, uint8_t oper, uint8_t level);
     void setRateScale(uint8_t channel, uint8_t oper, uint8_t rate_scale);
     void setAttackRate(uint8_t channel, uint8_t oper, uint8_t rate);
-    void enableLfoForOperator(uint8_t channel, uint8_t oper, bool enabled);
+    void enableLfoForOperator(uint8_t channel, uint8_t oper, uint8_t enabled);
     void setDecayRate(uint8_t channel, uint8_t oper, uint8_t rate);
     void setSustainRate(uint8_t channel, uint8_t oper, uint8_t rate);
     void setSustainLevel(uint8_t channel, uint8_t oper, uint8_t level);
@@ -78,7 +78,7 @@ public:
     void setFrequency(uint8_t channel, uint8_t octave, uint16_t offset);
     void setAlgorithm(uint8_t channel, uint8_t algorithm);
     void setFeedback(uint8_t channel, uint8_t feedback);
-    void setOutputs(uint8_t channel, bool left, bool right);
+    void setOutputs(uint8_t channel, uint8_t outputs);
     void setLfoAm(uint8_t channel, uint8_t depth);
     void setLfoFm(uint8_t channel, uint8_t depth);
 

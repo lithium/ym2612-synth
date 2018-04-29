@@ -86,12 +86,11 @@ void Ym2612::dumpPatch(uint8_t channel, struct ym2612_patch_t *patch)
     // channel-global parameters
     patch->lfo_enabled = getLfoEnabled();
     patch->lfo_frequency = getLfoFrequency();
-
-    // channel parameters
-    patch->algorithm = getAlgorithm(channel);
-    patch->feedback = getFeedback(channel);
     patch->lfo_am_depth = getLfoAm(channel);
     patch->lfo_fm_depth = getLfoFm(channel);
+
+    patch->algorithm = getAlgorithm(channel);
+    patch->feedback = getFeedback(channel);
 
     // channel+op parameters
     for (int i=0; i < 4; i++) {
@@ -113,11 +112,11 @@ void Ym2612::dumpPatch(uint8_t channel, struct ym2612_patch_t *patch)
  * global registers
  */
 
-void Ym2612::enableLfo(bool enabled)
+void Ym2612::enableLfo(uint8_t enabled)
 {
     update_register(0x22,0, 0b00001000, enabled);
 }
-bool Ym2612::getLfoEnabled()
+uint8_t Ym2612::getLfoEnabled()
 {
     return get_ch_register(0x22,0, 0b00001000);
 }
@@ -156,11 +155,11 @@ void Ym2612::keyOff(uint8_t channel)
     setKeyOnOff(channel, 0x0);
 }
 
-void Ym2612::enableDac(bool enabled)
+void Ym2612::enableDac(uint8_t enabled)
 {
     update_register(0x2B,0, 0b10000000, enabled);
 }
-bool Ym2612::getDacEnabled()
+uint8_t Ym2612::getDacEnabled()
 {
     return get_ch_register(0x2B,0, 0b10000000);
 }
@@ -221,7 +220,7 @@ uint8_t Ym2612::getAttackRate(uint8_t channel, uint8_t oper)
     return get_chop_register(0x50,channel,oper, 0b00011111);
 }
 
-void Ym2612::enableLfoForOperator(uint8_t channel, uint8_t oper, bool enabled)
+void Ym2612::enableLfoForOperator(uint8_t channel, uint8_t oper, uint8_t enabled)
 {
     update_chop_register(0x60,channel,oper, 0b10000000, enabled);
 }
@@ -302,9 +301,9 @@ uint8_t Ym2612::getFeedback(uint8_t channel)
     return get_ch_register(0xB0, channel, 0b00111000);
 }
 
-void Ym2612::setOutputs(uint8_t channel, bool left, bool right)
+void Ym2612::setOutputs(uint8_t channel, uint8_t outputs)
 {
-    update_ch_register(0xB4, channel, 0b11000000, (left<<1)|right);
+    update_ch_register(0xB4, channel, 0b11000000, outputs);
 }
 uint8_t Ym2612::getOutputs(uint8_t channel)
 {
@@ -313,11 +312,11 @@ uint8_t Ym2612::getOutputs(uint8_t channel)
 
 void Ym2612::setLfoAm(uint8_t channel, uint8_t depth)
 {
-    update_ch_register(0xB4, channel, 0b00110000, depth);
+    update_ch_register(0xB4, channel, 0b00011000, depth);
 }
 uint8_t Ym2612::getLfoAm(uint8_t channel)
 {
-    return get_ch_register(0xB4, channel, 0b00110000);
+    return get_ch_register(0xB4, channel, 0b00011000);
 }
 
 void Ym2612::setLfoFm(uint8_t channel, uint8_t depth)
@@ -346,7 +345,7 @@ uint8_t Ym2612::get_ch_register(uint8_t base_addr, uint8_t channel, uint8_t mask
 
 uint8_t Ym2612::get_chop_register(uint8_t base_addr,uint8_t channel,uint8_t oper, uint8_t mask)
 {
-    uint8_t ym_addr = base_addr + oper*4 + (channel%3);
+    uint8_t ym_addr = base_addr + (oper*4) + (channel%3);
     uint8_t value = get_register(channel >= 3, ym_addr) & mask;
     while (!(mask & 1)) {
         value >>= 1;
@@ -502,6 +501,7 @@ void Ym2612::grandPianoVoice(uint8_t channel)
 
     setAlgorithm(channel, 2); 
     setFeedback(channel, 6);
+    setOutputs(channel, 3);
 }
 
 void Ym2612::segaDocTestProgram(bool play_test_note)

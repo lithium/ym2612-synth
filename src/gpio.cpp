@@ -5,7 +5,7 @@
 
 
 #define ENC1_GPIO_A 9
-#define ENC1_GPIO_B 10
+#define ENC1_GPIO_B 8
 TotalLevelEncoder enc1(ENC1_GPIO_A, ENC1_GPIO_B);
 
 
@@ -62,6 +62,10 @@ void check_encoders()
     if (_gpio_ready) {
         _gpio_ready = false;
         uint16_t capture = gpio_read_word(INTCAP);
+        uint16_t current = gpio_read_word(GPIO);
+        if (capture != current) {
+            return;
+        }
         if (capture != _gpio_last) {
             Serial.print("gpio: ");
             Serial.println(capture, BIN);

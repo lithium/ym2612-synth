@@ -13,6 +13,10 @@ GpioEncoder::GpioEncoder(int gpio_pin_a, int gpio_pin_b)
     pin_a = gpio_pin_a;
     pin_b = gpio_pin_b;
     old_ab = 0;
+    _detent_divider = 0;
+    _pulses_per_detent = 4;
+    _first = 0;
+    _first_to_skip = 2;
 }
 
 
@@ -21,17 +25,28 @@ int8_t GpioEncoder::read(uint16_t debounced_state)
     old_ab <<= 2;
     old_ab |= read_pin(debounced_state, pin_a) << 1;
     old_ab |= read_pin(debounced_state, pin_b);
+    if (_first < _first_to_skip) {
+        // hack to skip first couple to align with detents
+        _first++;
+        return -1;
+    }
     return _encoder_states[(old_ab & 0x0f)];
 }
 
 void GpioEncoder::handle(uint16_t debounced_state)
 {
     int val = read(debounced_state);
-    if (val == -1) {
-        handleAntiClockwise();
-    } 
-    else if (val == 1) {
-        handleClockwise();
+    if (val != 0) {
+        _detent_divider += val;
+        if (abs(_detent_divider) == _pulses_per_detent) {
+            if (val == -1) {
+                handleAntiClockwise();
+            } 
+            else if (val == 1) {
+                handleClockwise();
+            }
+            _detent_divider = 0;
+        }
     }
 }
 

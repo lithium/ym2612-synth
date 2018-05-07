@@ -55,7 +55,7 @@ void handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity)
 
     cur_scale_note = midi_scale_note;
 
-    digitalWrite(PIN_LED, HIGH);
+    digitalWriteFast(PIN_LED, HIGH);
 }
 
 void handleMidiNoteOff(uint8_t channel, uint8_t note, uint8_t velocity)
@@ -76,7 +76,7 @@ void handleMidiNoteOff(uint8_t channel, uint8_t note, uint8_t velocity)
 
     ym2612.keyOff(ym_channel);
 
-    digitalWrite(PIN_LED, LOW);
+    digitalWriteFast(PIN_LED, LOW);
 }
 
 void handle_midi_for_channel(uint8_t ym_channel, uint8_t control, uint8_t value)

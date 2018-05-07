@@ -416,9 +416,9 @@ void Ym2612::write_data(uint8_t data) {
 
     // togle write pin
     digitalWriteFast(this->pin_wr, LOW);
-    delayMicroseconds(5);
+    delayMicroseconds(3);
     digitalWriteFast(this->pin_wr, HIGH);
-    delayMicroseconds(5);
+    delayMicroseconds(3);
 
     // reset cs
     digitalWriteFast(this->pin_cs, HIGH);
@@ -429,13 +429,13 @@ void Ym2612::write_data(uint8_t data) {
 void Ym2612::write_register(uint8_t part, uint8_t reg, uint8_t data) 
 {
     digitalWriteFast(this->pin_a1, part ? HIGH : LOW);
-    delayMicroseconds(10);
+    // delayMicroseconds(10);
     digitalWriteFast(this->pin_a0, LOW);
     write_data(reg);
-    delayMicroseconds(10);
+    // delayMicroseconds(10);
     digitalWriteFast(this->pin_a0, HIGH);
     write_data(data);
-    delayMicroseconds(20);
+    // delayMicroseconds(20);
 }
 
 

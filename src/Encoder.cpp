@@ -4,7 +4,7 @@ static int8_t _encoder_states[] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0};
 
 inline bool read_pin(uint16_t port, uint8_t pin)
 {
-    return (port & (1<<pin))>>pin;
+    return (port & (1<<pin)) == (1<<pin);
 }
 
 
@@ -37,11 +37,13 @@ void GpioEncoder::handle(uint16_t debounced_state)
 
 void GpioEncoder::handleClockwise()
 {
+    Serial.println("super clockwise");
 
 }
 void GpioEncoder::handleAntiClockwise()
 {
 
+    Serial.println("super anti clockwise");
 }
 
 

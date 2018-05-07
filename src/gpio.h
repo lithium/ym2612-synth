@@ -2,12 +2,7 @@
 #define GPIO_H
 
 #include "config.h"
-#include <Wire.h>
-#include <mcp23s18.h>
-
 #include "Encoder.h"
-
-extern mcp23s18 gpio;
 
 
 #define WRITE_OPCODE 0b01000000
@@ -68,9 +63,6 @@ uint16_t gpio_read_word(int address);
 
 
 void setup_gpio();
-void encoder_irq();
-uint16_t encoder_debounced_state();
-
 void check_encoders();
 
 #endif

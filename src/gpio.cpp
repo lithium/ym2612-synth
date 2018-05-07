@@ -1,6 +1,10 @@
 #include "gpio.h"
 
 #include <SPI.h>
+#include <IntervalTimer.h>
+
+#define ENCODER_TIMER_PERIOD_USEC 500
+static IntervalTimer _encoder_timer;
 
 
 
@@ -32,8 +36,8 @@ void setup_gpio()
 
 
     // setup iocon
-    gpio_write_byte(IOCONA, 0b01000000);   // bank=0 mirror=ON seqop=ON intCC=GPIO
-    gpio_write_byte(IOCONB, 0b01000000);   // bank=0 mirror=ON seqop=ON intCC=GPIO
+    gpio_write_byte(IOCONA, 0b01000000);   // bank=0 mirror=ON seqop=ON
+    gpio_write_byte(IOCONB, 0b01000000);   // bank=0 mirror=ON seqop=ON
 
     uint16_t t = gpio_read_word(IOCON);
     Serial.print("iocon: ");
@@ -47,15 +51,18 @@ void setup_gpio()
 
 
     // setup interrupt
-    gpio_write_word(GPINTEN, 0xFFFF);  // enable interrupt for all pins
+    // gpio_write_word(GPINTEN, 0xFFFF);  // enable interrupt for all pins
     // gpio_write_word(DEFVAL, 0xFFFF); // default value is everything pulled up
-    gpio_write_word(INTCON, 0x0000);  
+    // gpio_write_word(INTCON, 0x0000);  
 
 
     uint16_t v = gpio_read_word(GPIOA);
     Serial.print("v: ");
     Serial.println(v, BIN);
-    attachInterrupt(digitalPinToInterrupt(IO_IRQ), handle_gpio_interrupt, CHANGE);
+    // attachInterrupt(digitalPinToInterrupt(IO_IRQ), handle_gpio_interrupt, CHANGE);
+
+
+    _encoder_timer.begin(handle_gpio_interrupt, ENCODER_TIMER_PERIOD_USEC);
 
 }
 

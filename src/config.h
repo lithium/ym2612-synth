@@ -40,7 +40,7 @@
 
 // io expand assignments
 #define IO_CS 18
-#define IO_IRQ 15
+#define IO_IRQ A14
 
 
 // encoder switches

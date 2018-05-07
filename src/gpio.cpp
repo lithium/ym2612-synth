@@ -2,7 +2,6 @@
 
 #include <SPI.h>
 #include <IntervalTimer.h>
-#include "UiScreen.h"
 
 #define ENCODER_TIMER_PERIOD_USEC 500
 static IntervalTimer _encoder_timer;
@@ -13,10 +12,10 @@ static int _encoder_gpio_pins[] = {
     11, 10,
     13, 12,
     15, 14,
-    7, 6,
-    5, 4,
-    3, 2,
     1, 0,
+    3, 2,
+    5, 4,
+    7, 6,
 };
 GpioEncoder encoders[ENCODER_COUNT];
 
@@ -25,21 +24,10 @@ static volatile bool _gpio_ready = false;
 static uint16_t _gpio_last = 0;
 
 
-UiScreen demo_screen;
-UiScreen *cur_screen = NULL;
-
 
 void handle_gpio_interrupt()    // ISR
 {
     _gpio_ready = true;
-}
-
-void change_screen(UiScreen *screen)
-{
-    cur_screen = screen;
-    for (int i=0; i < ENCODER_COUNT; i++) {
-        encoders[i].setListener(cur_screen);
-    }
 }
 
 void setup_gpio()
@@ -50,7 +38,6 @@ void setup_gpio()
     for (int i=0; i < ENCODER_COUNT; i++) {
         encoders[i].setup(_encoder_gpio_pins[i*2], _encoder_gpio_pins[i*2+1]);
     }
-    change_screen(&demo_screen);
 
 
     SPI.begin();

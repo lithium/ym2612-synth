@@ -3,6 +3,8 @@
 #include "clock.h"
 #include "midi.h"
 #include "gpio.h"
+#include "UiScreen.h"
+
 
 void setup()
 {
@@ -40,6 +42,9 @@ void setup()
 
 
     setup_gpio();
+    set_active_screen(&demo_screen);
+
+
     sei();
 }
 

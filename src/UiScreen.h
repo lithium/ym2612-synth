@@ -2,7 +2,12 @@
 #define UI_SCREEN_H
 
 #include "config.h"
-#include "encoder.h"
+#include "Encoder.h"
+#include "gpio.h"
+
+
+
+
 
 class UiScreen : public GpioEncoder::Listener
 {
@@ -15,5 +20,11 @@ public:
 private:
 
 };
+
+
+extern UiScreen *active_screen;
+extern UiScreen demo_screen;
+
+void set_active_screen(UiScreen *screen);
 
 #endif

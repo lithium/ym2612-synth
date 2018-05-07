@@ -1,8 +1,7 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-#include <inttypes.h>
-#include "gpio.h"
+#include "config.h"
 
 
 
@@ -16,10 +15,6 @@ public:
     // returns: 1 clockwise, -1 counterclockwise, 0 ignore
     int8_t read(uint16_t state);
     void handle(uint16_t state);
-
-
-    // virtual void handleClockwise();
-    // virtual void handleAntiClockwise();
 
 
     class Listener {
@@ -42,24 +37,6 @@ private:
     Listener *listener = NULL;
 };
 
-
-
-
-
-
-// class TotalLevelEncoder : public GpioEncoder
-// {
-// public:
-//     void handleClockwise() override;
-//     void handleAntiClockwise() override;
-// };
-
-// class SustainLevelEncoder : public GpioEncoder
-// {
-// public:
-//     void handleClockwise() override;
-//     void handleAntiClockwise() override;
-// };
 
 
 #endif

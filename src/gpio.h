@@ -5,6 +5,29 @@
 #include "Encoder.h"
 
 
+#define ENCODER_COUNT 8
+extern GpioEncoder encoders[8];
+int get_encoder_number(GpioEncoder *e);
+
+
+void gpio_write_byte(int address, uint8_t value);
+void gpio_write_word(int address, uint16_t value);
+uint8_t gpio_read_byte(int address);
+uint16_t gpio_read_word(int address);
+
+
+
+
+
+void setup_gpio();
+void check_encoders();
+
+
+
+
+
+
+// MCP23s18 registers
 #define WRITE_OPCODE 0b01000000
 #define READ_OPCODE  0b01000001
 
@@ -53,16 +76,5 @@
 #define OLATA   0x14
 #define OLATB   0x15
 
-void gpio_write_byte(int address, uint8_t value);
-void gpio_write_word(int address, uint16_t value);
-uint8_t gpio_read_byte(int address);
-uint16_t gpio_read_word(int address);
-
-
-
-
-
-void setup_gpio();
-void check_encoders();
 
 #endif

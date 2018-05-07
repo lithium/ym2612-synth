@@ -34,7 +34,7 @@ int8_t GpioEncoder::read(uint16_t debounced_state)
     if (_first < _first_to_skip) {
         // hack to skip first couple to align with detents
         _first++;
-        return -1;
+        return 0;
     }
     return _encoder_states[(old_ab & 0x0f)];
 }
@@ -49,62 +49,13 @@ void GpioEncoder::handle(uint16_t debounced_state)
                 this->listener->encoderTurned(val, this);
             }
 
-            // if (val == -1) {
-            //     handleAntiClockwise();
-            // } 
-            // else if (val == 1) {
-            //     handleClockwise();
-            // }
-
             _detent_divider = 0;
         }
     }
 }
-
-// void GpioEncoder::handleClockwise()
-// {
-//     Serial.println("super clockwise");
-
-// }
-// void GpioEncoder::handleAntiClockwise()
-// {
-
-//     Serial.println("super anti clockwise");
-// }
 
 void GpioEncoder::setListener(GpioEncoder::Listener *listener)
 {
     this->listener = listener;
 }
 
-
-// === tl encoder
-// TotalLevelEncoder::TotalLevelEncoder(int gpio_pin_a, int gpio_pin_b) : GpioEncoder(gpio_pin_a, gpio_pin_b)
-// {
-// }
-
-// void TotalLevelEncoder::handleClockwise()
-// {
-//     Serial.println("TOTAL right");
-// }
-
-// void TotalLevelEncoder::handleAntiClockwise()
-// {
-//     Serial.println("TOTAL left");
-// }
-
-
-// // === sustain level encoder ====
-// SustainLevelEncoder::SustainLevelEncoder(int gpio_pin_a, int gpio_pin_b) : GpioEncoder(gpio_pin_a, gpio_pin_b)
-// {
-// }
-
-// void SustainLevelEncoder::handleClockwise()
-// {
-//     Serial.println("SUSTAIN right");
-// }
-
-// void SustainLevelEncoder::handleAntiClockwise()
-// {
-//     Serial.println("SUSTAIN left");
-// }

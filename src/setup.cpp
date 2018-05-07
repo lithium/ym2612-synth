@@ -42,9 +42,15 @@ void setup()
 
 
     setup_gpio();
-    set_active_screen(&demo_screen);
+
+    //initialize TFT display
+    setup_screen();
+
+    // must occur after setup_gpio() and setup_screen()
+    set_active_screen(&demo_screen); 
 
 
+    //enable interrupts
     sei();
 }
 

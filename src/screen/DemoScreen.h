@@ -6,6 +6,8 @@
 class DemoScreen : public UiScreen
 {
     void encoderTurned(int direction, GpioEncoder *e) override;
+
+    void paint();
 };
 
 #endif

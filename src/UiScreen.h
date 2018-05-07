@@ -9,10 +9,14 @@ class UiScreen : public GpioEncoder::Listener
 public:
     UiScreen();
 
+    virtual void paint();
 
+    bool isDirty();
+    void setDirty(bool dirty = true);
 
 private:
 
+    bool _dirty = false;
 };
 
 

@@ -1,6 +1,14 @@
 
 #include "DemoScreen.h"
 #include "gpio.h"
+#include "screen.h"
+
+
+void DemoScreen::paint()
+{
+    Serial.println("paint it red");
+    tft.fillScreen(ILI9341_RED);
+}
 
 void DemoScreen::encoderTurned(int direction, GpioEncoder *e) 
 {
@@ -10,3 +18,4 @@ void DemoScreen::encoderTurned(int direction, GpioEncoder *e)
     Serial.print(" turned ");
     Serial.println(direction == 1 ? "right" : "left");
 }
+

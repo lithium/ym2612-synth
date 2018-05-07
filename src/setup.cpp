@@ -2,9 +2,11 @@
 #include "ym2612.h"
 #include "clock.h"
 #include "midi.h"
+#include "gpio.h"
 
 void setup()
 {
+    cli();
 
 #ifdef SERIAL_DEBUG
     Serial.begin(38400);
@@ -26,6 +28,7 @@ void setup()
 
 
 
+
     // double blink led for startup
     pinMode(PIN_LED, OUTPUT);
     for (int i=0; i<2; i++) {
@@ -34,6 +37,10 @@ void setup()
         digitalWrite(PIN_LED, LOW);
         delay(100);
     }
+
+
+    setup_gpio();
+    sei();
 }
 
 

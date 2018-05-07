@@ -39,4 +39,11 @@ public:
     void handleAntiClockwise() override;
 };
 
+class SustainLevelEncoder : public GpioEncoder
+{
+public:
+    SustainLevelEncoder(int gpio_pin_a, int gpio_pin_b);
+    void handleClockwise() override;
+    void handleAntiClockwise() override;
+};
 #endif

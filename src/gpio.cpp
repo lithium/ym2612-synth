@@ -8,6 +8,10 @@
 #define ENC1_GPIO_B 8
 TotalLevelEncoder enc1(ENC1_GPIO_A, ENC1_GPIO_B);
 
+#define ENC2_GPIO_A 11
+#define ENC2_GPIO_B 10
+SustainLevelEncoder enc2(ENC2_GPIO_A, ENC2_GPIO_B);
+
 
 static volatile bool _gpio_ready = false;
 static uint16_t _gpio_last = 0;
@@ -72,6 +76,7 @@ void check_encoders()
             _gpio_last = capture;
 
             enc1.handle(capture);
+            enc2.handle(capture);
         }
     }
 }

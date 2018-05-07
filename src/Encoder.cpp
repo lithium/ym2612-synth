@@ -69,10 +69,26 @@ TotalLevelEncoder::TotalLevelEncoder(int gpio_pin_a, int gpio_pin_b) : GpioEncod
 
 void TotalLevelEncoder::handleClockwise()
 {
-    Serial.println("tl clockwise");
+    Serial.println("TOTAL right");
 }
 
 void TotalLevelEncoder::handleAntiClockwise()
 {
-    Serial.println("tl anti clockwise");
+    Serial.println("TOTAL left");
+}
+
+
+// === sustain level encoder ====
+SustainLevelEncoder::SustainLevelEncoder(int gpio_pin_a, int gpio_pin_b) : GpioEncoder(gpio_pin_a, gpio_pin_b)
+{
+}
+
+void SustainLevelEncoder::handleClockwise()
+{
+    Serial.println("SUSTAIN right");
+}
+
+void SustainLevelEncoder::handleAntiClockwise()
+{
+    Serial.println("SUSTAIN left");
 }

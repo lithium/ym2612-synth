@@ -32,8 +32,8 @@ void setup_gpio()
 
 
     // setup iocon
-    gpio_write_byte(IOCONA, 0b01000001);   // bank=0 mirror=ON seqop=ON intCC=INTCAP
-    gpio_write_byte(IOCONB, 0b01000001);   // bank=0 mirror=ON seqop=ON intCC=INTCAP
+    gpio_write_byte(IOCONA, 0b01000000);   // bank=0 mirror=ON seqop=ON intCC=GPIO
+    gpio_write_byte(IOCONB, 0b01000000);   // bank=0 mirror=ON seqop=ON intCC=GPIO
 
     uint16_t t = gpio_read_word(IOCON);
     Serial.print("iocon: ");
@@ -65,11 +65,7 @@ void check_encoders()
 {
     if (_gpio_ready) {
         _gpio_ready = false;
-        uint16_t capture = gpio_read_word(INTCAP);
-        uint16_t current = gpio_read_word(GPIO);
-        if (capture != current) {
-            return;
-        }
+        uint16_t capture = gpio_read_word(GPIO);
         if (capture != _gpio_last) {
             Serial.print("gpio: ");
             Serial.println(capture, BIN);

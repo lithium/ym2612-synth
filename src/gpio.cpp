@@ -76,8 +76,8 @@ void setup_gpio()
 
 
     // setup iocon
-    gpio_write_byte(IOCONA, 0b01000000);   // bank=0 mirror=ON seqop=ON
-    gpio_write_byte(IOCONB, 0b01000000);   // bank=0 mirror=ON seqop=ON
+    gpio_write_byte(IOCONA, 0b01000001);   // bank=0 mirror=ON seqop=ON intCC=INTCAP
+    gpio_write_byte(IOCONB, 0b01000001);   // bank=0 mirror=ON seqop=ON intCC=INTCAP
 
     uint16_t t = gpio_read_word(IOCON);
     Serial.print("iocon: ");
@@ -91,15 +91,15 @@ void setup_gpio()
 
 
     // setup interrupt
-    // gpio_write_word(GPINTEN, 0xFFFF);  // enable interrupt for all pins
+    gpio_write_word(GPINTEN, 0xFFFF);  // enable interrupt for all pins
     // gpio_write_word(DEFVAL, 0xFFFF); // default value is everything pulled up
-    // gpio_write_word(INTCON, 0xFFFF);  
+    gpio_write_word(INTCON, 0x0000);  
 
 
     uint16_t v = gpio_read_word(GPIOA);
     Serial.print("v: ");
     Serial.println(v, BIN);
-    // attachInterrupt(digitalPinToInterrupt(IO_IRQ), handle_gpio_interrupt, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(IO_IRQ), handle_gpio_interrupt, CHANGE);
 
 
     // uint8_t a = gpio_read_byte(GPIOA);
@@ -119,7 +119,7 @@ void setup_gpio()
     // initialize encoder debouncing
     memset(_encoder_state, 0, sizeof(_encoder_state));
     _encoder_state_idx = 0;
-    _encoder_timer.begin(encoder_irq, ENCODER_TIMER_PERIOD_USEC);
+    // _encoder_timer.begin(encoder_irq, ENCODER_TIMER_PERIOD_USEC);
 
     v = gpio_read_word(GPIOA);
     Serial.print("v: ");
@@ -149,7 +149,7 @@ void check_encoders()
 {
     if (_gpio_ready) {
         _gpio_ready = false;
-        uint16_t port = gpio_read_word(GPIO);
+        uint16_t port = gpio_read_word(INTCAP);
         if (port != last) {
             Serial.print("gpio: ");
             Serial.println(port, BIN);

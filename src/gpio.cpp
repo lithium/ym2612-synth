@@ -2,23 +2,40 @@
 
 #include <SPI.h>
 #include <IntervalTimer.h>
+#include "UiScreen.h"
 
 #define ENCODER_TIMER_PERIOD_USEC 500
 static IntervalTimer _encoder_timer;
 
 
 
-#define ENC1_GPIO_A 9
-#define ENC1_GPIO_B 8
-TotalLevelEncoder enc1(ENC1_GPIO_A, ENC1_GPIO_B);
+// #define ENC1_GPIO_A 9
+// #define ENC1_GPIO_B 8
+// TotalLevelEncoder enc1(ENC1_GPIO_A, ENC1_GPIO_B);
 
-#define ENC2_GPIO_A 11
-#define ENC2_GPIO_B 10
-SustainLevelEncoder enc2(ENC2_GPIO_A, ENC2_GPIO_B);
+// #define ENC2_GPIO_A 11
+// #define ENC2_GPIO_B 10
+// SustainLevelEncoder enc2(ENC2_GPIO_A, ENC2_GPIO_B);
+
+int encoder_gpio_pins[] = {
+    9, 8,
+    11, 10,
+    13, 12,
+    15, 14,
+    7, 6,
+    5, 4,
+    3, 2,
+    1, 0,
+};
+GpioEncoder encoders[8];
 
 
 static volatile bool _gpio_ready = false;
 static uint16_t _gpio_last = 0;
+
+
+UiScreen demo_screen;
+UiScreen *cur_screen = NULL;
 
 
 void handle_gpio_interrupt()    // ISR
@@ -26,11 +43,24 @@ void handle_gpio_interrupt()    // ISR
     _gpio_ready = true;
 }
 
+void change_screen(UiScreen *screen)
+{
+    cur_screen = screen;
+    for (int i=0; i < 8; i++) {
+        encoders[i].setListener(cur_screen);
+    }
+}
 
 void setup_gpio()
 {
     pinMode(IO_CS, OUTPUT);
-    pinMode(IO_IRQ, INPUT_PULLUP);
+    // pinMode(IO_IRQ, INPUT_PULLUP);
+
+    for (int i=0; i < 8; i++) {
+        encoders[i].setup(encoder_gpio_pins[i*2], encoder_gpio_pins[i*2+1]);
+    }
+    change_screen(&demo_screen);
+
 
     SPI.begin();
 
@@ -40,8 +70,8 @@ void setup_gpio()
     gpio_write_byte(IOCONB, 0b01000000);   // bank=0 mirror=ON seqop=ON
 
     uint16_t t = gpio_read_word(IOCON);
-    Serial.print("iocon: ");
-    Serial.println(t, BIN);
+    // Serial.print("iocon: ");
+    // Serial.println(t, BIN);
 
     // all pins inputs
     gpio_write_word(IODIR, 0xFFFF);
@@ -57,8 +87,8 @@ void setup_gpio()
 
 
     uint16_t v = gpio_read_word(GPIOA);
-    Serial.print("v: ");
-    Serial.println(v, BIN);
+    // Serial.print("v: ");
+    // Serial.println(v, BIN);
     // attachInterrupt(digitalPinToInterrupt(IO_IRQ), handle_gpio_interrupt, CHANGE);
 
 
@@ -74,12 +104,15 @@ void check_encoders()
         _gpio_ready = false;
         uint16_t capture = gpio_read_word(GPIO);
         if (capture != _gpio_last) {
-            Serial.print("gpio: ");
-            Serial.println(capture, BIN);
+            // Serial.print("gpio: ");
+            // Serial.println(capture, BIN);
             _gpio_last = capture;
 
-            enc1.handle(capture);
-            enc2.handle(capture);
+            for (int i=0; i < 8; i++) {
+                encoders[i].handle(capture);
+            }
+            // enc1.handle(capture);
+            // enc2.handle(capture);
         }
     }
 }

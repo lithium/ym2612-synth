@@ -9,14 +9,26 @@
 class GpioEncoder 
 {
 public:
-    GpioEncoder(int gpio_pin_a, int gpio_pin_b);
+    GpioEncoder();
+
+    void setup(int gpio_pin_a, int gpio_pin_b, int pulses_per_detent=4, int first_to_skip=2);
 
     // returns: 1 clockwise, -1 counterclockwise, 0 ignore
     int8_t read(uint16_t state);
     void handle(uint16_t state);
 
-    virtual void handleClockwise();
-    virtual void handleAntiClockwise();
+
+    // virtual void handleClockwise();
+    // virtual void handleAntiClockwise();
+
+
+    class Listener {
+    public:
+        virtual void encoderTurned(int direction, GpioEncoder *encoder) = 0;
+    };
+
+    void setListener(Listener *listener);
+
 
 private:
     int pin_a, pin_b;
@@ -26,24 +38,28 @@ private:
     uint8_t _pulses_per_detent = 4;
     uint8_t _first = 0;
     uint8_t _first_to_skip = 2;
+
+    Listener *listener = NULL;
 };
 
 
 
 
-class TotalLevelEncoder : public GpioEncoder
-{
-public:
-    TotalLevelEncoder(int gpio_pin_a, int gpio_pin_b);
-    void handleClockwise() override;
-    void handleAntiClockwise() override;
-};
 
-class SustainLevelEncoder : public GpioEncoder
-{
-public:
-    SustainLevelEncoder(int gpio_pin_a, int gpio_pin_b);
-    void handleClockwise() override;
-    void handleAntiClockwise() override;
-};
+
+// class TotalLevelEncoder : public GpioEncoder
+// {
+// public:
+//     void handleClockwise() override;
+//     void handleAntiClockwise() override;
+// };
+
+// class SustainLevelEncoder : public GpioEncoder
+// {
+// public:
+//     void handleClockwise() override;
+//     void handleAntiClockwise() override;
+// };
+
+
 #endif

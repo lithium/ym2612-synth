@@ -9,7 +9,7 @@ class Button
 public:
     Button();
 
-    void setup(int pin, int debounce_threshold=500, int number=-1);
+    void setup(int pin, int debounce_threshold=50, int number=-1);
 
     class Listener {
     public:
@@ -30,6 +30,7 @@ public:
 private:
     int _counter = 0;
     bool _pending = false;
+    bool _sent = false;
 
 
     Listener *listener = nullptr;

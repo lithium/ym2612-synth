@@ -26,11 +26,11 @@ void Button::setListener( Button::Listener *listener)
 
 void Button::firePending()
 {
-    if (_pending) {
+    if (_pending && !_sent) {
         if (listener) {
             listener->buttonPressed(this);
         }
-
+        _sent = true;
         _pending = false;
     }
 }
@@ -39,17 +39,18 @@ void Button::firePending()
 // Called in an ISR!
 void Button::tick()
 {
-    if (_pending)
-        return;
-
     bool v = digitalReadFast(this->pin);
+
     if (v == 0) {
-        _counter += 1;
-        if (_counter >= threshold) {
+        if (_counter < threshold) {
+            _counter += 1;
+        } else if (!_sent) {
             _pending = true;
-            _counter = 0;
+            _sent = false;
         }
     } else {
         _counter = 0;
+        _pending = false;
+        _sent = false;
     }
 }

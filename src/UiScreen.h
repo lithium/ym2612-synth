@@ -3,20 +3,17 @@
 
 #include "config.h"
 #include "Encoder.h"
+#include "Widget.h"
 
-class UiScreen : public GpioEncoder::Listener
+class UiScreen : 
+        public Widget,
+        public GpioEncoder::Listener
 {
 public:
     UiScreen();
 
-    virtual void paint();
-
-    bool isDirty();
-    void setDirty(bool dirty = true);
-
 private:
 
-    bool _dirty = false;
 };
 
 

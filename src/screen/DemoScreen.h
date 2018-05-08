@@ -3,7 +3,6 @@
 
 #include "UiScreen.h"
 #include "Widget.h"
-#include <LinkedList.h>
 
 
 class DemoWidget : public Widget
@@ -21,15 +20,9 @@ public:
     
     void encoderTurned(int direction, GpioEncoder *e) override;
 
-    void paint();
-    void repaint();
-
-
-    void addWidget(Widget *w);
+    void paint() override;
 
 private:
-    // DemoWidget widgets[8];
-    LinkedList<Widget *> widgets;
 };
 
 #endif

@@ -23,3 +23,20 @@ void Widget::setDirty(bool dirty)
 {
     _dirty = dirty;
 }
+void Widget::addWidget(Widget *w)
+{
+    children.add(w);
+}
+
+void Widget::repaint()
+{
+    int l = children.size();
+    for (int i=0; i < l; i++) {
+        Widget *w = children.get(i);
+        if (w->isDirty()) {
+            w->paint();
+            w->setDirty(false);
+        }
+    }
+}
+

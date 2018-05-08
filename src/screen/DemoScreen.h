@@ -21,6 +21,7 @@ public:
     void encoderTurned(int direction, GpioEncoder *e) override;
 
     void paint();
+    void repaint();
 
 private:
     DemoWidget widgets[8];

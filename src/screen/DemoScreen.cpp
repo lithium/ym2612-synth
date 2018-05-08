@@ -3,66 +3,51 @@
 #include "gpio.h"
 #include "screen.h"
 
+    auto width = 40;
+    auto height = 20;
+    auto padding = 2;
+
 DemoScreen::DemoScreen()
 {
-    auto x = 40;
+    auto x = 110;
     auto y = 20;
-
-
-    auto width = 40;
-    auto height = 40;
-    auto padding = 2;
 
     for (int i=0; i < 8; i++) {
         widgets[i].setBounds(x, y, width, height);
         y += height+padding;
     }
 
+}
 
-    // static paint
+void DemoScreen::repaint()
+{
+    for (int i=0; i < 8; i++) {
+        if (widgets[i].isDirty()) {
+            widgets[i].paint();
+            widgets[i].setDirty(false);
+        }
+    }
+}
+
+void DemoScreen::paint()
+{
+    Serial.println("paint it ");
     tft.fillScreen(ILI9341_BLACK);
+
     tft.setTextSize(2);
     tft.setTextColor(ILI9341_WHITE);
 
-    y = 20;
-    x = 20;
+    auto x = 20;
+    auto y = 20;
 
     for (int i=0; i < 8; i++) {
         tft.setCursor(x,y);
         tft.print("ENC #");
         tft.print(i+1);
         tft.print(": ");
-        y += 20;
+        y += height+padding;
     }
-
-    setDirty(true); // paint widgets
-}
-
-void DemoScreen::paint()
-{
-    // for (int i=0; i < 8; i++) {
-    //     if (widgets[i].isDirty()) {
-    //         widgets[i].paint();
-    //     }
-    // }
-
-    // Serial.println("paint it ");
-    // tft.fillScreen(ILI9341_BLACK);
-
-    // tft.setTextSize(2);
-    // tft.setTextColor(ILI9341_WHITE);
-
-    // auto x = 20;
-    // auto y = 20;
-
-    // for (int i=0; i < 8; i++) {
-    //     tft.setCursor(x,y);
-    //     tft.print("ENC #");
-    //     tft.print(i+1);
-    //     tft.print(": ");
-    //     tft.print(counters[i]);
-    //     y += 20;
-    // }
+    repaint();
 }
 
 void DemoScreen::encoderTurned(int direction, GpioEncoder *e) 
@@ -75,8 +60,7 @@ void DemoScreen::encoderTurned(int direction, GpioEncoder *e)
 
     widgets[enc].counter += direction;
     widgets[enc].setDirty(true);
-    // counters[enc] += direction;
-    setDirty();
+    repaint();
 }
 
 
@@ -84,5 +68,8 @@ void DemoScreen::encoderTurned(int direction, GpioEncoder *e)
 
 void DemoWidget::paint() {
     tft.fillRect(x, y, w, h, ILI9341_BLACK);
+    tft.setTextSize(2);
+    tft.setTextColor(ILI9341_WHITE);
+    tft.setCursor(x, y);
     tft.print(counter);
 }

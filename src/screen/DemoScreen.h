@@ -3,6 +3,7 @@
 
 #include "UiScreen.h"
 #include "Widget.h"
+#include <LinkedList.h>
 
 
 class DemoWidget : public Widget
@@ -23,8 +24,12 @@ public:
     void paint();
     void repaint();
 
+
+    void addWidget(Widget *w);
+
 private:
-    DemoWidget widgets[8];
+    // DemoWidget widgets[8];
+    LinkedList<Widget *> widgets;
 };
 
 #endif

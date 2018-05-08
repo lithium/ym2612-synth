@@ -7,24 +7,37 @@
     auto height = 20;
     auto padding = 2;
 
+#define num_demos 8
+DemoWidget demos[num_demos];
+
 DemoScreen::DemoScreen()
 {
     auto x = 110;
     auto y = 20;
 
+
     for (int i=0; i < 8; i++) {
-        widgets[i].setBounds(x, y, width, height);
+        demos[i].setBounds(x, y, width, height);
+        addWidget(&demos[i]);
+
         y += height+padding;
     }
 
 }
 
+void DemoScreen::addWidget(Widget *w)
+{
+    widgets.add(w);
+}
+
 void DemoScreen::repaint()
 {
-    for (int i=0; i < 8; i++) {
-        if (widgets[i].isDirty()) {
-            widgets[i].paint();
-            widgets[i].setDirty(false);
+    int l = widgets.size();
+    for (int i=0; i < l; i++) {
+        Widget *w = widgets.get(i);
+        if (w->isDirty()) {
+            w->paint();
+            w->setDirty(false);
         }
     }
 }
@@ -58,8 +71,9 @@ void DemoScreen::encoderTurned(int direction, GpioEncoder *e)
     Serial.print(" turned ");
     Serial.println(direction == 1 ? "right" : "left");
 
-    widgets[enc].counter += direction;
-    widgets[enc].setDirty(true);
+    DemoWidget *dw = (DemoWidget *)widgets.get(enc);
+    dw->counter += direction;
+    dw->setDirty(true);
     repaint();
 }
 

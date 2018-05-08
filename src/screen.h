@@ -6,9 +6,9 @@
 
 #include <SPI.h>
 #include <Wire.h>
-#include <Adafruit_ILI9341.h>
+#include <ILI9341_t3.h>
 
-extern Adafruit_ILI9341 tft;
+extern ILI9341_t3 tft;
 
 extern UiScreen *active_screen;
 

@@ -3,7 +3,7 @@
 
 
 
-Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+ILI9341_t3 tft = ILI9341_t3(TFT_CS, TFT_DC);
 
 DemoScreen demo_screen;
 UiScreen *active_screen = NULL;
@@ -24,5 +24,6 @@ void set_active_screen(UiScreen *screen)
 void setup_screen()
 {
     tft.begin();
+    tft.setRotation(3);
     tft.fillScreen(ILI9341_BLUE);
 }

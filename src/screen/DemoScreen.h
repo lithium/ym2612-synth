@@ -5,9 +5,14 @@
 
 class DemoScreen : public UiScreen
 {
+public:
     void encoderTurned(int direction, GpioEncoder *e) override;
 
     void paint();
+
+
+private:
+    int counters[8];
 };
 
 #endif

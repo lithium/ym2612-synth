@@ -25,9 +25,23 @@ static uint16_t _gpio_last = 0;
 
 
 
+
+static int _button_pins[] = {
+    // A11, A10
+    22, 23
+};
+Button buttons[BUTTON_COUNT];
+
+
+
+
 void handle_gpio_interrupt()    // ISR
 {
     _gpio_ready = true;
+
+    for (int i=0; i < BUTTON_COUNT; i++) {
+        buttons[i].tick();
+    }
 }
 
 void setup_gpio()
@@ -35,8 +49,14 @@ void setup_gpio()
     pinMode(IO_CS, OUTPUT);
 
 
+    //setup encoders
     for (int i=0; i < ENCODER_COUNT; i++) {
         encoders[i].setup(_encoder_gpio_pins[i*2], _encoder_gpio_pins[i*2+1]);
+    }
+
+    //setup buttons
+    for (int i=0; i < BUTTON_COUNT; i++) {
+        buttons[i].setup(_button_pins[i]);
     }
 
 
@@ -60,10 +80,12 @@ void setup_gpio()
 
 
 
-void check_encoders()
+void check_inputs()
 {
     if (_gpio_ready) {
         _gpio_ready = false;
+
+        // check encoders
         uint16_t capture = gpio_read_word(GPIO);
         if (capture != _gpio_last) {
             _gpio_last = capture;
@@ -72,7 +94,13 @@ void check_encoders()
                 encoders[i].handle(capture);
             }
         }
+
     }
+    // check buttons
+    for (int i=0; i < BUTTON_COUNT; i++) {
+        buttons[i].firePending();
+    }
+
 }
 
 int get_encoder_number(GpioEncoder *e)

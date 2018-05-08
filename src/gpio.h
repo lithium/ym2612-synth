@@ -3,12 +3,15 @@
 
 #include "config.h"
 #include "Encoder.h"
+#include "Button.h"
 
 
 #define ENCODER_COUNT 8
-extern GpioEncoder encoders[8];
+extern GpioEncoder encoders[ENCODER_COUNT];
 int get_encoder_number(GpioEncoder *e);
 
+#define BUTTON_COUNT 2
+extern Button buttons[BUTTON_COUNT];
 
 void gpio_write_byte(int address, uint8_t value);
 void gpio_write_word(int address, uint16_t value);
@@ -20,7 +23,7 @@ uint16_t gpio_read_word(int address);
 
 
 void setup_gpio();
-void check_encoders();
+void check_inputs();
 
 
 

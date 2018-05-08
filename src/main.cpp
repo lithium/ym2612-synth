@@ -8,7 +8,7 @@ void loop()
 {
     usbMIDI.read();
 
-    check_encoders();
+    check_inputs();
 
     if (active_screen && active_screen->isDirty()) {
         active_screen->paint();

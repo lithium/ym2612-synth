@@ -19,6 +19,7 @@ public:
     DemoScreen();
     
     void encoderTurned(int direction, GpioEncoder *e) override;
+    void buttonPressed(Button *b) override;
 
     void paint() override;
 

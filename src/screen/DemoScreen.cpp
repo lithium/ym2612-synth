@@ -7,21 +7,30 @@
     auto height = 20;
     auto padding = 2;
 
-#define num_demos 8
-DemoWidget demos[num_demos];
+#define num_enc_demos ENCODER_COUNT
+DemoWidget enc_demos[num_enc_demos];
+
+DemoWidget btn_demos[BUTTON_COUNT];
 
 DemoScreen::DemoScreen()
 {
     auto x = 110;
     auto y = 20;
-
-    for (int i=0; i < 8; i++) {
-        demos[i].setBounds(x, y, width, height);
-        addWidget(&demos[i]);
+    for (int i=0; i < num_enc_demos; i++) {
+        enc_demos[i].setBounds(x, y, width, height);
+        addWidget(&enc_demos[i]);
 
         y += height+padding;
     }
 
+
+    x = 240;
+    y = 20;
+    for (int i=0; i < BUTTON_COUNT; i++) {
+        btn_demos[i].setBounds(x, y, width, height);
+        addWidget(&btn_demos[i]);
+        y += height + padding;
+    }
 }
 
 void DemoScreen::paint()
@@ -34,14 +43,25 @@ void DemoScreen::paint()
 
     auto x = 20;
     auto y = 20;
-
-    for (int i=0; i < 8; i++) {
+    for (int i=0; i < num_enc_demos; i++) {
         tft.setCursor(x,y);
         tft.print("ENC #");
         tft.print(i+1);
         tft.print(": ");
         y += height+padding;
     }
+
+    x = 150;
+    y = 20;
+    for (int i=0; i < BUTTON_COUNT; i++) {
+        tft.setCursor(x,y);
+        tft.print("BTN #");
+        tft.print(i+1);
+        tft.print(": ");
+        y += height+padding;
+    }
+
+
     repaint();
 }
 
@@ -53,12 +73,23 @@ void DemoScreen::encoderTurned(int direction, GpioEncoder *e)
     Serial.print(" turned ");
     Serial.println(direction == 1 ? "right" : "left");
 
-    DemoWidget *dw = &demos[enc];
+    DemoWidget *dw = &enc_demos[enc];
     dw->counter += direction;
     dw->setDirty(true);
     repaint();
 }
 
+void DemoScreen::buttonPressed(Button *b) 
+{
+    int btn = b->number;
+    Serial.print("btn pressed #");
+    Serial.print(btn+1);
+
+    DemoWidget *dw = &btn_demos[btn % BUTTON_COUNT];
+    dw->counter += 1;
+    dw->setDirty(true);
+    repaint();
+}
 
 
 

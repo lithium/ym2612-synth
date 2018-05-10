@@ -8,9 +8,9 @@
 class TouchScreen
 {
 public:
-    TouchScreen(int cs_pin = TOUCH_CS);
+    TouchScreen(int cs_pin=TOUCH_CS, int debounce_threshold=100);
 
-    void setup(int cs_pin);
+    void setup(int cs_pin, int debounce_threshold);
 
     class Listener {
     public:
@@ -21,6 +21,7 @@ public:
 
     void notifyListener(TS_Point p) {
         if (listener) {
+            listener->screenTouched(p);
         }
     }
 
@@ -28,6 +29,7 @@ public:
     void check();
 
     int cs_pin;
+    int threshold;
 private:
     XPT2046_Touchscreen tsc2046;
     TS_Point _last_touch;

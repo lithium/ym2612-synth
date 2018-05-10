@@ -4,14 +4,15 @@
 TouchScreen touchscreen;
 
 
-TouchScreen::TouchScreen(int cs_pin) : tsc2046(cs_pin), _last_touch(-1,-1,-1)
+TouchScreen::TouchScreen(int cs_pin, int debounce_threshold) : tsc2046(cs_pin), _last_touch(-1,-1,-1)
 {
-    setup(cs_pin);
+    setup(cs_pin, debounce_threshold);
 }
 
-void TouchScreen::setup(int cs_pin)
+void TouchScreen::setup(int cs_pin, int debounce_threshold)
 {
     this->cs_pin = cs_pin; 
+    this->threshold = debounce_threshold;
 }
 
 
@@ -23,12 +24,9 @@ void TouchScreen::check()
 
     if (tsc2046.touched()) {
         TS_Point p = tsc2046.getPoint();
-        if (p != _last_touch) {
+        if ((abs(p.x - _last_touch.x) > threshold) ||
+            (abs(p.y - _last_touch.y) > threshold)) {
             notifyListener(p);
-            Serial.print("touched! ");
-            Serial.print(p.x);
-            Serial.print(", ");
-            Serial.println(p.y);
             _last_touch = p;
         }
     }

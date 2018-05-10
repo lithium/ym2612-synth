@@ -20,6 +20,7 @@ public:
     
     void encoderTurned(int direction, GpioEncoder *e) override;
     void buttonPressed(Button *b) override;
+    void screenTouched(TS_Point p) override;
 
     void paint() override;
 

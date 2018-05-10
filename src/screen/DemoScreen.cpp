@@ -12,6 +12,8 @@ DemoWidget enc_demos[num_enc_demos];
 
 DemoWidget btn_demos[BUTTON_COUNT];
 
+DemoWidget touch_demos[2];
+
 DemoScreen::DemoScreen()
 {
     auto x = 110;
@@ -29,6 +31,12 @@ DemoScreen::DemoScreen()
     for (int i=0; i < BUTTON_COUNT; i++) {
         btn_demos[i].setBounds(x, y, width, height);
         addWidget(&btn_demos[i]);
+        y += height + padding;
+    }
+
+    for (int i=0; i < 2; i++) {
+        touch_demos[i].setBounds(x, y, width, height);
+        addWidget(&touch_demos[i]);
         y += height + padding;
     }
 }
@@ -61,6 +69,14 @@ void DemoScreen::paint()
         y += height+padding;
     }
 
+    y += padding*2;
+
+    tft.setCursor(x,y);
+    tft.print("TOUCHX:");
+    y += height+padding;
+    tft.setCursor(x,y);
+    tft.print("TOUCHY:");
+
 
     repaint();
 }
@@ -88,6 +104,17 @@ void DemoScreen::buttonPressed(Button *b)
     DemoWidget *dw = &btn_demos[btn % BUTTON_COUNT];
     dw->counter += 1;
     dw->setDirty(true);
+    repaint();
+}
+
+void DemoScreen::screenTouched(TS_Point p)
+{
+    touch_demos[0].counter = p.x / 10;
+    touch_demos[0].setDirty();
+
+    touch_demos[1].counter = p.y / 10;
+    touch_demos[1].setDirty();
+
     repaint();
 }
 

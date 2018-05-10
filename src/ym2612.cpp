@@ -5,7 +5,7 @@
 
 Ym2612 ym2612(
     YM_D0, YM_D1, YM_D2, YM_D3, YM_D4, YM_D5, YM_D6, YM_D7,
-    YM_IC, YM_CS, YM_RD, YM_WR, YM_A0, YM_A1
+    YM_IC, YM_CS, -1 /*YM_RD*/, YM_WR, YM_A0, YM_A1
 );
 
 Ym2612::Ym2612(
@@ -38,7 +38,10 @@ void Ym2612::setup()
     }
     pinMode(this->pin_ic, OUTPUT);
     pinMode(this->pin_cs, OUTPUT);
-    pinMode(this->pin_rd, OUTPUT);
+    if (this->pin_rd != -1) {
+        pinMode(this->pin_rd, OUTPUT);
+        digitalWriteFast(this->pin_rd, HIGH);
+    }
     pinMode(this->pin_wr, OUTPUT);
     pinMode(this->pin_a0, OUTPUT);
     pinMode(this->pin_a1, OUTPUT);
@@ -47,7 +50,6 @@ void Ym2612::setup()
     digitalWriteFast(this->pin_ic, HIGH);
     digitalWriteFast(this->pin_cs, HIGH);
     digitalWriteFast(this->pin_wr, HIGH);
-    digitalWriteFast(this->pin_rd, HIGH);
     digitalWriteFast(this->pin_a0, LOW);
     digitalWriteFast(this->pin_a1, LOW);
 

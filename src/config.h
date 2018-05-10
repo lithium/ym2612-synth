@@ -22,12 +22,12 @@
 
 #define YM_CS 14
 #define YM2_CS 15
-#define YM_WR 16
-#define YM_RD 17
-#define YM_A0 20
-#define YM_A1 21
-#define YM_CLK 22
-#define YM_IC 23
+#define YM_IC 16
+#define YM_WR 17
+// #define YM_RD 17
+#define YM_A0 18
+#define YM_A1 19
+#define YM_CLK 20
 
 
 // tft pin assignments
@@ -36,16 +36,16 @@
 
 // touch controller
 #define TOUCH_CS 8
-#define TOUCH_IRQ 19
+// #define TOUCH_IRQ 19
 
 // io expand assignments
-#define IO_CS 18
-#define IO_IRQ A14
+#define IO_CS 21
+// #define IO_IRQ A14
 
 
 // encoder switches
-#define ENC1_SW A11
-#define ENC5_SW A10
+#define ENC1_SW 22
+#define ENC5_SW 23
 
 
 // builtin led

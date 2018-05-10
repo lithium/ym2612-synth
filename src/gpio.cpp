@@ -47,6 +47,10 @@ void handle_gpio_interrupt()    // ISR
 void setup_gpio()
 {
     pinMode(IO_CS, OUTPUT);
+    digitalWriteFast(IO_CS, HIGH);
+
+    pinMode(TOUCH_CS, OUTPUT);
+    digitalWriteFast(TOUCH_CS, HIGH);
 
 
     //setup encoders

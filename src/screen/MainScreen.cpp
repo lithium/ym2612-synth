@@ -77,6 +77,9 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
         case 7:
             ym2612.setMultiple(chan, op, ym2612.getMultiple(chan, op) + direction);
             break;
+        case 6:
+            ym2612.setDetune(chan, op, ym2612.getDetune(chan, op) + direction);
+            break;
     }
 }
 

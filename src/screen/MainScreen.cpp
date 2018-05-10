@@ -44,6 +44,9 @@ void MainScreen::stop()
 void MainScreen::paint()
 {
     tft.fillScreen(ILI9341_BLACK);
+
+    settingsChanged(-1,-1); // force update all operator widgets with current patch
+
     repaint();
 }
 
@@ -67,7 +70,7 @@ void MainScreen::screenTouched(TS_Point p)
 void MainScreen::encoderTurned(int direction, GpioEncoder *e)
 {
     int enc = get_encoder_number(e);
-    int chan = 0;
+    int chan = active_channel;
     int op = active_op->op_number;
     switch (enc)
     {
@@ -79,8 +82,14 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
 
 void MainScreen::settingsChanged(uint8_t chan, uint8_t oper) 
 {
+    struct ym2612_patch_t new_patch;
+
+    ym2612.dumpPatch(active_channel, &new_patch);
     for (auto i=0; i < 4; i++) {
-        ops[i].setDirty();
+        ops[i].operatorChanged(new_patch.op[i]);
     }
+
+    last_patch = new_patch;
     repaint();
 }
+

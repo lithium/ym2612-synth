@@ -29,6 +29,10 @@ private:
     OperatorWidget ops[4];
 
     OperatorWidget *active_op = nullptr;
+
+    int active_channel = 0;
+    
+    struct ym2612_patch_t last_patch;
 };
 
 #endif

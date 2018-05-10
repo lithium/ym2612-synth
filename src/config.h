@@ -8,6 +8,9 @@
 #define SERIAL_DEBUG
 
 
+#define VERSION_STRING "v0.3.0"
+
+
 
 
 // ym2612 pin assignments

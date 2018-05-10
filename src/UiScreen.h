@@ -20,6 +20,11 @@ public:
     void buttonPressed(Button *b) override;
     void screenTouched(TS_Point p) override;
 
+
+    virtual void loop(); // called in master loop() when active screen
+    virtual void start(); // called when becoming active screen
+    virtual void stop();  // called when active and another screen is becoming active
+
 private:
 
 };

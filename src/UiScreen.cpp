@@ -8,6 +8,18 @@ UiScreen::UiScreen()
 
 }    
 
+void UiScreen::loop()
+{
+}
+
+void UiScreen::start()
+{
+}
+
+void UiScreen::stop()
+{
+}
+
 void UiScreen::encoderTurned(int direction, GpioEncoder *e)
 {
 

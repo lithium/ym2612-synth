@@ -47,7 +47,7 @@ void setup()
     setup_screen();
 
     // must occur after setup_gpio() and setup_screen()
-    set_active_screen(&demo_screen); 
+    set_active_screen(&splash_screen); 
 
 
     //enable interrupts

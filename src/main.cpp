@@ -10,9 +10,13 @@ void loop()
 
     check_inputs();
 
-    if (active_screen && active_screen->isDirty()) {
-        active_screen->paint();
-        active_screen->setDirty(false);
+    if (active_screen) {
+        active_screen->loop();
+        
+        if (active_screen->isDirty()) {
+            active_screen->paint();
+            active_screen->setDirty(false);
+        }
     }
 }
 

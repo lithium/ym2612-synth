@@ -4,11 +4,17 @@
 
 
 DemoScreen demo_screen;
+SplashScreen splash_screen;
+
 UiScreen *active_screen = NULL;
 
 
 void set_active_screen(UiScreen *screen)
 {
+    if (active_screen) {
+        active_screen->stop();
+    }
+
     active_screen = screen;
 
     for (int i=0; i < ENCODER_COUNT; i++) {
@@ -21,6 +27,7 @@ void set_active_screen(UiScreen *screen)
     touchscreen.setListener(active_screen);
 
     if (active_screen) {
+        active_screen->start();
         active_screen->setDirty();
     }
 }

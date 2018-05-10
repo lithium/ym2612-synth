@@ -5,6 +5,7 @@
 #include "Encoder.h"
 #include "Button.h"
 
+#include "TouchScreen.h"
 
 #define ENCODER_COUNT 8
 extern GpioEncoder encoders[ENCODER_COUNT];

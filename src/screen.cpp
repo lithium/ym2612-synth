@@ -20,6 +20,8 @@ void set_active_screen(UiScreen *screen)
         buttons[i].setListener(active_screen);
     }
 
+    touchscreen.setListener(active_screen);
+
     if (active_screen) {
         active_screen->setDirty();
     }

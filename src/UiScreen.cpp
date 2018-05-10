@@ -16,3 +16,7 @@ void UiScreen::buttonPressed(Button *b)
 {
     
 }
+void UiScreen::screenTouched(TS_Point p)
+{
+    
+}

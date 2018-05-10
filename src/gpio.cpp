@@ -100,6 +100,9 @@ void check_inputs()
         }
 
     }
+
+    touchscreen.check();
+
     // check buttons
     for (int i=0; i < BUTTON_COUNT; i++) {
         buttons[i].firePending();

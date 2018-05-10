@@ -40,3 +40,16 @@ void Widget::repaint()
     }
 }
 
+Widget *Widget::getChildAtPoint(TS_Point p)
+{
+    int l = children.size();
+    int x = ((double)p.x/4096.0) * 320;
+    int y = ((double)p.y/4096.0) * 240;
+    for (int i=0; i < l; i++) {
+        Widget *w = children.get(i);
+        if (x >= w->x && x <= w->x+w->w && y >= w->y && y <= w->y+w->h) {
+            return w;
+        }
+    }
+    return nullptr;
+}

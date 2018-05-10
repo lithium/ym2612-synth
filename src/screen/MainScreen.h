@@ -15,10 +15,12 @@ public:
 
     void paint() override;
 
+    void screenTouched(TS_Point p) override;
+
 private:
     OperatorWidget ops[4];
 
-    int _active_op = 0;
+    OperatorWidget *active_op = nullptr;
 };
 
 #endif

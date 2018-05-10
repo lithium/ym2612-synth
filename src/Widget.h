@@ -2,6 +2,7 @@
 #define WIDGET_H
 
 #include <LinkedList.h>
+#include "TouchScreen.h"
 
 class Widget;
 
@@ -20,6 +21,7 @@ public:
     void setBounds(int x, int y, int w, int h);
     void addWidget(Widget *child);
 
+    Widget *getChildAtPoint(TS_Point p);
 
     // public members
     int x, y, w, h;

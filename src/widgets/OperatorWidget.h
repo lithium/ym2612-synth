@@ -8,14 +8,18 @@
 class OperatorWidget : public Widget
 {
 public:
-    OperatorWidget();
+    OperatorWidget(int op_number=0);
 
     void paint() override; 
 
-    void setActive(bool active) { _active = active; }
+    void setActive(bool active);
+
+    int op_number;
 
 private:
     bool _active = false;
+
+
 };
 
 

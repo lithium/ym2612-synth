@@ -7,11 +7,9 @@
 #include "screen/DemoScreen.h"
 #include "screen/SplashScreen.h"
 
-extern UiScreen *active_screen;
 
 extern DemoScreen demo_screen;
 extern SplashScreen splash_screen;
 
-void set_active_screen(UiScreen *screen);
 
 #endif

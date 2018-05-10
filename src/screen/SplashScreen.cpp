@@ -1,10 +1,11 @@
 #include "SplashScreen.h"
-
+#include "screen.h"
 
 static bool _tick = false;
 static bool _holding = false;
 static int _hold_counter = 0;
-static int _hold_compare = 1000;
+static int _hold_compare = 30000;
+auto animation_interval = 80000;
 
 SplashScreen::SplashScreen()
 {
@@ -15,7 +16,6 @@ SplashScreen::SplashScreen()
     height = 39;    
 }
 
-
 void SplashScreen::paint()
 {
     tft.fillScreen(background);
@@ -25,14 +25,10 @@ void SplashScreen::paint()
     tft.print(VERSION_STRING);
 }
 
-
-
 void splash_screen_tick()
 {
     _tick = true;
-
 }
-
 
 void SplashScreen::draw_logo(int color)
 {
@@ -48,7 +44,7 @@ void SplashScreen::loop()
 
     if (_holding) {
         if (++_hold_counter > _hold_compare) {
-            // set_active_screen(&demo_screen);
+            UiScreen::setActiveScreen(&demo_screen);
         }
     } else {
         draw_logo(background);
@@ -56,8 +52,9 @@ void SplashScreen::loop()
         y += yv;
 
         if ((y <= 0) || (y + height >= 240)) {
+            yv *= -1;
+
             // reached bottom hold
-            // yv *= -1;
             _holding = true;
         }
         if ((x <= 0) || (x + width >= 320)) {
@@ -72,8 +69,6 @@ void SplashScreen::loop()
 
 void SplashScreen::start()
 {
-    auto animation_interval = 50000;
-
     x = 0;
     y = 20;
     xv = 20;
@@ -86,3 +81,4 @@ void SplashScreen::stop()
 {
     _timer.end();
 }
+

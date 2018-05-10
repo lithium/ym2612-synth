@@ -6,6 +6,7 @@
 #include "Button.h"
 #include "Widget.h"
 #include "TouchScreen.h"
+#include "gpio.h"
 
 class UiScreen : 
         public Widget,
@@ -25,9 +26,15 @@ public:
     virtual void start(); // called when becoming active screen
     virtual void stop();  // called when active and another screen is becoming active
 
+
+    static void setActiveScreen(UiScreen *s);
 private:
 
 };
+
+
+
+extern UiScreen *active_screen;
 
 
 

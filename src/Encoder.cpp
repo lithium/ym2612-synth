@@ -31,11 +31,11 @@ int8_t GpioEncoder::read(uint16_t debounced_state)
     old_ab <<= 2;
     old_ab |= read_pin(debounced_state, pin_a) << 1;
     old_ab |= read_pin(debounced_state, pin_b);
-    if (_first < _first_to_skip) {
-        // hack to skip first couple to align with detents
-        _first++;
-        return 0;
-    }
+    // if (_first < _first_to_skip) {
+    //     // hack to skip first couple to align with detents
+    //     _first++;
+    //     return 0;
+    // }
     return _encoder_states[(old_ab & 0x0f)];
 }
 

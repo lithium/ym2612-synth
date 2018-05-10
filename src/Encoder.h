@@ -10,7 +10,7 @@ class GpioEncoder
 public:
     GpioEncoder();
 
-    void setup(int gpio_pin_a, int gpio_pin_b, int pulses_per_detent=4, int first_to_skip=2);
+    void setup(int gpio_pin_a, int gpio_pin_b, int pulses_per_detent=4, int first_to_skip=0);
 
     // returns: 1 clockwise, -1 counterclockwise, 0 ignore
     int8_t read(uint16_t state);

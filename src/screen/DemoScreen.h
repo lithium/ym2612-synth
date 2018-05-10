@@ -3,6 +3,8 @@
 
 #include "UiScreen.h"
 #include "Widget.h"
+#include "gpio.h"
+#include "tft.h"
 
 
 class DemoWidget : public Widget

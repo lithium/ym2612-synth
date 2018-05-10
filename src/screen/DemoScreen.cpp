@@ -1,7 +1,5 @@
 
 #include "DemoScreen.h"
-#include "gpio.h"
-#include "screen.h"
 
     auto width = 40;
     auto height = 20;

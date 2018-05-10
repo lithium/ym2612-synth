@@ -110,6 +110,32 @@ void Ym2612::dumpPatch(uint8_t channel, struct ym2612_patch_t *patch)
     }
 }
 
+void Ym2612::addListener(Listener *listener) 
+{
+    listeners.add(listener);
+}
+void Ym2612::removeListener(Listener *listener) 
+{
+    auto l = listeners.size();
+    for (auto i = 0; i < l; i++) {
+        if (listeners.get(i) == listener) {
+            listeners.remove(i);
+            return;
+        }
+    }
+}
+
+void Ym2612::notifyListenersOfChange(uint8_t channel, uint8_t oper)
+{
+    auto l = listeners.size();
+    for (auto i = 0; i < l; i++) {
+        Listener *listener = listeners.get(i);
+        if (listener) {
+            listener->settingsChanged(channel, oper);
+        }
+    }
+}
+
 /*
  * global registers
  */
@@ -359,13 +385,17 @@ uint8_t Ym2612::get_chop_register(uint8_t base_addr,uint8_t channel,uint8_t oper
 void Ym2612::update_ch_register(uint8_t base_addr, uint8_t channel, uint8_t mask, uint8_t value)
 {
     uint8_t ym_addr = base_addr + (channel%3);
-    return update_register(ym_addr, channel, mask, value);
+    update_register(ym_addr, channel, mask, value);
+
+    notifyListenersOfChange(channel, -1);
 }
 
 void Ym2612::update_chop_register(uint8_t base_addr,uint8_t channel,uint8_t oper, uint8_t mask, uint8_t value)
 {
     uint8_t ym_addr = base_addr + oper*4 + (channel%3);
-    return update_register(ym_addr, channel, mask, value);
+    update_register(ym_addr, channel, mask, value);
+
+    notifyListenersOfChange(channel, oper);
 }
 
 void Ym2612::update_register(uint8_t ym_addr, uint8_t channel, uint8_t mask, uint8_t value)

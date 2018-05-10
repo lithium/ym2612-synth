@@ -32,6 +32,14 @@ MainScreen::MainScreen()
 
 }
 
+void MainScreen::start() 
+{
+    ym2612.addListener(this);
+}
+void MainScreen::stop() 
+{
+    ym2612.removeListener(this);
+}
 
 void MainScreen::paint()
 {
@@ -56,3 +64,23 @@ void MainScreen::screenTouched(TS_Point p)
     repaint();
 }
 
+void MainScreen::encoderTurned(int direction, GpioEncoder *e)
+{
+    int enc = get_encoder_number(e);
+    int chan = 0;
+    int op = active_op->op_number;
+    switch (enc)
+    {
+        case 7:
+            ym2612.setMultiple(chan, op, ym2612.getMultiple(chan, op) + direction);
+            break;
+    }
+}
+
+void MainScreen::settingsChanged(uint8_t chan, uint8_t oper) 
+{
+    for (auto i=0; i < 4; i++) {
+        ops[i].setDirty();
+    }
+    repaint();
+}

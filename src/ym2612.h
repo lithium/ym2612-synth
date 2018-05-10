@@ -1,11 +1,10 @@
 #ifndef YM2612_H
-#define YM2612_h
+#define YM2612_H
 
 #include "config.h"
 #include "patch.h"
+#include <LinkedList.h>
 
-
-#define DELAY_SCALE 11
 
 
 class Ym2612 {
@@ -90,8 +89,18 @@ public:
     uint8_t getLfoFm(uint8_t channel);
 
 
+    class Listener {
+    public:
+        virtual void settingsChanged(uint8_t channel, uint8_t oper) = 0; // -1 means change applies to all channels/operators
+    };
+    void addListener(Listener *listener);
+    void removeListener(Listener *listener);
+    void notifyListenersOfChange(uint8_t channel, uint8_t oper);
+
 
     static uint16_t hz_to_fword(uint8_t octave, uint16_t hz);
+
+
 
 
 private:
@@ -121,6 +130,8 @@ private:
 #define YM_REG_NUM_PARTS 2
     uint8_t registers[YM_REG_NUM_PARTS][YM_REG_PART_SIZE];
 
+
+    LinkedList<Listener*> listeners;
 };
 
 

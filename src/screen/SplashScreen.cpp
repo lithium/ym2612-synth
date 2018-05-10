@@ -44,7 +44,7 @@ void SplashScreen::loop()
 
     if (_holding) {
         if (++_hold_counter > _hold_compare) {
-            UiScreen::setActiveScreen(&demo_screen);
+            UiScreen::setActiveScreen(&main_screen);
         }
     } else {
         draw_logo(background);

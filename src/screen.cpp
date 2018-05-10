@@ -5,5 +5,6 @@
 
 DemoScreen demo_screen;
 SplashScreen splash_screen;
+MainScreen main_screen;
 
 

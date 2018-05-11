@@ -74,12 +74,25 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
     int op = active_op->op_number;
     switch (enc)
     {
-        case 0:
-            ym2612.setTotalLevel(chan, op, ym2612.getTotalLevel(chan, op) + direction*-1);
+        case 0: {
+            int tl = ym2612.getTotalLevel(chan, op);
+            direction *= -1;
+            if ((tl+direction > 127) || (tl+direction < 0)) {
+                return;
+            }
+            ym2612.setTotalLevel(chan, op, tl + direction);
             break;
-        case 1:
-            ym2612.setSustainLevel(chan, op, ym2612.getSustainLevel(chan, op) + direction*-1);
+        }
+
+        case 1: {
+            int sl = ym2612.getSustainLevel(chan, op);
+            direction *= -1;
+            if ((sl+direction > 15) || (sl+direction < 0)) {
+                return;
+            }
+            ym2612.setSustainLevel(chan, op, sl + direction);
             break;
+        }
 
         case 2: {
             int ar = ym2612.getAttackRate(chan, op);
@@ -122,12 +135,19 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
             ym2612.setReleaseRate(chan, op, rr + direction);
             break;
         }
-        case 6:
-            ym2612.setDetune(chan, op, ym2612.getDetune(chan, op) + direction);
+        case 6: {
+            int dt = ym2612.getDetune(chan, op);
+            ym2612.setDetune(chan, op, dt + direction);
             break;
-        case 7:
-            ym2612.setMultiple(chan, op, ym2612.getMultiple(chan, op) + direction);
+        }
+        case 7: {
+            int mul = ym2612.getMultiple(chan, op);
+            if ((mul+direction > 15) || (mul+direction < 0)) {
+                return;
+            }
+            ym2612.setMultiple(chan, op, mul + direction);
             break;
+        }
     }
 }
 

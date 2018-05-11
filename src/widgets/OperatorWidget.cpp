@@ -68,7 +68,7 @@ void OperatorWidget::paintDetune(uint8_t detune, int color)
 }
 
 
-void drawLabeledLine(int x1, int y1, int x2, int y2, int label, int color)
+inline void drawLabeledLine(int x1, int y1, int x2, int y2, int label, int color)
 {
     auto midx = (x1+x2)/2;
     auto midy = (y1+y2)/2;
@@ -77,10 +77,10 @@ void drawLabeledLine(int x1, int y1, int x2, int y2, int label, int color)
 
     tft.drawLine(x1, y1, x2, y2, color); 
     // tft.fillRect(midx-labelWidth/2, midy-labelHeight/2, labelWidth, labelHeight, background);
-    tft.setTextSize(1);
-    tft.setTextColor(color);
-    tft.setCursor(midx - labelWidth/2, midy);
-    tft.print(label);
+    // tft.setTextSize(1);
+    // tft.setTextColor(color);
+    // tft.setCursor(midx - labelWidth/2, midy);
+    // tft.print(label);
 }
 void OperatorWidget::paintEnvelope(struct ym2612_patch_op_t env, bool erase)
 {

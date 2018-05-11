@@ -1,6 +1,7 @@
 #ifndef SPLASH_SCREEN_H
 #define SPLASH_SCREEN_H
 
+#include "config.h"
 #include "UiScreen.h"
 #include "Widget.h"
 #include <IntervalTimer.h>

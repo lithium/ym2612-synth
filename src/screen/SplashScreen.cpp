@@ -51,13 +51,13 @@ void SplashScreen::loop()
         x += xv;
         y += yv;
 
-        if ((y <= 0) || (y + height >= 240)) {
+        if ((y <= 0) || (y + height >= SCREEN_HEIGHT)) {
             yv *= -1;
 
             // reached bottom hold
             _holding = true;
         }
-        if ((x <= 0) || (x + width >= 320)) {
+        if ((x <= 0) || (x + width >= SCREEN_WIDTH)) {
             xv *= -1;
         }
 

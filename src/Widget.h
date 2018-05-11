@@ -1,6 +1,7 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include "config.h"
 #include <LinkedList.h>
 #include "TouchScreen.h"
 

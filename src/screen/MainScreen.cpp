@@ -6,8 +6,6 @@ MainScreen::MainScreen()
 {
     auto title_height = 20;
     auto padding = 20;
-    // auto operator_width = (320 - padding*3) / 2;
-    // auto operator_height = (240 - (title_height+padding) - padding*3) / 2;
     auto operator_width = 130;
     auto operator_height = 80;
 

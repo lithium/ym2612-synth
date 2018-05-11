@@ -110,30 +110,34 @@ void Ym2612::dumpPatch(uint8_t channel, struct ym2612_patch_t *patch)
     }
 }
 
-void Ym2612::addListener(Listener *listener) 
+void Ym2612::setListener(Listener *listener) 
 {
-    listeners.add(listener);
+    this->listener = listener;
 }
-void Ym2612::removeListener(Listener *listener) 
-{
-    auto l = listeners.size();
-    for (auto i = 0; i < l; i++) {
-        if (listeners.get(i) == listener) {
-            listeners.remove(i);
-            return;
-        }
-    }
-}
+// void Ym2612::addListener(Listener *listener) 
+// {
+//     listeners.add(listener);
+// }
+// void Ym2612::removeListener(Listener *listener) 
+// {
+//     auto l = listeners.size();
+//     for (auto i = 0; i < l; i++) {
+//         if (listeners.get(i) == listener) {
+//             listeners.remove(i);
+//             return;
+//         }
+//     }
+// }
 
 void Ym2612::notifyListenersOfChange(uint8_t channel, uint8_t oper)
 {
-    auto l = listeners.size();
-    for (auto i = 0; i < l; i++) {
-        Listener *listener = listeners.get(i);
+    // auto l = listeners.size();
+    // for (auto i = 0; i < l; i++) {
+    //     Listener *listener = listeners.get(i);
         if (listener) {
             listener->settingsChanged(channel, oper);
         }
-    }
+    // }
 }
 
 /*

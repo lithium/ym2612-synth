@@ -36,11 +36,13 @@ MainScreen::MainScreen()
 
 void MainScreen::start() 
 {
-    ym2612.addListener(this);
+    ym2612.setListener(this);
 }
 void MainScreen::stop() 
 {
-    ym2612.removeListener(this);
+    // Serial.println("stop");
+    // ym2612.removeListener(this);
+    // Serial.println("removed");
 }
 
 void MainScreen::paint()
@@ -168,9 +170,8 @@ void MainScreen::settingsChanged(uint8_t chan, uint8_t oper)
 
 void MainScreen::buttonPressed(Button *b)
 {
-    // Serial.print("button pressed "); Serial.println(b->number);
-    
-    // if (b->number == 0) {
-    //     UiScreen::setActiveScreen(&voice_settings_dialog);
-    // }
+    Serial.print("press "); Serial.println(b->number);
+    if (b->number == 0) {
+        UiScreen::setActiveScreen(&voice_settings_dialog);
+    }
 }

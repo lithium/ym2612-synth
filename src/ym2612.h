@@ -93,8 +93,10 @@ public:
     public:
         virtual void settingsChanged(uint8_t channel, uint8_t oper) = 0; // -1 means change applies to all channels/operators
     };
-    void addListener(Listener *listener);
-    void removeListener(Listener *listener);
+    void setListener(Listener *listener);
+
+    // void addListener(Listener *listener);
+    // void removeListener(Listener *listener);
     void notifyListenersOfChange(uint8_t channel, uint8_t oper);
 
 
@@ -131,7 +133,8 @@ private:
     uint8_t registers[YM_REG_NUM_PARTS][YM_REG_PART_SIZE];
 
 
-    LinkedList<Listener*> listeners;
+    // LinkedList<Listener*> listeners;
+    Listener *listener = nullptr;
 };
 
 

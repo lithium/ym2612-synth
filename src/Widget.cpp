@@ -28,12 +28,12 @@ void Widget::addWidget(Widget *w)
     children.add(w);
 }
 
-void Widget::repaint()
+void Widget::repaint(bool force)
 {
     int l = children.size();
     for (int i=0; i < l; i++) {
         Widget *w = children.get(i);
-        if (w->isDirty()) {
+        if (force || w->isDirty()) {
             w->paint();
             w->setDirty(false);
         }

@@ -1,5 +1,7 @@
 #include "MainScreen.h"
 
+#include "screen.h"
+
 MainScreen::MainScreen()
 {
     auto title_height = 20;
@@ -47,7 +49,7 @@ void MainScreen::paint()
 
     settingsChanged(-1,-1); // force update all operator widgets with current patch
 
-    repaint();
+    repaint(true);
 }
 
 
@@ -164,3 +166,10 @@ void MainScreen::settingsChanged(uint8_t chan, uint8_t oper)
     repaint();
 }
 
+void MainScreen::buttonPressed(Button *b)
+{
+    Serial.print("press "); Serial.println(b->number);
+    if (b->number == 0) {
+        UiScreen::setActiveScreen(&voice_settings_dialog);
+    }
+}

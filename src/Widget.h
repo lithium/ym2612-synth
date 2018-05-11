@@ -13,7 +13,7 @@ public:
     Widget();
 
     virtual void paint() = 0;  // expensive full repaint
-    void repaint(); // repaint dirty widgets
+    void repaint(bool force = false); // repaint dirty widgets
 
     bool isDirty();
     void setDirty(bool dirty = true);

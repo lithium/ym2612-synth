@@ -8,3 +8,4 @@ SplashScreen splash_screen;
 MainScreen main_screen;
 
 
+VoiceSettingsDialog voice_settings_dialog;

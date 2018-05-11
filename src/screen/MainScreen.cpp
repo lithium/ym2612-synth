@@ -1,5 +1,7 @@
 #include "MainScreen.h"
 
+#include "screen.h"
+
 MainScreen::MainScreen()
 {
     auto title_height = 20;
@@ -164,3 +166,11 @@ void MainScreen::settingsChanged(uint8_t chan, uint8_t oper)
     repaint();
 }
 
+void MainScreen::buttonPressed(Button *b)
+{
+    // Serial.print("button pressed "); Serial.println(b->number);
+    
+    // if (b->number == 0) {
+    //     UiScreen::setActiveScreen(&voice_settings_dialog);
+    // }
+}

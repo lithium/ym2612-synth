@@ -124,14 +124,14 @@ private:
     uint8_t get_register(uint8_t part, uint8_t ym_addr);
 
     // internal register cache, copy on write
-#define YM_REG_LAST_ADDR 0xB4
+#define YM_REG_LAST_ADDR 0xB9
 #define YM_REG_FIRST_ADDR 0x22
-#define YM_REG_PART_SIZE (YM_REG_LAST_ADDR - YM_REG_FIRST_ADDR) 
+#define YM_REG_PART_SIZE (YM_REG_LAST_ADDR - YM_REG_FIRST_ADDR)  
 #define YM_REG_NUM_PARTS 2
     uint8_t registers[YM_REG_NUM_PARTS][YM_REG_PART_SIZE];
 
-
     LinkedList<Listener*> listeners;
+
 };
 
 

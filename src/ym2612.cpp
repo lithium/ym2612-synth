@@ -414,11 +414,25 @@ void Ym2612::update_register(uint8_t ym_addr, uint8_t channel, uint8_t mask, uin
 
 void Ym2612::set_register(uint8_t part, uint8_t ym_addr, uint8_t value)
 {
+    if (ym_addr < YM_REG_FIRST_ADDR || ym_addr > YM_REG_LAST_ADDR) {
+        #ifdef DEBUG
+        Serial.print("set register for INVALID ADDR! "); 
+        Serial.println(ym_addr, HEX);
+        #endif
+        return;
+    }
     this->registers[part][ym_addr - YM_REG_FIRST_ADDR] = value;
     write_register(part, ym_addr, value);
 }
 uint8_t Ym2612::get_register(uint8_t part, uint8_t ym_addr)
 {
+    if (ym_addr < YM_REG_FIRST_ADDR || ym_addr > YM_REG_LAST_ADDR) {
+        #ifdef DEBUG
+        Serial.print("get register for INVALID ADDR! "); 
+        Serial.println(ym_addr, HEX);
+        #endif
+        return 0xFF;
+    }
     return this->registers[part][ym_addr - YM_REG_FIRST_ADDR];
 }
 

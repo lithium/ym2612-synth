@@ -9,6 +9,12 @@ static auto tl_stroke_color = ILI9341_LIGHTGREY;
 static auto sl_stroke_color = ILI9341_DARKGREY;
 static auto env_stroke_color = ILI9341_WHITE;
 
+
+static auto attack_color = ILI9341_BLUE;
+static auto decay_color = ILI9341_GREEN;
+static auto sustain_color = ILI9341_CYAN;
+static auto release_color = ILI9341_MAGENTA;
+
 OperatorWidget::OperatorWidget(int op_number) : op_number(op_number)
 {
     memset(&last_patch, 0, sizeof(last_patch));
@@ -134,17 +140,19 @@ void OperatorWidget::paintEnvelope(struct ym2612_patch_op_t env, bool erase)
         sr_y = sl_y;
     }
 
+    //attack
+    tft.fillTriangle(x+border_width,bottom, ar_x,tl_y, ar_x,bottom, erase ? background : attack_color);
 
-    // total level
-    // tft.drawFastHLine(x + border_width, tl_y, w - border_width*2, erase ? background : tl_stroke_color);
+    //decay
+    tft.fillTriangle(ar_x,bottom, ar_x,tl_y, dr_x,sl_y, erase ? background : decay_color);
+    tft.fillTriangle(ar_x,bottom, dr_x,bottom, dr_x,sl_y, erase ? background : decay_color);
 
-    // sustain level
-    // tft.drawFastHLine(x + border_width, sl_y, w - border_width*2, erase ? background : sl_stroke_color);
+    //sustain
+    tft.fillTriangle(dr_x,bottom, dr_x,sl_y, sr_x,sr_y, erase ? background : sustain_color);
+    tft.fillTriangle(dr_x,bottom, sr_x,bottom, sr_x,sr_y, erase ? background : sustain_color);
 
-    drawLabeledLine(x + border_width, bottom, ar_x, tl_y, env.attack_rate, erase ? background : env_stroke_color);
-    drawLabeledLine(ar_x, tl_y, dr_x, sl_y, env.decay_rate, erase ? background : env_stroke_color);
-    drawLabeledLine(dr_x, sl_y, sr_x, sr_y, env.sustain_rate, erase ? background : env_stroke_color);
-    drawLabeledLine(sr_x, sr_y, right, bottom, env.release_rate, erase ? background : env_stroke_color);
+    //release 
+    tft.fillTriangle(sr_x,bottom, sr_x,sr_y, right,bottom, erase ? background : release_color);
 }
 
 

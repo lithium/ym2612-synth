@@ -81,19 +81,47 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
             ym2612.setSustainLevel(chan, op, ym2612.getSustainLevel(chan, op) + direction*-1);
             break;
 
-        case 2:
-            ym2612.setAttackRate(chan, op, ym2612.getAttackRate(chan, op) + direction*-1);
+        case 2: {
+            int ar = ym2612.getAttackRate(chan, op);
+            direction *= -1;
+            if ((ar+direction > 31) || (ar+direction <= 0)) {
+                return;
+            }
+            ym2612.setAttackRate(chan, op, ar+direction);
             break;
-        case 3:
-            ym2612.setDecayRate(chan, op, ym2612.getDecayRate(chan, op) + direction*-1);
+        }
+        case 3: {
+            int dr = ym2612.getDecayRate(chan, op);
+            direction *= -1;
+            if ((dr+direction > 31) || (dr+direction < 0)) {
+                return;
+            }
+            ym2612.setDecayRate(chan, op, dr + direction);
             break;
-        case 4:
-            ym2612.setSustainRate(chan, op, ym2612.getSustainRate(chan, op) + direction*-1);
+        }
+        case 4: {
+            int sr = ym2612.getSustainRate(chan, op);
+            direction *= -1;
+            if ((sr+direction > 31) || (sr+direction < 0)) {
+                return;
+            }
+            ym2612.setSustainRate(chan, op, sr + direction);
             break;
-        case 5:
-            ym2612.setReleaseRate(chan, op, ym2612.getReleaseRate(chan, op) + direction*-1);
+        }
+        case 5: {
+            int rr = ym2612.getReleaseRate(chan, op);
+            direction *= -1;
+            if (rr == 0) {
+                if (direction > 0 )
+                    return;
+            }
+            else
+            if ((rr+direction > 16) || (rr+direction <= 0)) {
+                return;
+            }
+            ym2612.setReleaseRate(chan, op, rr + direction);
             break;
-
+        }
         case 6:
             ym2612.setDetune(chan, op, ym2612.getDetune(chan, op) + direction);
             break;

@@ -3,7 +3,7 @@
 static auto padding = 4;
 static auto foreground = ILI9341_WHITE;
 static auto background = ILI9341_BLACK;
-static auto border_width = 1;
+static auto border_width = 2;
 
 static auto tl_stroke_color = ILI9341_LIGHTGREY;
 static auto sl_stroke_color = ILI9341_DARKGREY;

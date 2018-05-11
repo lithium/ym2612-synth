@@ -74,11 +74,31 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
     int op = active_op->op_number;
     switch (enc)
     {
-        case 7:
-            ym2612.setMultiple(chan, op, ym2612.getMultiple(chan, op) + direction);
+        case 0:
+            ym2612.setTotalLevel(chan, op, ym2612.getTotalLevel(chan, op) + direction*-1);
             break;
+        case 1:
+            ym2612.setSustainLevel(chan, op, ym2612.getSustainLevel(chan, op) + direction*-1);
+            break;
+
+        case 2:
+            ym2612.setAttackRate(chan, op, ym2612.getAttackRate(chan, op) + direction*-1);
+            break;
+        case 3:
+            ym2612.setDecayRate(chan, op, ym2612.getDecayRate(chan, op) + direction*-1);
+            break;
+        case 4:
+            ym2612.setSustainRate(chan, op, ym2612.getSustainRate(chan, op) + direction*-1);
+            break;
+        case 5:
+            ym2612.setReleaseRate(chan, op, ym2612.getReleaseRate(chan, op) + direction*-1);
+            break;
+
         case 6:
             ym2612.setDetune(chan, op, ym2612.getDetune(chan, op) + direction);
+            break;
+        case 7:
+            ym2612.setMultiple(chan, op, ym2612.getMultiple(chan, op) + direction);
             break;
     }
 }

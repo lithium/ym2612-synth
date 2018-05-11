@@ -15,6 +15,7 @@ public:
     void paint() override; 
     void paintMultiplier(uint8_t multiplier, int color);
     void paintDetune(uint8_t detune, int color);
+    void paintEnvelope(struct ym2612_patch_op_t env, bool erase = false);
 
     void setActive(bool active);
     void operatorChanged(struct ym2612_patch_op_t new_patch_op);

@@ -151,8 +151,35 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
             break;
         }
         case 6: {
+
+            const uint8_t detune_values[] = {
+                0b111, //-3
+                0b110, //-2
+                0b101, //-1
+                0b000, //0
+                0b001, //+1
+                0b010, //+2
+                0b011, //+3
+            };
+
             int dt = ym2612.getDetune(chan, op);
-            ym2612.setDetune(chan, op, dt + direction);
+
+            int cur_idx = -1;
+            for (int i=0; i < 7; i++) {
+                if (detune_values[i] == dt) {
+                    cur_idx = i;
+                    break;
+                }
+            }
+            if (cur_idx == -1) {
+                cur_idx = 3; // +0
+            }
+
+            if ((cur_idx + direction > 6) || (cur_idx+direction < 0)) {
+                return;
+            }
+
+            ym2612.setDetune(chan, op, detune_values[cur_idx + direction]);
             break;
         }
         case 7: {

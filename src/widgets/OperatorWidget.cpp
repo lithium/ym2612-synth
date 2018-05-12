@@ -4,13 +4,11 @@
 
 static auto padding = 4;
 static auto foreground = ILI9341_WHITE;
-static auto background = ILI9341_BLACK;
+
+static auto active_background = COLOR_darkgrey;
+static auto unactive_background = COLOR_lightgrey;
+
 static auto border_width = 2;
-
-static auto tl_stroke_color = ILI9341_LIGHTGREY;
-static auto sl_stroke_color = ILI9341_DARKGREY;
-static auto env_stroke_color = ILI9341_WHITE;
-
 
 static auto attack_color = ILI9341_BLUE;
 static auto decay_color = ILI9341_GREEN;
@@ -24,14 +22,14 @@ OperatorWidget::OperatorWidget(int op_number) : op_number(op_number)
 
 void OperatorWidget::paint()
 {
-    tft.drawRect(x, y, w, h, _active ? ILI9341_WHITE : ILI9341_DARKGREY);
+    tft.fillRect(x,y,w,h, _active ? active_background : unactive_background);
+    emboss_frame(x,y,w,h, _active ? COLOR_emboss : COLOR_deboss);
 
 
     // multiplier label
-
-    tft.setTextColor(ILI9341_LIGHTGREY);
-    tft.setCursor(x+padding, y+padding+7);
-    tft.setTextSize(1);
+    tft.setFont(ComicSansMS_10);
+    tft.setTextColor(foreground);
+    tft.setCursor(x+padding, y+padding+3);
     tft.print("x");
 
     paintMultiplier(last_patch.multiplier, foreground);
@@ -44,19 +42,10 @@ void OperatorWidget::paintMultiplier(uint8_t multiplier, int color)
     tft.setTextColor(color);
     tft.setFont(ComicSansMS_14);
 
+    tft.setCursor(x+padding+10, y+padding);
     if (multiplier == 0) { 
-        // 0 == x1/2
-        tft.setTextSize(1);
-        tft.setCursor(x+padding+6, y+padding);
-        tft.print("1");
-
-        tft.drawLine(x+padding+10, y+padding+10, x+padding+14, y+padding+4, color);
-
-        tft.setCursor(x+padding+16, y+padding+8);
-        tft.print("2");
+        tft.print("1/2");
     } else {
-        // tft.setTextSize(2);
-        tft.setCursor(x+padding+8, y+padding);
         tft.print(multiplier);
     }
 }
@@ -67,13 +56,11 @@ void OperatorWidget::paintDetune(uint8_t detune, int color)
         return; 
     }
 
-    tft.setTextSize(1);
     tft.setTextColor(color);
-    tft.setCursor(x+42, y+7);
-    tft.print(detune & 0b100 ? "-" : "+");
+    tft.setFont(ComicSansMS_14);
 
-    tft.setTextSize(2);
     tft.setCursor(x+50, y+padding);
+    tft.print(detune & 0b100 ? "-" : "+");
     tft.print(detune & 0b11);
 }
 
@@ -144,6 +131,8 @@ void OperatorWidget::paintEnvelope(struct ym2612_patch_op_t env, bool erase)
         sr_y = sl_y;
     }
 
+    auto background = _active ? active_background : unactive_background;
+
     //attack
     tft.fillTriangle(x+border_width,bottom, ar_x,tl_y, ar_x,bottom, erase ? background : attack_color);
 
@@ -168,11 +157,11 @@ void OperatorWidget::setActive(bool active) {
 void OperatorWidget::operatorChanged(struct ym2612_patch_op_t new_patch)
 {
     if (last_patch.multiplier != new_patch.multiplier) {
-        paintMultiplier(last_patch.multiplier, background);
+        paintMultiplier(last_patch.multiplier, _active ? active_background : unactive_background);
         paintMultiplier(new_patch.multiplier, foreground);
     }
     if (last_patch.detune != new_patch.detune) {
-        paintDetune(last_patch.detune, background);
+        paintDetune(last_patch.detune, _active ? active_background : unactive_background);
         paintDetune(new_patch.detune, foreground);
     }
 

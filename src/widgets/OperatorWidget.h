@@ -6,6 +6,7 @@
 #include "tft.h"
 #include "ym2612.h"
 #include "patch.h"
+#include "colors.h"
 
 
 

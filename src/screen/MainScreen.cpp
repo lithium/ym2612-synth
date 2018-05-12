@@ -4,6 +4,7 @@
 #include "colors.h"
 
 #include "icons.h"
+#include <font_ComicSansMS.h>
 
 
 #define operator_width 131
@@ -23,7 +24,6 @@
 
 MainScreen::MainScreen()
 {
-    memset(&last_patch, 0, sizeof(last_patch));
 
 
     ops[0].setBounds(op1_x,op1_y, operator_width,operator_height);
@@ -63,7 +63,9 @@ void MainScreen::paint()
     draw_icon(6,6, ICON_feedback);
     
 
-    settingsChanged(-1,-1); // force update all operator widgets with current patch
+    // force update all widgets with current patch
+    memset(&last_patch, 0, sizeof(last_patch));
+    settingsChanged(-1,-1); 
 
     repaint(true);
 }
@@ -107,6 +109,13 @@ void MainScreen::paintAlgorithm(uint8_t algorithm, bool erase)
 
         placements += 1;
     }
+}
+void MainScreen::paintFeedback(uint8_t feedback, bool erase)
+{
+    tft.setFont(ComicSansMS_14);
+    tft.setCursor(15,9);
+    tft.setTextColor(erase ? COLOR_black : COLOR_white);
+    tft.print(feedback);
 }
 
 
@@ -246,6 +255,10 @@ void MainScreen::settingsChanged(uint8_t chan, uint8_t oper)
     if (last_patch.algorithm != new_patch.algorithm) {
         paintAlgorithm(last_patch.algorithm, true);
         paintAlgorithm(new_patch.algorithm, false);
+    }
+    if (last_patch.feedback != new_patch.feedback) {
+        paintFeedback(last_patch.feedback, true);
+        paintFeedback(new_patch.feedback, false);
     }
 
     for (auto i=0; i < 4; i++) {

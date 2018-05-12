@@ -24,3 +24,9 @@ void emboss_frame(int x, int y, int w, int h, const uint16_t colors[4])
     tft.drawFastHLine(x,y+h, w, colors[3]);
     tft.drawFastVLine(x+w,y, h, colors[3]);
 }
+
+void draw_icon(int x, int y, int icon_number)
+{
+   const struct icon_t ico = ICONS[icon_number];
+   tft.writeRect8BPP(x, y, ico.width, ico.height, ico.icon, icon_palette);
+}

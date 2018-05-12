@@ -2,6 +2,7 @@
 #define TFT_H
 
 #include "config.h"
+#include "icons.h"
 
 #include <SPI.h>
 #include <Wire.h>
@@ -14,5 +15,6 @@ void setup_screen();
 
 
 void emboss_frame(int x, int y, int w, int h, const uint16_t colors[4]);
+void draw_icon(int x, int y, int icon_number);
 
 #endif

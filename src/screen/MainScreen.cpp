@@ -3,6 +3,8 @@
 #include "screen.h"
 #include "colors.h"
 
+#include "icons.h"
+
 
 #define operator_width 131
 #define operator_height 87
@@ -53,12 +55,12 @@ void MainScreen::stop()
     ym2612.removeListener(this);
 }
 
+
 void MainScreen::paint()
 {
     tft.fillScreen(COLOR_lightgrey);
-
-
-    // tft.fillRect(op1_x,op1_y, operator_width, operator_height, COLOR_darkgrey);
+    draw_icon(6,6, ICON_feedback);
+    
 
     settingsChanged(-1,-1); // force update all operator widgets with current patch
 

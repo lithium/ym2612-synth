@@ -7,6 +7,8 @@
 #include "ym2612.h"
 #include "patch.h"
 
+
+
 class OperatorWidget : public Widget
 {
 public:

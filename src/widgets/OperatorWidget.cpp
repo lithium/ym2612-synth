@@ -1,5 +1,7 @@
 #include "OperatorWidget.h"
 
+#include <font_ComicSansMS.h>
+
 static auto padding = 4;
 static auto foreground = ILI9341_WHITE;
 static auto background = ILI9341_BLACK;
@@ -26,6 +28,7 @@ void OperatorWidget::paint()
 
 
     // multiplier label
+
     tft.setTextColor(ILI9341_LIGHTGREY);
     tft.setCursor(x+padding, y+padding+7);
     tft.setTextSize(1);
@@ -39,6 +42,7 @@ void OperatorWidget::paint()
 void OperatorWidget::paintMultiplier(uint8_t multiplier, int color)
 {
     tft.setTextColor(color);
+    tft.setFont(ComicSansMS_14);
 
     if (multiplier == 0) { 
         // 0 == x1/2
@@ -51,7 +55,7 @@ void OperatorWidget::paintMultiplier(uint8_t multiplier, int color)
         tft.setCursor(x+padding+16, y+padding+8);
         tft.print("2");
     } else {
-        tft.setTextSize(2);
+        // tft.setTextSize(2);
         tft.setCursor(x+padding+8, y+padding);
         tft.print(multiplier);
     }

@@ -30,3 +30,8 @@ void draw_icon(int x, int y, int icon_number)
    const struct icon_t ico = ICONS[icon_number];
    tft.writeRect8BPP(x, y, ico.width, ico.height, ico.icon, icon_palette);
 }
+void erase_icon(int x, int y, int icon_number, int color)
+{
+   const struct icon_t ico = ICONS[icon_number];
+   tft.fillRect(x, y, ico.width, ico.height, color);
+}

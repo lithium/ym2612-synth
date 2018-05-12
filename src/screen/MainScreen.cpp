@@ -23,6 +23,7 @@
 
 MainScreen::MainScreen()
 {
+    memset(&last_patch, 0, sizeof(last_patch));
 
 
     ops[0].setBounds(op1_x,op1_y, operator_width,operator_height);
@@ -65,6 +66,47 @@ void MainScreen::paint()
     settingsChanged(-1,-1); // force update all operator widgets with current patch
 
     repaint(true);
+}
+
+
+struct icon_placement_t {
+    int x;
+    int y;
+    int icon_number;
+};
+const struct icon_placement_t algorithm0[] = {
+    {151, 76, ICON_arrow_right},
+    {151,122, ICON_arrow_downleft},
+    {151,184, ICON_arrow_right},
+    {238,229, ICON_output},
+    {-1,-1,-1}
+};
+const struct icon_placement_t algorithm1[] = {
+    { 78,121, ICON_arrow_down},
+    {151,122, ICON_arrow_downleft},
+    {151,184, ICON_arrow_right},
+    {238,229, ICON_output},
+    {-1,-1,-1}
+};
+const struct icon_placement_t *algorithm_icon_placements[] = {
+    algorithm0,
+    algorithm1
+};
+
+void MainScreen::paintAlgorithm(uint8_t algorithm, bool erase)
+{
+    const icon_placement_t *placements = algorithm_icon_placements[algorithm % 2];
+
+    while (placements->x != -1) {
+        if (erase) {
+            erase_icon(placements->x, placements->y, placements->icon_number, COLOR_lightgrey);
+        }
+        else {
+            draw_icon(placements->x, placements->y, placements->icon_number);
+        }
+
+        placements += 1;
+    }
 }
 
 
@@ -200,6 +242,12 @@ void MainScreen::settingsChanged(uint8_t chan, uint8_t oper)
     struct ym2612_patch_t new_patch;
 
     ym2612.dumpPatch(active_channel, &new_patch);
+
+    if (last_patch.algorithm != new_patch.algorithm) {
+        paintAlgorithm(last_patch.algorithm, true);
+        paintAlgorithm(new_patch.algorithm, false);
+    }
+
     for (auto i=0; i < 4; i++) {
         ops[i].operatorChanged(new_patch.op[i]);
     }

@@ -17,6 +17,8 @@ public:
     MainScreen();
 
     void paint() override;
+    void paintAlgorithm(uint8_t algorithm, bool erase=false);
+
     void start() override;
     void stop() override;
 

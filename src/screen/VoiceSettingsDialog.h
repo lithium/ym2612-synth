@@ -2,7 +2,7 @@
 #define VOICE_SETTINGS_DIALOG_H
 
 #include "config.h"
-#include "UiScreen.h"
+#include "DialogScreen.h"
 #include "tft.h"
 #include "ym2612.h"
 
@@ -26,7 +26,7 @@ private:
 };
 
 class VoiceSettingsDialog :
-        public UiScreen,
+        public DialogScreen,
         public Ym2612::Listener
 {
 public:

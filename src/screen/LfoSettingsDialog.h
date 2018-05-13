@@ -2,13 +2,13 @@
 #define LFO_SETTINGS_DIALOG_H
 
 #include "config.h"
-#include "UiScreen.h"
+#include "DialogScreen.h"
 #include "tft.h"
 #include "ym2612.h"
 
 
 class LfoSettingsDialog:
-        public UiScreen,
+        public DialogScreen,
         public Ym2612::Listener
 {
 public:
@@ -18,7 +18,6 @@ public:
 
     void start() override;
     void stop() override;
-
 
     void encoderTurned(int direction, GpioEncoder *e) override;
     void buttonPressed(Button *b) override;

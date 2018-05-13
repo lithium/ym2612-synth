@@ -17,5 +17,6 @@ void setup_screen();
 void emboss_frame(int x, int y, int w, int h, const uint16_t colors[4]);
 void draw_icon(int x, int y, int icon_number);
 void erase_icon(int x, int y, int icon_number, int color);
+void draw_algorithm_icon(int x, int y, int icon_number);
 
 #endif

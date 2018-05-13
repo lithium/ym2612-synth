@@ -6,6 +6,25 @@
 #include "tft.h"
 #include "ym2612.h"
 
+
+class AlgorithmWidget : 
+        public Widget
+{
+public:
+    AlgorithmWidget(int algorithm_number=-1);
+
+    void paint() override;
+
+    void setActive(bool active) {
+        this->active = active;
+        setDirty(true);
+    }
+
+    uint8_t number;
+    bool active = false;
+private:
+};
+
 class VoiceSettingsDialog :
         public UiScreen,
         public Ym2612::Listener
@@ -21,11 +40,16 @@ public:
 
     void encoderTurned(int direction, GpioEncoder *e) override;
     void buttonPressed(Button *b) override;
+    void screenTouched(TS_Point p) override;
 
     void settingsChanged(uint8_t chan, uint8_t oper) override;
 
 private:
-    struct ym2612_patch_t last_patch;
+    uint8_t last_algorithm = -1;
+    uint8_t current_channel = 0;
+
+    AlgorithmWidget algorithmWidgets[8];
+    AlgorithmWidget *activeWidget = nullptr;
 };
 
 #endif

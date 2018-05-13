@@ -50,6 +50,9 @@ MainScreen::MainScreen()
 void MainScreen::start() 
 {
     ym2612.addListener(this);
+    for (int i=0; i < children.size(); i++) {
+        children.get(i)->setDirty(true);
+    }
 }
 void MainScreen::stop() 
 {
@@ -90,14 +93,43 @@ const struct icon_placement_t algorithm1[] = {
     {238,229, ICON_output},
     {-1,-1,-1}
 };
+const struct icon_placement_t algorithm2[] = {
+    {151, 76, ICON_arrow_right},
+    {151,122, ICON_arrow_downleft},
+    {151,184, ICON_arrow_right},
+    {77,229, ICON_output},
+    {-1,-1,-1}
+};
+const struct icon_placement_t algorithm3[] = {
+    {-1,-1,-1}
+};
+const struct icon_placement_t algorithm4[] = {
+    {-1,-1,-1}
+};
+const struct icon_placement_t algorithm5[] = {
+    {-1,-1,-1}
+};
+const struct icon_placement_t algorithm6[] = {
+    {-1,-1,-1}
+};
+const struct icon_placement_t algorithm7[] = {
+    {-1,-1,-1}
+};
+
 const struct icon_placement_t *algorithm_icon_placements[] = {
     algorithm0,
-    algorithm1
+    algorithm1,
+    algorithm2,
+    algorithm3,
+    algorithm4,
+    algorithm5,
+    algorithm6,
+    algorithm7
 };
 
 void MainScreen::paintAlgorithm(uint8_t algorithm, bool erase)
 {
-    const icon_placement_t *placements = algorithm_icon_placements[algorithm % 2];
+    const icon_placement_t *placements = algorithm_icon_placements[algorithm];
 
     while (placements->x != -1) {
         if (erase) {
@@ -252,11 +284,13 @@ void MainScreen::settingsChanged(uint8_t chan, uint8_t oper)
 
     ym2612.dumpPatch(active_channel, &new_patch);
 
-    if (last_patch.algorithm != new_patch.algorithm) {
+
+    if (chan == 255 || (last_patch.algorithm != new_patch.algorithm)) {
         paintAlgorithm(last_patch.algorithm, true);
         paintAlgorithm(new_patch.algorithm, false);
     }
-    if (last_patch.feedback != new_patch.feedback) {
+
+    if (chan == 255 || last_patch.feedback != new_patch.feedback) {
         paintFeedback(last_patch.feedback, true);
         paintFeedback(new_patch.feedback, false);
     }

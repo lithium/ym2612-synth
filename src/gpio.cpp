@@ -27,13 +27,12 @@ static uint16_t _gpio_last = 0;
 
 
 static int _button_pins[] = {
-    // A11, A10
     22, 23
 };
 Button buttons[BUTTON_COUNT];
 
 static int _analog_button_pins[] = {
-    A11
+    A10,A11
 };
 AnalogButton analog_buttons[ANALOG_BUTTON_COUNT];
 

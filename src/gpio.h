@@ -15,7 +15,7 @@ int get_encoder_number(GpioEncoder *e);
 #define BUTTON_COUNT 2
 extern Button buttons[BUTTON_COUNT];
 
-#define ANALOG_BUTTON_COUNT 1
+#define ANALOG_BUTTON_COUNT 2
 extern AnalogButton analog_buttons[ANALOG_BUTTON_COUNT];
 
 void gpio_write_byte(int address, uint8_t value);

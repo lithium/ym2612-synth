@@ -34,6 +34,8 @@ public:
 
 
     void paint() override;
+    void paintFeedback(uint8_t feedback, bool erase);
+
     void start() override;
     void stop() override;
 
@@ -46,6 +48,7 @@ public:
 
 private:
     uint8_t last_algorithm = -1;
+    uint8_t last_feedback = -1;
     uint8_t current_channel = 0;
 
     AlgorithmWidget algorithmWidgets[8];

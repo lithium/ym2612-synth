@@ -4,6 +4,7 @@
 #include "config.h"
 #include "Encoder.h"
 #include "Button.h"
+#include "AnalogButton.h"
 
 #include "TouchScreen.h"
 
@@ -13,6 +14,9 @@ int get_encoder_number(GpioEncoder *e);
 
 #define BUTTON_COUNT 2
 extern Button buttons[BUTTON_COUNT];
+
+#define ANALOG_BUTTON_COUNT 1
+extern AnalogButton analog_buttons[ANALOG_BUTTON_COUNT];
 
 void gpio_write_byte(int address, uint8_t value);
 void gpio_write_word(int address, uint16_t value);

@@ -21,6 +21,8 @@ public:
     void tick(); // called in ISR!
     void firePending(); // calls listener if debounced click is pending
 
+    virtual bool readValue();
+
 
     // public members
     int number;         // user definable button "number"

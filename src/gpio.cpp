@@ -32,6 +32,10 @@ static int _button_pins[] = {
 };
 Button buttons[BUTTON_COUNT];
 
+static int _analog_button_pins[] = {
+    A11
+};
+AnalogButton analog_buttons[ANALOG_BUTTON_COUNT];
 
 
 
@@ -41,6 +45,10 @@ void handle_gpio_interrupt()    // ISR
 
     for (int i=0; i < BUTTON_COUNT; i++) {
         buttons[i].tick();
+    }
+
+    for (int i=0; i < ANALOG_BUTTON_COUNT; i++) {
+        analog_buttons[i].tick();
     }
 }
 
@@ -61,6 +69,11 @@ void setup_gpio()
     //setup buttons
     for (int i=0; i < BUTTON_COUNT; i++) {
         buttons[i].setup(_button_pins[i]);
+    }
+
+    analogReadResolution(8); // we're justing reading switch states
+    for (int i=0; i < ANALOG_BUTTON_COUNT; i++) {
+        analog_buttons[i].setup(_analog_button_pins[i]);
     }
 
 
@@ -106,6 +119,10 @@ void check_inputs()
     // check buttons
     for (int i=0; i < BUTTON_COUNT; i++) {
         buttons[i].firePending();
+    }
+    // check buttons
+    for (int i=0; i < ANALOG_BUTTON_COUNT; i++) {
+        analog_buttons[i].firePending();
     }
 
 }

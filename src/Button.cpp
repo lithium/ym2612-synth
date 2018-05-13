@@ -35,11 +35,16 @@ void Button::firePending()
     }
 }
 
+// Called in an ISR!
+bool Button::readValue()
+{
+    return digitalReadFast(this->pin);
+}
 
 // Called in an ISR!
 void Button::tick()
 {
-    bool v = digitalReadFast(this->pin);
+    bool v = readValue();
 
     if (v == 0) {
         if (_counter < threshold) {

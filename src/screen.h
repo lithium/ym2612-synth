@@ -8,6 +8,7 @@
 #include "screen/SplashScreen.h"
 #include "screen/MainScreen.h"
 #include "screen/VoiceSettingsDialog.h"
+#include "screen/LfoSettingsDialog.h"
 
 
 extern DemoScreen demo_screen;
@@ -15,6 +16,7 @@ extern SplashScreen splash_screen;
 extern MainScreen main_screen;
 
 extern VoiceSettingsDialog voice_settings_dialog;
+extern LfoSettingsDialog lfo_settings_dialog;
 
 
 #endif

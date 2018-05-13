@@ -9,6 +9,7 @@
 #include "screen/MainScreen.h"
 #include "screen/VoiceSettingsDialog.h"
 #include "screen/LfoSettingsDialog.h"
+#include "screen/PatchDialog.h"
 
 
 extern DemoScreen demo_screen;
@@ -17,6 +18,7 @@ extern MainScreen main_screen;
 
 extern VoiceSettingsDialog voice_settings_dialog;
 extern LfoSettingsDialog lfo_settings_dialog;
+extern PatchDialog patch_dialog;
 
 
 #endif

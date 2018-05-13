@@ -10,3 +10,4 @@ MainScreen main_screen;
 
 VoiceSettingsDialog voice_settings_dialog;
 LfoSettingsDialog lfo_settings_dialog;
+PatchDialog patch_dialog;

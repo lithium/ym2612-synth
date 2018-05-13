@@ -91,6 +91,9 @@ void VoiceSettingsDialog::buttonPressed(Button *b)
         case 1:
             UiScreen::setActiveScreen(&lfo_settings_dialog);
             break;
+        case 2:
+            UiScreen::setActiveScreen(&patch_dialog);
+            break;
     }
 
 }

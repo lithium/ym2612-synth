@@ -30,6 +30,9 @@ void LfoSettingsDialog::buttonPressed(Button *b)
         case 1:
             UiScreen::setActiveScreen(&main_screen);
             break;
+        case 2:
+            UiScreen::setActiveScreen(&patch_dialog);
+            break;
     }
 
 }

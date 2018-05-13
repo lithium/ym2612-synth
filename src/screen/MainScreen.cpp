@@ -326,10 +326,16 @@ void MainScreen::settingsChanged(uint8_t chan, uint8_t oper)
 void MainScreen::buttonPressed(Button *b)
 {
     Serial.print("press "); Serial.println(b->number);
-    if (b->number == 0) {
-        UiScreen::setActiveScreen(&voice_settings_dialog);
+    switch (b->number) {
+        case 0:
+            UiScreen::setActiveScreen(&voice_settings_dialog);
+            break;
+        case 1:
+            UiScreen::setActiveScreen(&lfo_settings_dialog);
+            break;
+        case 2:
+            UiScreen::setActiveScreen(&patch_dialog);
+            break;
     }
-    else if (b->number == 1) {
-        UiScreen::setActiveScreen(&lfo_settings_dialog);
-    }
+
 }

@@ -7,17 +7,12 @@
 #include "ym2612.h"
 
 
-class LfoSettingsDialog:
-        public DialogScreen,
-        public Ym2612::Listener
+class LfoSettingsDialog : public DialogScreen
 {
 public:
     LfoSettingsDialog();
 
     void paint() override;
-
-    void start() override;
-    void stop() override;
 
     void encoderTurned(int direction, GpioEncoder *e) override;
     void buttonPressed(Button *b) override;

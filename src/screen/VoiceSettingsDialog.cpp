@@ -57,14 +57,12 @@ void VoiceSettingsDialog::paint()
 }
 void VoiceSettingsDialog::start()
 {
-    ym2612.addListener(this);
     for (int i=0; i < 8; i++) {
         algorithmWidgets[i].setDirty(true);
     }
 }
 void VoiceSettingsDialog::stop()
 {
-    ym2612.removeListener(this);
 }
 
 

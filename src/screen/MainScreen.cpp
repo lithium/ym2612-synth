@@ -49,14 +49,12 @@ MainScreen::MainScreen()
 
 void MainScreen::start() 
 {
-    ym2612.addListener(this);
     for (int i=0; i < children.size(); i++) {
         children.get(i)->setDirty(true);
     }
 }
 void MainScreen::stop() 
 {
-    ym2612.removeListener(this);
 }
 
 

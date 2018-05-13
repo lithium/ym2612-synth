@@ -26,8 +26,7 @@ private:
 };
 
 class VoiceSettingsDialog :
-        public DialogScreen,
-        public Ym2612::Listener
+        public DialogScreen
 {
 public:
     VoiceSettingsDialog();

@@ -16,15 +16,6 @@ void LfoSettingsDialog::paint()
     repaint();
 }
 
-void LfoSettingsDialog::start()
-{
-    ym2612.addListener(this);
-}
-void LfoSettingsDialog::stop()
-{
-    ym2612.removeListener(this);
-}
-
 
 void LfoSettingsDialog::encoderTurned(int direction, GpioEncoder *e)
 {

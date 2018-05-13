@@ -9,9 +9,7 @@
 
 #define OPERATOR_COUNT 4
 
-class MainScreen : 
-        public UiScreen,
-        public Ym2612::Listener
+class MainScreen : public UiScreen
 {
 public:
     MainScreen();

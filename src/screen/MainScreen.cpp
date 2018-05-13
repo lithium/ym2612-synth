@@ -96,23 +96,45 @@ const struct icon_placement_t algorithm1[] = {
 const struct icon_placement_t algorithm2[] = {
     {151, 76, ICON_arrow_right},
     {151,122, ICON_arrow_downleft},
-    {151,184, ICON_arrow_right},
-    {77,229, ICON_output},
+    {151,184, ICON_arrow_left},
+    { 77,229, ICON_output},
     {-1,-1,-1}
 };
 const struct icon_placement_t algorithm3[] = {
+    {151, 76, ICON_arrow_right},
+    {238,122, ICON_arrow_down},
+    {151,184, ICON_arrow_right},
+    {238,229, ICON_output},
     {-1,-1,-1}
 };
 const struct icon_placement_t algorithm4[] = {
+    { 78,121, ICON_arrow_down},
+    {238,122, ICON_arrow_down},
+    { 77,229, ICON_output},
+    {238,229, ICON_output},
     {-1,-1,-1}
 };
 const struct icon_placement_t algorithm5[] = {
+    {151, 76, ICON_arrow_right},
+    { 78,121, ICON_arrow_down},
+    {151,122, ICON_arrow_downright},
+    {238,122, ICON_output},
+    { 77,229, ICON_output},
+    {238,229, ICON_output},
     {-1,-1,-1}
 };
 const struct icon_placement_t algorithm6[] = {
+    {238,122, ICON_output},
+    { 77,229, ICON_output},
+    {238,229, ICON_output},
+    {151, 76, ICON_arrow_right},
     {-1,-1,-1}
 };
 const struct icon_placement_t algorithm7[] = {
+    { 77,122, ICON_output},
+    {238,122, ICON_output},
+    { 77,229, ICON_output},
+    {238,229, ICON_output},
     {-1,-1,-1}
 };
 

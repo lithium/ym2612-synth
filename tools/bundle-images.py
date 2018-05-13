@@ -12,7 +12,7 @@ class Rgb565ImageScanner(object):
     palette = {}  # 16bit color -> palette index
     images = {}
 
-    def __init__(self, variable_prefix='icon_algorithm_', palette_variable='palette'):
+    def __init__(self, variable_prefix='icon_', palette_variable='palette'):
         self.variable_prefix = variable_prefix
         self.palette_variable = palette_variable
 

@@ -1,6 +1,5 @@
 #include "OperatorWidget.h"
 
-#include <font_ComicSansMS.h>
 
 static auto padding = 4;
 static auto foreground = ILI9341_WHITE;

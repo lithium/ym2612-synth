@@ -1,7 +1,6 @@
 #include "VoiceSettingsDialog.h"
 
 #include "screen.h"
-#include <font_ComicSansMS.h>
 
 
 VoiceSettingsDialog::VoiceSettingsDialog()

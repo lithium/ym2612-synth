@@ -5,6 +5,7 @@
 #include "DialogScreen.h"
 #include "tft.h"
 #include "ym2612.h"
+#include "colors.h"
 
 
 class AlgorithmWidget : 

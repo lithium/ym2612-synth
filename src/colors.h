@@ -21,6 +21,10 @@
 
 
 
+#define COLOR_dialog_background ILI9341_BLUE
+#define COLOR_dialog_border ILI9341_WHITE
+#define COLOR_active_border ILI9341_WHITE
+
 extern const uint16_t COLOR_emboss[];
 extern const uint16_t COLOR_deboss[];
 

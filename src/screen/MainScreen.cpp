@@ -94,10 +94,10 @@ const struct icon_placement_t algorithm1[] = {
     {-1,-1,-1}
 };
 const struct icon_placement_t algorithm2[] = {
-    {151, 76, ICON_arrow_right},
     {151,122, ICON_arrow_downleft},
-    {151,184, ICON_arrow_left},
-    { 77,229, ICON_output},
+    {151,122, ICON_arrow_downright},
+    {151,184, ICON_arrow_right},
+    {238,229, ICON_output},
     {-1,-1,-1}
 };
 const struct icon_placement_t algorithm3[] = {
@@ -330,5 +330,8 @@ void MainScreen::buttonPressed(Button *b)
     Serial.print("press "); Serial.println(b->number);
     if (b->number == 0) {
         UiScreen::setActiveScreen(&voice_settings_dialog);
+    }
+    else if (b->number == 1) {
+        UiScreen::setActiveScreen(&lfo_settings_dialog);
     }
 }

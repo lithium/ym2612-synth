@@ -15,6 +15,13 @@
 #define SCREEN_HEIGHT 240
 
 
+const auto dialog_radius = 3;
+const auto dialog_margin = 30;
+const auto dialog_width = SCREEN_WIDTH-dialog_margin*2; 
+const auto dialog_height = SCREEN_HEIGHT-dialog_margin*2; 
+const auto border_padding = 2;
+
+
 // ym2612 pin assignments
 #define YM_D0 0
 #define YM_D1 1
@@ -51,6 +58,8 @@
 // encoder switches
 #define ENC1_SW 22
 #define ENC5_SW 23
+
+#define ENC6_SW A11
 
 
 // builtin led

@@ -4,19 +4,6 @@
 #include <font_ComicSansMS.h>
 
 
-
-static auto dialog_margin = 30;
-
-static auto dialog_radius = 3;
-static auto dialog_background = ILI9341_BLUE;
-static auto dialog_border_color = ILI9341_WHITE;
-static auto dialog_width = SCREEN_WIDTH-dialog_margin*2; 
-static auto dialog_height = SCREEN_HEIGHT-dialog_margin*2; 
-static auto active_border_color = ILI9341_WHITE;
-
-
-static auto border_padding = 2;
-
 VoiceSettingsDialog::VoiceSettingsDialog()
 {
     auto padding = 3;
@@ -65,8 +52,8 @@ void VoiceSettingsDialog::paint()
 {
 
     // dont clear because we're an overlay dialog
-    tft.fillRoundRect(dialog_margin,dialog_margin, dialog_width,dialog_height, dialog_radius, dialog_background);
-    tft.drawRoundRect(dialog_margin+border_padding,dialog_margin+border_padding, dialog_width-border_padding*2,dialog_height-border_padding*2, dialog_radius, dialog_border_color);
+    tft.fillRoundRect(dialog_margin,dialog_margin, dialog_width,dialog_height, dialog_radius, COLOR_dialog_background);
+    tft.drawRoundRect(dialog_margin+border_padding,dialog_margin+border_padding, dialog_width-border_padding*2,dialog_height-border_padding*2, dialog_radius, COLOR_dialog_border);
 
     settingsChanged(-1,-1);
     repaint();
@@ -105,6 +92,9 @@ void VoiceSettingsDialog::buttonPressed(Button *b)
     switch (b->number) {
         case 0:
             UiScreen::setActiveScreen(&main_screen);
+            break;
+        case 1:
+            UiScreen::setActiveScreen(&lfo_settings_dialog);
             break;
     }
 
@@ -166,6 +156,6 @@ void AlgorithmWidget::paint()
 
     draw_algorithm_icon(x, y, this->number);
     if (active) {
-        tft.drawRect(x, y, w, h, active_border_color);
+        tft.drawRect(x, y, w, h, COLOR_active_border);
     }
 }    

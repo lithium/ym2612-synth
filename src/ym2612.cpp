@@ -28,6 +28,8 @@ Ym2612::Ym2612(
     this->pin_a0 = a0;
     this->pin_a1 = a1;
 
+
+    memset(patch_name, 0, PATCH_NAME_LENGTH+1);
 }
 
 void Ym2612::setup()
@@ -108,6 +110,17 @@ void Ym2612::dumpPatch(uint8_t channel, struct ym2612_patch_t *patch)
         patch->op[i].lfo_enabled = getLfoEnabledForOperator(channel, i);
         // patch->op[i].frequency = getFrequency(channel, i);
     }
+}
+
+void Ym2612::setPatchName(char *name)
+{
+    int l = min(PATCH_NAME_LENGTH, strlen(name));
+    memcpy(patch_name, name, l*sizeof(char));
+}
+
+char *Ym2612::getPatchName()
+{
+    return patch_name;
 }
 
 void Ym2612::addListener(Listener *listener) 

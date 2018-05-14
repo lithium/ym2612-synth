@@ -62,6 +62,8 @@ void MainScreen::paint()
 {
     tft.fillScreen(COLOR_lightgrey);
     draw_icon(6,6, ICON_feedback);
+
+    paintPatchName(nullptr,false);
     
 
     // force update all widgets with current patch
@@ -168,6 +170,20 @@ void MainScreen::paintFeedback(uint8_t feedback, bool erase)
     tft.setCursor(15,9);
     tft.setTextColor(erase ? COLOR_black : COLOR_white);
     tft.print(feedback);
+}
+void MainScreen::paintPatchName(char *name, bool erase)
+{
+
+    tft.setFont(ComicSansMS_14);
+    tft.setCursor(52,9);
+    tft.setTextColor(erase ? COLOR_lightgrey : COLOR_white);
+
+    auto l = name != nullptr ? strlen(name) : 0;
+    if (l < 1) {
+        tft.print("New Patch - to16");
+    } else {
+        tft.print(name);
+    }
 }
 
 
@@ -315,9 +331,15 @@ void MainScreen::settingsChanged(uint8_t chan, uint8_t oper)
         paintFeedback(new_patch.feedback, false);
     }
 
+    if (strncmp(last_patch.name, new_patch.name, PATCH_NAME_LENGTH) != 0) {
+        paintPatchName(last_patch.name, true);
+        paintPatchName(new_patch.name, false);
+    }
+
     for (auto i=0; i < 4; i++) {
         ops[i].operatorChanged(new_patch.op[i]);
     }
+
 
     last_patch = new_patch;
     repaint();

@@ -24,6 +24,8 @@ public:
     void segaDocTestProgram(bool play_test_note);
     void segaDocTestProgramCh4(bool play_test_note);
 
+    void setPatchName(char *name);
+    char *getPatchName();
 
 
     // utility functions
@@ -111,6 +113,8 @@ private:
     uint8_t pin_wr;
     uint8_t pin_a0;
     uint8_t pin_a1;
+
+    char patch_name[PATCH_NAME_LENGTH + 1];
 
 
     void update_ch_register(uint8_t base_addr, uint8_t channel, uint8_t mask, uint8_t value);

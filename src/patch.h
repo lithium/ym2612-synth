@@ -1,6 +1,7 @@
 #ifndef PATCH_H
 #define PATCH_H
 
+#define PATCH_NAME_LENGTH 16
 
 struct tfi_patch_t {
     uint8_t algorithm;
@@ -42,6 +43,8 @@ struct ym2612_patch_t {
     uint8_t lfo_am_depth;
     uint8_t lfo_fm_depth;
     struct ym2612_patch_op_t op[4];
+    uint8_t category;
+    char name[PATCH_NAME_LENGTH];
+    uint8_t terminator; // should always be 0
 };
-
 #endif

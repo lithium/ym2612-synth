@@ -18,6 +18,8 @@ public:
     void paintAlgorithm(uint8_t algorithm, bool erase=false);
     void paintFeedback(uint8_t feedback, bool erase=false);
 
+    void paintPatchName(char *name, bool erase=false);
+
     void start() override;
     void stop() override;
 

@@ -23,6 +23,9 @@ bool Widget::isDirty()
 void Widget::setDirty(bool dirty)
 {
     _dirty = dirty;
+    for (int i=0; i < children.size(); i++) {
+        children.get(i)->setDirty(true);
+    }
 }
 void Widget::addWidget(Widget *w)
 {

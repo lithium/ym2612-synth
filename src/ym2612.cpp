@@ -133,6 +133,9 @@ void Ym2612::dumpPatch(uint8_t channel, struct ym2612_patch_t *patch)
         patch->op[i].lfo_enabled = getLfoEnabledForOperator(channel, i);
         // patch->op[i].frequency = getFrequency(channel, i);
     }
+
+    int l = min(PATCH_NAME_LENGTH, strlen(patch_name));
+    memcpy(patch->name, patch_name, l*sizeof(char));
 }
 
 void Ym2612::setPatchName(char *name)

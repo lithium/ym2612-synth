@@ -1,6 +1,8 @@
 #ifndef PATCH_H
 #define PATCH_H
 
+#include <inttypes.h>
+
 #define PATCH_NAME_LENGTH 16
 
 struct tfi_patch_t {
@@ -47,4 +49,5 @@ struct ym2612_patch_t {
     char name[PATCH_NAME_LENGTH];
     uint8_t terminator; // should always be 0
 };
+
 #endif

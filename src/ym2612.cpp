@@ -82,6 +82,29 @@ void Ym2612::applyTfiPatch(uint8_t channel, struct tfi_patch_t *patch)
         setSustainLevel(channel, i, patch->op[i].sustain_level);
     }
 }
+void Ym2612::applyPatch(uint8_t channel, struct ym2612_patch_t *patch)
+{
+    setPatchName(patch->name);
+    enableLfo(patch->lfo_enabled);
+    setLfoFrequency(patch->lfo_frequency);
+
+
+    setAlgorithm(channel, patch->algorithm);
+    setFeedback(channel, patch->feedback);
+    setLfoAm(channel, patch->lfo_am_depth);
+    setLfoFm(channel, patch->lfo_fm_depth);
+    for (int i=0; i < 4; i++) {
+        setMultiple(channel, i, patch->op[i].multiplier);
+        setDetune(channel, i, patch->op[i].detune);
+        setTotalLevel(channel, i, patch->op[i].total_level);
+        setRateScale(channel, i, patch->op[i].rate_scale);
+        setAttackRate(channel, i, patch->op[i].attack_rate);
+        setDecayRate(channel, i, patch->op[i].decay_rate);
+        setSustainRate(channel, i, patch->op[i].sustain_rate);
+        setReleaseRate(channel, i, patch->op[i].release_rate);
+        setSustainLevel(channel, i, patch->op[i].sustain_level);
+    }
+}
 
 void Ym2612::dumpPatch(uint8_t channel, struct ym2612_patch_t *patch)
 {

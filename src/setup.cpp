@@ -5,6 +5,7 @@
 #include "gpio.h"
 #include "screen.h"
 
+#include "internal_storage.h"
 
 #include <SD.h>
 #include <SPI.h>
@@ -41,20 +42,59 @@ void setup()
     Serial.println("Hello ym2612");
 #endif
 
-    test_sdcard();
-
+    // initialize ym2612s
     start_clock();
-
     ym2612.setup();
     ym2612.reset();
 
-    //initialize all voices with sega doc patch
-    for (int i=0; i < 6; i++) {
-        ym2612.grandPianoVoice(i);
+
+    // initialize storage 
+    test_sdcard();
+
+    internal_storage.scanPatches();
+    for (auto i=0; i < INTERNAL_PATCH_MAX_COUNT; i++) {
+        if (internal_storage.patch_names[i][0] != 0) {
+            Serial.print("found internal patch #");
+            Serial.print(i);
+            Serial.print(": [");
+            Serial.print(internal_storage.patch_names[i]);
+            Serial.println("]");
+        }
     }
 
-    setup_midi();
 
+    // initialize voices
+
+    if (internal_storage.patch_names[0][0] != 0) {  
+        struct ym2612_patch_t p;
+        internal_storage.readPatch(0, &p);
+
+        // initial all voices with saved voice #0
+        for (int i=0; i < 6; i++) {
+            ym2612.applyPatch(i, &p);
+        }
+        Serial.println("voice loaded from patch #0");
+    } else {
+
+        //initialize all voices with sega doc patch
+        for (int i=0; i < 6; i++) {
+            ym2612.grandPianoVoice(i);
+        }
+
+        // dump sega patch to internal patch #0
+        struct ym2612_patch_t p;
+        memset(&p, 0, sizeof(p));
+        ym2612.dumpPatch(0, &p);
+        const auto n = "Grand Piano";
+        memcpy(p.name, n, strlen(n));
+        internal_storage.writePatch(0, &p);
+        Serial.print(p.name);
+        Serial.println(": saved to #0");
+
+    }
+
+
+    setup_midi();
 
 
 

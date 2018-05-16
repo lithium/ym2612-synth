@@ -18,6 +18,7 @@ public:
     void reset();
 
     void applyTfiPatch(uint8_t channel, struct tfi_patch_t *patch);
+    void applyPatch(uint8_t channel, struct ym2612_patch_t *patch);
     void dumpPatch(uint8_t channel, struct ym2612_patch_t *patchDestination);
 
     void grandPianoVoice(uint8_t channel);

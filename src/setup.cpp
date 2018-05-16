@@ -62,31 +62,33 @@ void setup()
         }
     }
 
+    //initialize all voices with sega doc patch
+    for (int i=0; i < 6; i++) {
+        ym2612.grandPianoVoice(i);
+        ym2612.setOutputs(i, 3);
+    }
+
 
     // initialize voices
+    struct ym2612_patch_t p;
+    memset(&p, 0, sizeof(p));
+
+    struct ym2612_patch_t dumped;
+    memset(&dumped, 0, sizeof(dumped));
 
     if (internal_storage.patch_names[0][0] != 0) {  
-        struct ym2612_patch_t p;
         internal_storage.readPatch(0, &p);
 
         // initial all voices with saved voice #0
         for (int i=0; i < 6; i++) {
             ym2612.applyPatch(i, &p);
         }
+
         Serial.println("voice loaded from patch #0");
     } else {
 
-        //initialize all voices with sega doc patch
-        for (int i=0; i < 6; i++) {
-            ym2612.grandPianoVoice(i);
-        }
-
         // dump sega patch to internal patch #0
-        struct ym2612_patch_t p;
-        memset(&p, 0, sizeof(p));
         ym2612.dumpPatch(0, &p);
-        const auto n = "Grand Piano";
-        memcpy(p.name, n, strlen(n));
         internal_storage.writePatch(0, &p);
         Serial.print(p.name);
         Serial.println(": saved to #0");

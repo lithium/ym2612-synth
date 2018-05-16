@@ -535,6 +535,7 @@ void Ym2612::write_register(uint8_t part, uint8_t reg, uint8_t data)
 
 void Ym2612::grandPianoVoice(uint8_t channel)
 {
+    setPatchName("Grand Piano");
     enableLfo(false);
     setCh3Mode(0);
     for (int i=0; i < 6; i++) {

@@ -52,9 +52,11 @@ void MainScreen::start()
     for (int i=0; i < children.size(); i++) {
         children.get(i)->setDirty(true);
     }
+    encoders[0]._pulses_per_detent = 1;
 }
 void MainScreen::stop() 
 {
+    encoders[0]._pulses_per_detent = 4;
 }
 
 

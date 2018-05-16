@@ -24,13 +24,12 @@ public:
 
     void setListener(Listener *listener);
 
-
+    uint8_t _pulses_per_detent = 4;
 private:
     int pin_a, pin_b;
     uint8_t old_ab;
 
     int _detent_divider = 0;
-    uint8_t _pulses_per_detent = 4;
     uint8_t _first = 0;
     uint8_t _first_to_skip = 2;
 

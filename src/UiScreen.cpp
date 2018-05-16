@@ -17,9 +17,9 @@ void UiScreen::setActiveScreen(UiScreen *screen)
     for (int i=0; i < ENCODER_COUNT; i++) {
         encoders[i].setListener(active_screen);
     }
-    for (int i=0; i < BUTTON_COUNT; i++) {
-        buttons[i].setListener(active_screen);
-    }
+    // for (int i=0; i < BUTTON_COUNT; i++) {
+    //     buttons[i].setListener(active_screen);
+    // }
     for (int i=0; i < ANALOG_BUTTON_COUNT; i++) {
         analog_buttons[i].setListener(active_screen);
     }

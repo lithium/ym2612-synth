@@ -8,7 +8,7 @@
 #define num_enc_demos ENCODER_COUNT
 DemoWidget enc_demos[num_enc_demos];
 
-DemoWidget btn_demos[BUTTON_COUNT];
+DemoWidget btn_demos[ANALOG_BUTTON_COUNT];
 
 DemoWidget touch_demos[2];
 
@@ -26,7 +26,7 @@ DemoScreen::DemoScreen()
 
     x = 240;
     y = 20;
-    for (int i=0; i < BUTTON_COUNT; i++) {
+    for (int i=0; i < ANALOG_BUTTON_COUNT; i++) {
         btn_demos[i].setBounds(x, y, width, height);
         addWidget(&btn_demos[i]);
         y += height + padding;
@@ -59,7 +59,7 @@ void DemoScreen::paint()
 
     x = 150;
     y = 20;
-    for (int i=0; i < BUTTON_COUNT; i++) {
+    for (int i=0; i < ANALOG_BUTTON_COUNT; i++) {
         tft.setCursor(x,y);
         tft.print("BTN #");
         tft.print(i+1);
@@ -99,7 +99,7 @@ void DemoScreen::buttonPressed(Button *b)
     Serial.print("btn pressed #");
     Serial.print(btn+1);
 
-    DemoWidget *dw = &btn_demos[btn % BUTTON_COUNT];
+    DemoWidget *dw = &btn_demos[btn % ANALOG_BUTTON_COUNT];
     dw->counter += 1;
     dw->setDirty(true);
     repaint();

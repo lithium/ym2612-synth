@@ -1,10 +1,13 @@
 #include "AnalogButton.h"
 
+void AnalogButton::setRange(int min, int max)
+{
+    this->min = min;
+    this->max = max;
+}
 
 bool AnalogButton::readValue()
 {
     auto v = analogRead(this->pin);
-    // Serial.println(v);
-    return v > 20;
-    // return v != 0;
+    return !((v >= min) && (v <= max)); // active low
 }

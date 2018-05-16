@@ -26,13 +26,16 @@ static uint16_t _gpio_last = 0;
 
 
 
-static int _button_pins[] = {
-    22, 23
-};
-Button buttons[BUTTON_COUNT];
+// static int _button_pins[] = {
+//     22, 23
+// };
+// Button buttons[BUTTON_COUNT];
 
-static int _analog_button_pins[] = {
-    A10,A11
+struct { int min; int max; } _analog_button_ranges[] = {
+    {0,300},
+    {2800,3300},
+    {800,1200},
+    {2000,2500},
 };
 AnalogButton analog_buttons[ANALOG_BUTTON_COUNT];
 
@@ -42,9 +45,9 @@ void handle_gpio_interrupt()    // ISR
 {
     _gpio_ready = true;
 
-    for (int i=0; i < BUTTON_COUNT; i++) {
-        buttons[i].tick();
-    }
+    // for (int i=0; i < BUTTON_COUNT; i++) {
+    //     buttons[i].tick();
+    // }
 
     for (int i=0; i < ANALOG_BUTTON_COUNT; i++) {
         analog_buttons[i].tick();
@@ -66,13 +69,14 @@ void setup_gpio()
     }
 
     //setup buttons
-    for (int i=0; i < BUTTON_COUNT; i++) {
-        buttons[i].setup(_button_pins[i]);
-    }
+    // for (int i=0; i < BUTTON_COUNT; i++) {
+    //     buttons[i].setup(_button_pins[i]);
+    // }
 
-    analogReadResolution(8); // we're justing reading switch states
+    analogReadResolution(12);
     for (int i=0; i < ANALOG_BUTTON_COUNT; i++) {
-        analog_buttons[i].setup(_analog_button_pins[i]);
+        analog_buttons[i].setup(ENC_SWA);
+        analog_buttons[i].setRange(_analog_button_ranges[i].min, _analog_button_ranges[i].max);
     }
 
 
@@ -116,9 +120,10 @@ void check_inputs()
     touchscreen.check();
 
     // check buttons
-    for (int i=0; i < BUTTON_COUNT; i++) {
-        buttons[i].firePending();
-    }
+    // for (int i=0; i < BUTTON_COUNT; i++) {
+    //     buttons[i].firePending();
+    // }
+
     // check buttons
     for (int i=0; i < ANALOG_BUTTON_COUNT; i++) {
         analog_buttons[i].firePending();

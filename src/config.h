@@ -55,11 +55,14 @@ const auto border_padding = 2;
 // #define IO_IRQ A14
 
 
-// encoder switches
-#define ENC1_SW 22
-#define ENC5_SW 23
+#define SDCARD_CS 22
 
-#define ENC6_SW A11
+#define ENC_SWA A9
+
+// encoder switches
+// #define ENC1_SW 22
+// #define ENC5_SW 23
+// #define ENC6_SW A11
 
 
 // builtin led

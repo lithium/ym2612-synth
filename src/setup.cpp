@@ -6,6 +6,32 @@
 #include "screen.h"
 
 
+#include <SD.h>
+#include <SPI.h>
+#include <Wire.h>
+
+void test_sdcard()
+{
+    pinMode(10, OUTPUT);
+    pinMode(SDCARD_CS, OUTPUT);
+
+    if (!SD.begin(SDCARD_CS)) {
+        Serial.println("sd init failed!");
+        return;
+    }
+    Serial.println("sd init success");
+    auto root = SD.open("/");
+    root.seek(0);
+    // root.rewindDirectory();
+    File e = root.openNextFile();
+    if (e) {
+        Serial.println(e.name());
+    } else {
+        Serial.println("no file?");
+    }
+    e.close();
+}
+
 void setup()
 {
     cli();
@@ -15,6 +41,7 @@ void setup()
     Serial.println("Hello ym2612");
 #endif
 
+    test_sdcard();
 
     start_clock();
 

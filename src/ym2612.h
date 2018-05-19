@@ -10,11 +10,17 @@
 class Ym2612 {
 public:
     Ym2612(
-        uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7,
-        uint8_t ic, uint8_t cs, uint8_t rd, uint8_t wr, uint8_t a0, uint8_t a1
+        uint8_t cs=-1,
+        uint8_t d0=YM_D0, uint8_t d1=YM_D1, uint8_t d2=YM_D2, uint8_t d3=YM_D3, uint8_t d4=YM_D4, uint8_t d5=YM_D5, uint8_t d6=YM_D6, uint8_t d7=YM_D7,
+        uint8_t ic=YM_IC, uint8_t rd=-1, uint8_t wr=YM_WR, uint8_t a0=YM_A0, uint8_t a1=YM_A1
     );
 
-    void setup();
+    void setup(
+        uint8_t cs, 
+        uint8_t d0=YM_D0, uint8_t d1=YM_D1, uint8_t d2=YM_D2, uint8_t d3=YM_D3, uint8_t d4=YM_D4, uint8_t d5=YM_D5, uint8_t d6=YM_D6, uint8_t d7=YM_D7,
+        uint8_t ic=YM_IC, uint8_t rd=-1, uint8_t wr=YM_WR, uint8_t a0=YM_A0, uint8_t a1=YM_A1
+    );
+
     void reset();
 
     void applyTfiPatch(uint8_t channel, struct tfi_patch_t *patch);

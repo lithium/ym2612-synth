@@ -4,6 +4,7 @@
 #include "midi.h"
 #include "gpio.h"
 #include "screen.h"
+#include "synth.h"
 
 #include "internal_storage.h"
 
@@ -33,6 +34,19 @@ void test_sdcard()
     e.close();
 }
 
+
+void hexdump(void *a, int n)
+{
+    uint8_t *p = (uint8_t*)a;
+
+    auto i = 0;
+    for (i=0; i < n; i++) {
+        Serial.print(p[i], HEX);
+        Serial.print(' ');
+    }
+    Serial.println();
+}
+
 void setup()
 {
     cli();
@@ -42,58 +56,59 @@ void setup()
     Serial.println("Hello ym2612");
 #endif
 
-    // initialize ym2612s
-    start_clock();
-    ym2612.setup();
-    ym2612.reset();
-
 
     // initialize storage 
-    test_sdcard();
+    // test_sdcard();
+    // internal_storage.scanPatches();
+    // for (auto i=0; i < INTERNAL_PATCH_MAX_COUNT; i++) {
+    //     if (internal_storage.patch_names[i][0] != 0) {
+    //         Serial.print("found internal patch #");
+    //         Serial.print(i);
+    //         Serial.print(": [");
+    //         Serial.print(internal_storage.patch_names[i]);
+    //         Serial.println("]");
+    //     }
+    // }
 
-    internal_storage.scanPatches();
-    for (auto i=0; i < INTERNAL_PATCH_MAX_COUNT; i++) {
-        if (internal_storage.patch_names[i][0] != 0) {
-            Serial.print("found internal patch #");
-            Serial.print(i);
-            Serial.print(": [");
-            Serial.print(internal_storage.patch_names[i]);
-            Serial.println("]");
-        }
-    }
+
+    // initialize ym2612s
+    start_clock();
+    synth.setup();
+    synth.loadVoicesFromStorage();
+
 
     //initialize all voices with sega doc patch
-    for (int i=0; i < 6; i++) {
-        ym2612.grandPianoVoice(i);
-        ym2612.setOutputs(i, 3);
-    }
+    // for (int i=0; i < 6; i++) {
+    //     ym2612.grandPianoVoice(i);
+    //     ym2612.setOutputs(i, 3);
+    // }
 
 
     // initialize voices
-    struct ym2612_patch_t p;
-    memset(&p, 0, sizeof(p));
+    // struct ym2612_patch_t p;
+    // memset(&p, 0, sizeof(p));
 
-    struct ym2612_patch_t dumped;
-    memset(&dumped, 0, sizeof(dumped));
+    // struct ym2612_patch_t dumped;
+    // memset(&dumped, 0, sizeof(dumped));
 
-    if (internal_storage.patch_names[0][0] != 0) {  
-        internal_storage.readPatch(0, &p);
+    // if (internal_storage.patch_names[0][0] != 0) {  
+    //     internal_storage.readPatch(0, &p);
 
-        // initial all voices with saved voice #0
-        for (int i=0; i < 6; i++) {
-            ym2612.applyPatch(i, &p);
-        }
+    //     // initial all voices with saved voice #0
+    //     for (int i=0; i < 6; i++) {
+    //         ym2612.applyPatch(i, &p);
+    //     }
 
-        Serial.println("voice loaded from patch #0");
-    } else {
+    //     Serial.println("voice loaded from patch #0");
+    // } else {
 
-        // dump sega patch to internal patch #0
-        ym2612.dumpPatch(0, &p);
-        internal_storage.writePatch(0, &p);
-        Serial.print(p.name);
-        Serial.println(": saved to #0");
+    //     // dump sega patch to internal patch #0
+    //     ym2612.dumpPatch(0, &p);
+    //     internal_storage.writePatch(0, &p);
+    //     Serial.print(p.name);
+    //     Serial.println(": saved to #0");
 
-    }
+    // }
 
 
     setup_midi();

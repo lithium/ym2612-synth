@@ -15,6 +15,7 @@ public:
     void setup();
 
     void loadVoicesFromStorage();
+    void initializeDefaultVoice();
 
 
     void handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity);

@@ -32,6 +32,7 @@ public:
     bool midiMatch(uint8_t midi_channel, uint8_t midi_note=-1);
 
     void dumpPatch(struct ym2612_patch_t *patchDestination);
+    void applyPatch(struct ym2612_patch_t *patch);
 
     void keyOn();
     void keyOff();

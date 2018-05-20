@@ -9,8 +9,18 @@
 #define EEPROM_SIZE 2048
 
 struct voice_storage_t {
-    // placeholder until real definition
-    char name[16];
+    uint8_t voice_size; // size of record including this header
+
+    uint8_t midi_channel=1;
+    uint8_t note_lo=0;
+    uint8_t note_hi=127;
+    uint8_t midi_transpose=0;
+
+    uint8_t name_len;
+    char name[];
+
+    uint8_t patch_path_len;
+    char patch_path[];
 };
 
 

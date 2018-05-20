@@ -53,7 +53,7 @@ struct ym2612_patch_t {
 
 
 
-extern struct ym2612_patch_t GrandPianoPatch;
+extern const struct ym2612_patch_t GrandPianoPatch;
 
 
 #endif

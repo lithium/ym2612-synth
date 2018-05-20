@@ -1,7 +1,7 @@
 #include "patch.h"
 
 
-struct ym2612_patch_t GrandPianoPatch = {
+const struct ym2612_patch_t GrandPianoPatch = {
     2,
     6,
     0,

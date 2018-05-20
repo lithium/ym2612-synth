@@ -50,4 +50,10 @@ struct ym2612_patch_t {
     uint8_t terminator; // should always be 0
 };
 
+
+
+
+extern struct ym2612_patch_t GrandPianoPatch;
+
+
 #endif

@@ -40,6 +40,7 @@ void Synth::initializeDefaultVoice()
     voice->note_lo = 0;
     voice->note_hi = 127;
     voice->applyPatch((struct ym2612_patch_t *)&GrandPianoPatch);
+    voice->setOutputs(3);
 
     voices.add(voice);
     active_voice_index = 0;

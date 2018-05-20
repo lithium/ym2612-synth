@@ -13,7 +13,9 @@ Synth::Synth()
 {
 
     scale = _scale_hand_tuned;
+    active_voice_index = -1;
 }     
+
 
 void Synth::setup()
 {
@@ -34,6 +36,14 @@ void Synth::loadVoicesFromStorage()
     voice->note_hi = 127;
 
     voices.add(voice);
+    active_voice_index = 0;
+}
+
+SynthVoice *Synth::getActiveVoice() { 
+    if (active_voice_index < 0 || active_voice_index >= this->voices.size()) {
+        return nullptr;
+    }
+    return this->voices.get(active_voice_index); 
 }
 
 

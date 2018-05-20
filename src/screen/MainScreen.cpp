@@ -70,7 +70,7 @@ void MainScreen::paint()
 
     // force update all widgets with current patch
     memset(&last_patch, 0, sizeof(last_patch));
-    settingsChanged(-1,-1); 
+    settingsChanged(nullptr,-1,-1); 
 
     repaint(true);
 }
@@ -210,57 +210,61 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
     int enc = get_encoder_number(e);
     int chan = active_channel;
     int op = active_op->op_number;
+
+    SynthVoice *voice = synth.getActiveVoice();
+
+
     switch (enc)
     {
         case 0: {
-            int tl = ym2612.getTotalLevel(chan, op);
+            int tl = voice->getTotalLevel(op);
             direction *= -1;
             if ((tl+direction > 127) || (tl+direction < 0)) {
                 return;
             }
-            ym2612.setTotalLevel(chan, op, tl + direction);
+            voice->setTotalLevel(op, tl + direction);
             break;
         }
 
         case 1: {
-            int sl = ym2612.getSustainLevel(chan, op);
+            int sl = voice->getSustainLevel(op);
             direction *= -1;
             if ((sl+direction > 15) || (sl+direction < 0)) {
                 return;
             }
-            ym2612.setSustainLevel(chan, op, sl + direction);
+            voice->setSustainLevel(op, sl + direction);
             break;
         }
 
         case 2: {
-            int ar = ym2612.getAttackRate(chan, op);
+            int ar = voice->getAttackRate(op);
             direction *= -1;
             if ((ar+direction > 31) || (ar+direction <= 0)) {
                 return;
             }
-            ym2612.setAttackRate(chan, op, ar+direction);
+            voice->setAttackRate(op, ar+direction);
             break;
         }
         case 3: {
-            int dr = ym2612.getDecayRate(chan, op);
+            int dr = voice->getDecayRate(op);
             direction *= -1;
             if ((dr+direction > 31) || (dr+direction < 0)) {
                 return;
             }
-            ym2612.setDecayRate(chan, op, dr + direction);
+            voice->setDecayRate(op, dr + direction);
             break;
         }
         case 4: {
-            int sr = ym2612.getSustainRate(chan, op);
+            int sr = voice->getSustainRate(op);
             direction *= -1;
             if ((sr+direction > 31) || (sr+direction < 0)) {
                 return;
             }
-            ym2612.setSustainRate(chan, op, sr + direction);
+            voice->setSustainRate(op, sr + direction);
             break;
         }
         case 5: {
-            int rr = ym2612.getReleaseRate(chan, op);
+            int rr = voice->getReleaseRate(op);
             direction *= -1;
             if (rr == 0) {
                 if (direction > 0 )
@@ -270,7 +274,7 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
             if ((rr+direction > 16) || (rr+direction <= 0)) {
                 return;
             }
-            ym2612.setReleaseRate(chan, op, rr + direction);
+            voice->setReleaseRate(op, rr + direction);
             break;
         }
         case 6: {
@@ -285,7 +289,7 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
                 0b011, //+3
             };
 
-            int dt = ym2612.getDetune(chan, op);
+            int dt = voice->getDetune(op);
 
             int cur_idx = -1;
             for (int i=0; i < 7; i++) {
@@ -302,25 +306,25 @@ void MainScreen::encoderTurned(int direction, GpioEncoder *e)
                 return;
             }
 
-            ym2612.setDetune(chan, op, detune_values[cur_idx + direction]);
+            voice->setDetune(op, detune_values[cur_idx + direction]);
             break;
         }
         case 7: {
-            int mul = ym2612.getMultiple(chan, op);
+            int mul = voice->getMultiple(op);
             if ((mul+direction > 15) || (mul+direction < 0)) {
                 return;
             }
-            ym2612.setMultiple(chan, op, mul + direction);
+            voice->setMultiple(op, mul + direction);
             break;
         }
     }
 }
 
-void MainScreen::settingsChanged(uint8_t chan, uint8_t oper) 
+void MainScreen::settingsChanged(Ym2612 *ym, uint8_t chan, uint8_t oper) 
 {
+    SynthVoice *voice = synth.getActiveVoice();
     struct ym2612_patch_t new_patch;
-
-    ym2612.dumpPatch(active_channel, &new_patch);
+    voice->dumpPatch(&new_patch);
 
 
     if (chan == 255 || (last_patch.algorithm != new_patch.algorithm)) {

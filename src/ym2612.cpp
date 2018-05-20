@@ -155,29 +155,15 @@ char *Ym2612::getPatchName()
     return patch_name;
 }
 
-void Ym2612::addListener(Listener *listener) 
+void Ym2612::setListener(Listener *listener) 
 {
-    listeners.add(listener);
-}
-void Ym2612::removeListener(Listener *listener) 
-{
-    auto l = listeners.size();
-    for (auto i = 0; i < l; i++) {
-        if (listeners.get(i) == listener) {
-            listeners.remove(i);
-            return;
-        }
-    }
+    this->listener = listener;
 }
 
 void Ym2612::notifyListenersOfChange(uint8_t channel, uint8_t oper)
 {
-    auto l = listeners.size();
-    for (auto i = 0; i < l; i++) {
-        Listener *listener = listeners.get(i);
-        if (listener) {
-            listener->settingsChanged(channel, oper);
-        }
+    if (listener) {
+        listener->settingsChanged(this, channel, oper);
     }
 }
 

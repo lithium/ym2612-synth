@@ -31,6 +31,7 @@ public:
 
     bool midiMatch(uint8_t midi_channel, uint8_t midi_note=-1);
 
+    void dumpPatch(struct ym2612_patch_t *patchDestination);
 
     void keyOn();
     void keyOff();
@@ -56,25 +57,25 @@ public:
     void setLfoFm(uint8_t depth);
 
 
-    // uint8_t getDetune(uint8_t oper);
-    // uint8_t getMultiple(uint8_t oper);
-    // uint8_t getTotalLevel(uint8_t oper);
-    // uint8_t getRateScale(uint8_t oper);
-    // uint8_t getAttackRate(uint8_t oper);
-    // uint8_t getLfoEnabledForOperator(uint8_t oper);
-    // uint8_t getDecayRate(uint8_t oper);
-    // uint8_t getSustainRate(uint8_t oper);
-    // uint8_t getSustainLevel(uint8_t oper);
-    // uint8_t getReleaseRate(uint8_t oper);
+    uint8_t getDetune(uint8_t oper);
+    uint8_t getMultiple(uint8_t oper);
+    uint8_t getTotalLevel(uint8_t oper);
+    uint8_t getRateScale(uint8_t oper);
+    uint8_t getAttackRate(uint8_t oper);
+    uint8_t getLfoEnabledForOperator(uint8_t oper);
+    uint8_t getDecayRate(uint8_t oper);
+    uint8_t getSustainRate(uint8_t oper);
+    uint8_t getSustainLevel(uint8_t oper);
+    uint8_t getReleaseRate(uint8_t oper);
 
-    // uint8_t getFrequency();
-    // uint8_t getAlgorithm();
-    // uint8_t getFeedback();
-    // uint8_t getOutputs();
-    // uint8_t getLfoEnabled();
-    // uint8_t getLfoFrequency();
-    // uint8_t getLfoAm();
-    // uint8_t getLfoFm();
+    uint8_t getFrequency();
+    uint8_t getAlgorithm();
+    uint8_t getFeedback();
+    uint8_t getOutputs();
+    uint8_t getLfoEnabled();
+    uint8_t getLfoFrequency();
+    uint8_t getLfoAm();
+    uint8_t getLfoFm();
 
 };
 

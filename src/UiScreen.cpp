@@ -9,7 +9,6 @@ void UiScreen::setActiveScreen(UiScreen *screen)
 {
     if (active_screen) {
         active_screen->stop();
-        ym2612.removeListener(active_screen);
     }
 
     active_screen = screen;
@@ -26,7 +25,8 @@ void UiScreen::setActiveScreen(UiScreen *screen)
 
     touchscreen.setListener(active_screen);
 
-    ym2612.addListener(active_screen);
+    // ym2612.addListener(active_screen);
+    synth.setListener(active_screen);
 
     if (active_screen) {
         active_screen->start();
@@ -67,7 +67,7 @@ void UiScreen::screenTouched(TS_Point p)
     
 }
 
-void UiScreen::settingsChanged(uint8_t chan, uint8_t oper)
+void UiScreen::settingsChanged(Ym2612 *ym, uint8_t chan, uint8_t oper)
 {
     
 }

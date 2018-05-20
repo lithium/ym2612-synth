@@ -25,14 +25,25 @@ public:
 
     const uint16_t *getScale() { return this->scale; }
 
+    SynthVoice *getActiveVoice();
+
+
+    void setListener(Ym2612::Listener *listener) {
+        this->listener = listener;
+        ym2612[0].setListener(listener);
+        ym2612[1].setListener(listener);
+    }
 
 private:
 
     const uint16_t *scale; 
 
 
+    uint8_t active_voice_index;
     LinkedList<SynthVoice *> voices;
     Ym2612 ym2612[2];
+
+    Ym2612::Listener *listener = nullptr;
 };
 
 

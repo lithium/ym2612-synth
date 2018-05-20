@@ -12,7 +12,7 @@ void PatchDialog::paint()
 {
     DialogScreen::paint();
 
-    settingsChanged(-1,-1);
+    settingsChanged(nullptr,-1,-1);
     repaint();
 }
 
@@ -40,7 +40,7 @@ void PatchDialog::screenTouched(TS_Point p)
 {
 
 }
-void PatchDialog::settingsChanged(uint8_t chan, uint8_t oper)
+void PatchDialog::settingsChanged(Ym2612 *ym, uint8_t chan, uint8_t oper)
 {
 
 }

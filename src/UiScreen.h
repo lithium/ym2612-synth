@@ -8,6 +8,7 @@
 #include "TouchScreen.h"
 #include "gpio.h"
 #include "ym2612.h"
+#include "synth.h"
 
 class UiScreen : 
         public Widget,
@@ -22,7 +23,7 @@ public:
     virtual void encoderTurned(int direction, GpioEncoder *e) override;
     virtual void buttonPressed(Button *b) override;
     virtual void screenTouched(TS_Point p) override;
-    virtual void settingsChanged(uint8_t chan, uint8_t oper) override;
+    virtual void settingsChanged(Ym2612 *ym, uint8_t chan, uint8_t oper) override;
 
 
     virtual void loop(); // called in master loop() when active screen

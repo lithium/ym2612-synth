@@ -100,10 +100,9 @@ public:
 
     class Listener {
     public:
-        virtual void settingsChanged(uint8_t channel, uint8_t oper) = 0; // -1 means change applies to all channels/operators
+        virtual void settingsChanged(Ym2612 *ym2612, uint8_t channel, uint8_t oper) = 0; // -1 means change applies to all channels/operators
     };
-    void addListener(Listener *listener);
-    void removeListener(Listener *listener);
+    void setListener(Listener *listener);
     void notifyListenersOfChange(uint8_t channel, uint8_t oper);
 
 
@@ -141,7 +140,7 @@ private:
 #define YM_REG_NUM_PARTS 2
     uint8_t registers[YM_REG_NUM_PARTS][YM_REG_PART_SIZE];
 
-    LinkedList<Listener*> listeners;
+    Listener *listener;
 
 };
 

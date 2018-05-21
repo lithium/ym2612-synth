@@ -24,7 +24,6 @@ public:
     void handleMidiSysex(const uint8_t *data, uint16_t length, bool last);
 
 
-    const uint16_t *getScale() { return this->scale; }
 
     SynthVoice *getActiveVoice();
 
@@ -37,7 +36,6 @@ public:
 
 private:
 
-    const uint16_t *scale; 
 
 
     uint8_t active_voice_index;

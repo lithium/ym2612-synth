@@ -11,6 +11,12 @@
 #define CHANNELS_PER_CHIP 6
 
 
+struct note_assignment_t {
+    uint8_t midi_note;
+    uint8_t chip;
+    uint8_t channel;
+};
+
 class SynthVoice
 {
 public:
@@ -22,7 +28,9 @@ public:
     char name[17];
     char patch_name[17];
 
-    uint16_t ym2612_channels;   // 12 bit mask
+   uint16_t ym2612_channels;   // 12 bit mask of assigned channels
+   uint16_t used_channels;
+
 
     uint8_t midi_channel=1;
     uint8_t note_lo=0;
@@ -33,6 +41,9 @@ public:
 
     void dumpPatch(struct ym2612_patch_t *patchDestination);
     void applyPatch(struct ym2612_patch_t *patch);
+
+    void noteOn(uint8_t midi_note, uint8_t velocity);
+    void noteOff(uint8_t midi_note, uint8_t velocity);
 
     void keyOn();
     void keyOff();
@@ -78,6 +89,10 @@ public:
     uint8_t getLfoAm();
     uint8_t getLfoFm();
 
+private:
+    uint8_t poly_count();
+
+    LinkedList<struct note_assignment_t> note_assignments;
 };
 
 #endif

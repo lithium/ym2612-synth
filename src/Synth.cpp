@@ -3,8 +3,6 @@
 
 Synth synth;
 
-static const uint16_t _scale_sega_doc[12] = {617, 653, 692, 733, 777, 823, 872, 924, 979, 1037, 1099, 1164};
-static const uint16_t _scale_hand_tuned[12] = {686, 727, 770, 816, 865, 916, 970, 1028, 1089, 1154, 1223, 1295 };
 
 
 
@@ -12,7 +10,6 @@ static const uint16_t _scale_hand_tuned[12] = {686, 727, 770, 816, 865, 916, 970
 Synth::Synth()
 {
 
-    scale = _scale_hand_tuned;
     active_voice_index = -1;
 }     
 
@@ -35,7 +32,7 @@ void Synth::initializeDefaultVoice()
 {
     // initialize default voice, 12-note polyphony on midi ch1
     SynthVoice *voice = new SynthVoice(ym2612, 2);
-    voice->ym2612_channels = 0xFFF; // all 12 channels
+    voice->ym2612_channels = 0xFC0; // all 12 channels
     voice->midi_channel = 1;
     voice->note_lo = 0;
     voice->note_hi = 127;
@@ -44,6 +41,8 @@ void Synth::initializeDefaultVoice()
 
     voices.add(voice);
     active_voice_index = 0;
+
+    Serial.println("default voice initialized");
 }
 
 SynthVoice *Synth::getActiveVoice() { 
@@ -60,11 +59,10 @@ void Synth::handleMidiNoteOn(uint8_t channel, uint8_t note, uint8_t velocity)
     for (auto i=0; i < l; i++) {
         SynthVoice *v = voices.get(i);
         if (v->midiMatch(channel, note)) {
-            int midi_octave = (note/12)-1;
-            int midi_scale_note = note % 12;
-            uint16_t fn = this->scale[midi_scale_note];
-            v->setFrequency(midi_octave, fn);
-            v->keyOn();
+
+            v->noteOn(note, velocity);
+
+
         }
     }
 
@@ -75,7 +73,8 @@ void Synth::handleMidiNoteOff(uint8_t channel, uint8_t note, uint8_t velocity)
     for (auto i=0; i < l; i++) {
         SynthVoice *v = voices.get(i);
         if (v->midiMatch(channel, note)) {
-            v->keyOff();
+            v->noteOff(note, velocity);
+            // v->keyOff();
         }
     }
 

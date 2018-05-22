@@ -37,12 +37,12 @@ public:
 private:
 
 
+    Ym2612::Listener *listener = nullptr;
 
     uint8_t active_voice_index;
     LinkedList<SynthVoice *> voices;
     Ym2612 ym2612[2];
 
-    Ym2612::Listener *listener = nullptr;
 };
 
 

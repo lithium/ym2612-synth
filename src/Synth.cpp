@@ -32,7 +32,7 @@ void Synth::initializeDefaultVoice()
 {
     // initialize default voice, 12-note polyphony on midi ch1
     SynthVoice *voice = new SynthVoice(ym2612, 2);
-    voice->ym2612_channels = 0xFC0; // all 12 channels
+    voice->ym2612_channels = 0xFFF; // all 12 channels
     voice->midi_channel = 1;
     voice->note_lo = 0;
     voice->note_hi = 127;

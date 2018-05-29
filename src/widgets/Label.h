@@ -18,6 +18,9 @@ public:
 
     void setLabel(const char *label)
     {
+        if (_label) {
+            paintLabel(_label, true);
+        }
         _label = label;
         setDirty(true);
     }

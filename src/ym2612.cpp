@@ -441,6 +441,8 @@ void Ym2612::update_register(uint8_t ym_addr, uint8_t channel, uint8_t mask, uin
     }
     uint8_t new_value = (existing_value & ~mask) | ((value & value_mask) << bit_offset);
     set_register(channel >= 3, ym_addr, new_value);
+
+    notifyListenersOfChange(channel, -1);
 }
 
 void Ym2612::set_register(uint8_t part, uint8_t ym_addr, uint8_t value)

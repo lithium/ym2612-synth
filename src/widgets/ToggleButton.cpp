@@ -7,8 +7,8 @@ void ToggleButton::paint()
 
     emboss_frame(x,y,w,h, _active ? COLOR_emboss : COLOR_deboss);
 
-    padding_left = 4;
-    padding_top = 4;
+    // padding_left = 4;
+    // padding_top = 4;
 
     Label::paint();
 }

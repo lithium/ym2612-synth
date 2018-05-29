@@ -12,8 +12,10 @@ public:
 
     void paint() override;
     void setActive(bool active = true) {
-        _active = active;
-        setDirty(true);
+        if (_active != active) {
+            _active = active;
+            setDirty(true);
+        }
     }
     bool isActive() { return _active; }
 

@@ -49,10 +49,9 @@ public:
 private:
     uint8_t last_algorithm = -1;
     uint8_t last_feedback = -1;
-    uint8_t current_channel = 0;
 
-    AlgorithmWidget algorithmWidgets[8];
     AlgorithmWidget *activeWidget = nullptr;
+    AlgorithmWidget algorithmWidgets[8];
 };
 
 #endif

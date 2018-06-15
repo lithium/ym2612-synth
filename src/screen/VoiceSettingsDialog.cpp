@@ -112,9 +112,6 @@ void VoiceSettingsDialog::settingsChanged(Ym2612 *ym, uint8_t chan, uint8_t oper
 {
     SynthVoice *voice = synth.getActiveVoice();
 
-    if (chan == 255) {
-        chan = current_channel;
-    }
     auto new_algorithm = voice->getAlgorithm();
     auto new_feedback = voice->getFeedback();
 
@@ -124,6 +121,7 @@ void VoiceSettingsDialog::settingsChanged(Ym2612 *ym, uint8_t chan, uint8_t oper
         }
         algorithmWidgets[new_algorithm].setActive(true);
         last_algorithm = new_algorithm;
+
         repaint();
     }
     if (new_feedback != last_feedback) {

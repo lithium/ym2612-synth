@@ -15,6 +15,9 @@
 #define SCREEN_HEIGHT 240
 
 
+#define ENCODER_REVERSE_DIRECTION
+
+
 const auto dialog_radius = 3;
 const auto dialog_margin = 30;
 const auto dialog_width = SCREEN_WIDTH-dialog_margin*2; 

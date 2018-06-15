@@ -43,6 +43,9 @@ void GpioEncoder::handle(uint16_t debounced_state)
 {
     int val = read(debounced_state);
     if (val != 0) {
+#ifdef ENCODER_REVERSE_DIRECTION
+        val *= -1;
+#endif
         _detent_divider += val;
         if (abs(_detent_divider) == _pulses_per_detent) {
             if (this->listener) {

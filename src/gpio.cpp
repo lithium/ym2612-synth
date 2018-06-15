@@ -32,10 +32,10 @@ static uint16_t _gpio_last = 0;
 // Button buttons[BUTTON_COUNT];
 
 struct { int min; int max; } _analog_button_ranges[] = {
-    {0,600},
-    {3000,3300},
-    {800,1300},
-    {2200,2500},
+    {2900,3300},
+    {0,300},
+    {1700,2000},
+    {700,1000},
 };
 AnalogButton analog_buttons[ANALOG_BUTTON_COUNT];
 

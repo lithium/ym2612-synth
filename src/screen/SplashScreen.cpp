@@ -35,7 +35,7 @@ void SplashScreen::draw_logo(int color)
     tft.setTextSize(3);
     tft.setTextColor(color);
     tft.setCursor(x,y);
-    tft.print("Opie N.2");
+    tft.print("SynthOPN2");
 }
 
 void SplashScreen::loop()

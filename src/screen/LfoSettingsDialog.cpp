@@ -3,8 +3,8 @@
 
 
 static auto padding = 4;
-static auto left = dialog_margin + border_padding;
-static auto top = dialog_margin + border_padding;
+static auto _left = dialog_margin + border_padding;
+static auto _top = dialog_margin + border_padding;
 static const auto label_width = 40;
 
 static const char *_frequency_values[] = {
@@ -49,8 +49,8 @@ LfoSettingsDialog::LfoSettingsDialog() :
 {
 
 
-    auto l = left + padding;
-    auto t = top + padding;
+    auto l = _left + padding;
+    auto t = _top + padding;
 
     // enabled 
     lfoEnabledButton.setBounds(l, t, 90, 40);
@@ -67,8 +67,8 @@ LfoSettingsDialog::LfoSettingsDialog() :
 
 
     // am/fm depth
-    l = left + padding + label_width;
-    t = top + padding + 60;
+    l = _left + padding + label_width;
+    t = _top + padding + 60;
 
     amDepthLabel.setBounds(l, t, 90, 20);
     addWidget(&amDepthLabel);
@@ -81,8 +81,8 @@ LfoSettingsDialog::LfoSettingsDialog() :
     // am operator enabled 
     const auto button_size = 60;
     const auto button_padding = 10;
-    // l = left + padding + button_padding;
-    t = top + padding + 30;
+    // l = _left + padding + button_padding;
+    t = _top + padding + 30;
     l = 145;
 
     const int button_pos[][2] = {
@@ -105,8 +105,8 @@ void LfoSettingsDialog::paint()
 {
     DialogScreen::paint();
 
-    auto l = left + padding;
-    auto t = top + padding + 60;
+    auto l = _left + padding;
+    auto t = _top + padding + 60;
     tft.setCursor(l, t);
     tft.print("AM:");
     tft.setCursor(l+75, t);
@@ -118,8 +118,8 @@ void LfoSettingsDialog::paint()
     tft.setCursor(l+68, t);
     tft.print("c");
 
-    l = left + padding + 100;
-    t = top +padding;
+    l = _left + padding + 100;
+    t = _top +padding;
     tft.setCursor(l, t);
     tft.print("Rate:");
     tft.setCursor(l+90, t);

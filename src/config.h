@@ -8,7 +8,7 @@
 #define SERIAL_DEBUG
 
 
-#define VERSION_STRING "v0.3.0"
+#define VERSION_STRING "v0.4.0"
 
 
 #define SCREEN_WIDTH 320

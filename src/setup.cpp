@@ -8,31 +8,30 @@
 
 #include "internal_storage.h"
 
-#include <SD.h>
-#include <SPI.h>
-#include <Wire.h>
 
-void test_sdcard()
-{
-    pinMode(10, OUTPUT);
-    pinMode(SDCARD_CS, OUTPUT);
+// void setup_sdcard()
+// {
+//     pinMode(10, OUTPUT);
+//     pinMode(SDCARD_CS, OUTPUT);
 
-    if (!SD.begin(SDCARD_CS)) {
-        Serial.println("sd init failed!");
-        return;
-    }
-    Serial.println("sd init success");
-    auto root = SD.open("/");
-    root.seek(0);
-    // root.rewindDirectory();
-    File e = root.openNextFile();
-    if (e) {
-        Serial.println(e.name());
-    } else {
-        Serial.println("no file?");
-    }
-    e.close();
-}
+//     if (!SD.begin(SDCARD_CS)) {
+//         Serial.println("sd init failed!");
+//         return;
+//     }
+//     Serial.println("sd init success");
+
+
+//     auto root = SD.open("/");
+//     root.seek(0);
+//     // root.rewindDirectory();
+//     File e = root.openNextFile();
+//     if (e) {
+//         Serial.println(e.name());
+//     } else {
+//         Serial.println("no file?");
+//     }
+//     e.close();
+// }
 
 
 void hexdump(void *a, int n)
@@ -58,7 +57,8 @@ void setup()
 
 
     // initialize storage 
-    // test_sdcard();
+    // setup_sdcard();
+
     // internal_storage.scanPatches();
     // for (auto i=0; i < INTERNAL_PATCH_MAX_COUNT; i++) {
     //     if (internal_storage.patch_names[i][0] != 0) {
